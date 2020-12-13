@@ -15,7 +15,7 @@ const LoginScreen = ({navigation}) => {
                 <InputWithError
                     name="username"
                     label="username"
-                    placeholder="placeholder"
+                    placeholder="Username"
                     onChangeText={onChangeText}
                 />
             </View>
@@ -23,7 +23,7 @@ const LoginScreen = ({navigation}) => {
                 <InputWithError
                     name="password"
                     label="password"
-                    placeholder="placeholder"
+                    placeholder="Password"
                     onChangeText={onChangeText}
                     secureTextEntry={true}
                 />
