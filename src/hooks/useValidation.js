@@ -1,18 +1,16 @@
 import { useState } from "react";
-import { useIntl } from "translations";
 
 export default function useValidation(vest) {
     const [errors, setErrors] = useState({});
     const [hasErrors, setHasErrors] = useState(false);
-    const {formatMessage} = useIntl();
 
     const validate = async (subject, field = false) => {
         return new Promise((resolve, reject) => {
             let validation = {};
             if (!field) {
-                validation = vest(subject, null, formatMessage);
+                validation = vest(subject, null);
             } else {
-                validation = vest(subject, field, formatMessage);
+                validation = vest(subject, field);
             }
             setHasErrors(validation.hasErrors());
             if (validation.hasErrors()) {
