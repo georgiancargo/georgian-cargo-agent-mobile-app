@@ -1,5 +1,5 @@
 import {useContext, useState} from "react";
-import {useAxios} from "_hooks";
+import useAxios from "./useAxios";
 import {AuthContext} from "_context";
 
 export default function useRequest(request, load = false) {
