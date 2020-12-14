@@ -1,9 +1,13 @@
 import React, {useContext, useState} from "react";
-import {View, Button, StyleSheet} from "react-native";
+import {View, Button, StyleSheet, ScrollView} from "react-native";
 import {useRequest} from "_hooks";
 import {InputWithError} from "_atoms";
 import {loginRequest} from "_requests";
 import {AuthContext} from "_context";
+import BootstrapStyleSheet from "react-native-bootstrap-styles";
+
+const bootstrapStyleSheet = new BootstrapStyleSheet();
+const {s, c} = bootstrapStyleSheet;
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "", password: ""});
@@ -32,15 +36,13 @@ const LoginScreen = ({navigation}) => {
     };
     return (
         <View style={styles.container}>
-            <View style={styles.formInput}>
+            <View style={[s.formGroup]}>
                 <InputWithError
                     name="username"
                     label="username"
                     placeholder="Username"
                     onChangeText={onChangeText}
                 />
-            </View>
-            <View style={styles.formInput}>
                 <InputWithError
                     name="password"
                     label="password"
@@ -66,10 +68,12 @@ const styles = StyleSheet.create({
         paddingBottom: "20%",
     },
     formInput: {
-        flex: 1,
-        margin: 10,
+        flex: 2,
+        // margin: 10,
         // borderWidth: 10,
         // borderColor: "#fff",
+        // alignContent:"stretch",
+        // alignItems:"stretch",
     },
     formButton: {
         flex: 5,
