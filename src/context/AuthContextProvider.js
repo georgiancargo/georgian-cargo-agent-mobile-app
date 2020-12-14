@@ -1,12 +1,12 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import AuthContext from "./AuthContext";
 import {getItemAsync as get, setItemAsync as set} from "expo-secure-store";
 
-const AuthContextProvider = async ({children}) => {
+const AuthContextProvider = ({children}) => {
     const defaultAuthState = {
-        accessToken: (await get("accessToken")) || null,
-        refreshToken: (await get("refreshToken")) || null,
-        isLoggedIn: (await get("isLoggedIn")) === "true" || false,
+        // accessToken: (await get("accessToken")) || null,
+        // refreshToken: (await get("refreshToken")) || null,
+        // isLoggedIn: (await get("isLoggedIn")) === "true" || false,
     };
 
     const [auth, setAuth] = useState(defaultAuthState);
@@ -18,11 +18,17 @@ const AuthContextProvider = async ({children}) => {
         setAuth(data);
     };
     const authObj = {auth, setAuth: setAuthStorage};
+    const update = async () => {
 
-    useEffect(async () => {
         for (const key in auth) {
             await set(key, auth[key]);
         }
+    };
+    useEffect(() => {
+        update();
+        return () => {
+            console.log("This will be logged on unmount");
+          }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth]);
     return <AuthContext.Provider value={authObj}>{children}</AuthContext.Provider>;
