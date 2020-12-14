@@ -1,26 +1,12 @@
 import {useState} from "react";
-import {useCookies} from "react-cookie";
-import moment from "moment";
+import {setItemAsync as set} from "expo-secure-store";
 
 const useAuthentication = (defaultAuth) => {
     const [auth, setAuth] = useState(defaultAuth);
-    const [, setCookie] = useCookies([
-        "accessToken",
-        "refreshToken",
-        "isLoggedIn",
-        "accountType",
-    ]);
-    const persistent_cookies = ["refreshToken"];
 
     const setAuthCookies = (data) => {
-        let config = {
-            path: "/",
-        };
-        for (const key in data) {
-            if (persistent_cookies.includes(key)) {
-                config.expires = moment().add(30, "days").toDate();
-            }
-            setCookie(key, data[key], config);
+        for (const key in auth) {
+            await set(key, auth[key]);
         }
         setAuth(data);
     };
