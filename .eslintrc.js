@@ -18,6 +18,7 @@ module.exports = {
           _styles: './src/styles',
           _utils: './src/utils',
           _hooks: './src/hooks',
+          _context: './src/context', 
         },
       },
     },
