@@ -19,6 +19,7 @@ module.exports = {
           _utils: './src/utils',
           _hooks: './src/hooks',
           _context: './src/context', 
+          _requests: './src/requests', 
         },
       },
     },
