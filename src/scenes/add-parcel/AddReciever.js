@@ -6,7 +6,7 @@ import {InputWithError, Button} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const AddParcel = ({navigation}) => {
+const AddReciever = ({navigation}) => {
     const labels = [
         "Sender id",
         "Sender name",
@@ -40,10 +40,10 @@ const AddParcel = ({navigation}) => {
                         </View>
                     ))}
                     <Button onPress={onPress}>Next</Button> */}
-                    <Text>Add Parcel</Text>
+                    <Text>Add Reciever</Text>
                 </View>
             </ScrollView>
         </>
     );
 };
-export default AddParcel;
+export default AddReciever;

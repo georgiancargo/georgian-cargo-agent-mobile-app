@@ -22,7 +22,7 @@ const Home = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.horizontalButtons}>
-                    <TouchableOpacity style={styles.button} onPress={() => goto("Add")}>
+                    <TouchableOpacity style={styles.button} onPress={() => goto("Add Sender")}>
                         <Text>Pickup items</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>

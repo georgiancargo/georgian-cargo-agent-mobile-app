@@ -6,7 +6,7 @@ import {InputWithError, Button} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const AddParcel = ({navigation}) => {
+const AddSender = ({navigation}) => {
     const labels = [
         "Sender id",
         "Sender name",
@@ -32,18 +32,23 @@ const AddParcel = ({navigation}) => {
     };
     return (
         <>
-            <ScrollView style={[s.container, s.bgWhite]}>
+            <ScrollView style={[s.container, s.bgWhite, s.p3]}>
                 <View style={[s.formGroup]}>
-                    {/* {labels.map((label, i) => (
+                    {labels.map((label, i) => (
                         <View style={[s.formGroup]}>
-                            <InputWithError name={keys[i]} key={keys[i]} label={label} />
+                            <InputWithError
+                                name={keys[i]}
+                                key={keys[i]}
+                                // label={label}
+                                placeholder={label}
+                            />
                         </View>
                     ))}
-                    <Button onPress={onPress}>Next</Button> */}
-                    <Text>Add Parcel</Text>
+                    <Button onPress={onPress}>Next</Button>
                 </View>
             </ScrollView>
         </>
     );
 };
-export default AddParcel;
+
+export default AddSender;
