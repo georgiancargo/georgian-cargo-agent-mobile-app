@@ -1,7 +1,7 @@
 import React from "react";
 import {ScrollView, Text, View} from "react-native";
+import {InputWithError, Button, PickupListItem} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {InputWithError, Button} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -45,6 +45,10 @@ const AddSender = ({navigation}) => {
                         </View>
                     ))}
                     <Button onPress={onPress}>Next</Button>
+                </View>
+
+                <View>
+                    <PickupListItem />
                 </View>
             </ScrollView>
         </>
