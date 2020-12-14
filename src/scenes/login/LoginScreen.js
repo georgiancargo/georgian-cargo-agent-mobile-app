@@ -7,10 +7,21 @@ import {loginRequest} from "_requests";
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "", password: ""});
-    const [login] = useRequest(loginRequest);
+    const [request] = useRequest(loginRequest);
     const onChangeText = (name, text) => {
         setUser({...user, [name]: text});
-        console.log(name, text);
+    };
+    const login = () => {
+        request(user)
+            .then(() => {
+                console.log("hi success");
+            })
+            .catch(() => {
+                console.log("failed successfuly");
+            })
+            .finally(() => {
+                console.log("all done");
+            });
     };
     return (
         <View style={styles.container}>
@@ -32,7 +43,7 @@ const LoginScreen = ({navigation}) => {
                 />
             </View>
             <View style={styles.formButton}>
-                <Button style={styles.button} title="Login"></Button>
+                <Button style={styles.button} title="Login" onPress={login}></Button>
             </View>
         </View>
     );
@@ -49,10 +60,14 @@ const styles = StyleSheet.create({
     },
     formInput: {
         flex: 1,
-        padding: 3,
+        margin: 10,
+        // borderWidth: 10,
+        // borderColor: "#fff",
     },
     formButton: {
         flex: 5,
+        margin: 30,
+        // borderWidth: 10,
         // justifyContent: "flex-end",
         // margin: 20,
         // alignItems: "stretch",
