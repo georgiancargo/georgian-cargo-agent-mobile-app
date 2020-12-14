@@ -1,6 +1,6 @@
 import {useContext, useState} from "react";
-import useAxios from "hooks/useAxios";
-import {AuthContext} from "context";
+import {useAxios} from "_hooks";
+import {AuthContext} from "_context";
 
 export default function useRequest(request, load = false) {
     const axios = useAxios();
@@ -8,7 +8,6 @@ export default function useRequest(request, load = false) {
     const {setAuth} = useContext(AuthContext);
     const send = async (data) => {
         setIsProcessing(true);
-        if (load) document.getElementById("loader").classList.add("loading-indicator");
         const response = request(axios, data)
             .catch((e) => {
                 switch (e.response.status) {
@@ -23,10 +22,6 @@ export default function useRequest(request, load = false) {
             })
             .finally(() => {
                 setIsProcessing(false);
-                if (load)
-                    document
-                        .getElementById("loader")
-                        .classList.remove("loading-indicator");
             });
         return response;
     };
