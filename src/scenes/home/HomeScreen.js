@@ -1,5 +1,8 @@
 import React from "react";
 import {View, StyleSheet, Text, Button, TouchableOpacity} from "react-native";
+import {ScrollView} from "react-native-gesture-handler";
+import {ListItem} from "_atoms";
+import {ParcelList} from "_molecules";
 import {GRAY_MEDIUM} from "_styles/colors";
 
 const Home = () => (
@@ -26,7 +29,12 @@ const Home = () => (
             </View>
         </View>
         <View style={styles.listContainer}>
-            <Text>List</Text>
+            {/* <ScrollView>
+                <ListItem />
+                <ListItem />
+                <ListItem />
+            </ScrollView> */}
+            <ParcelList parcels={[1, 2, 3, 4]} />
         </View>
     </View>
 );
@@ -43,9 +51,12 @@ const styles = StyleSheet.create({
     },
     listContainer: {
         flex: 6,
+        margin: 5,
     },
     logo: {
         flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
     },
     horizontalButtons: {
         flex: 2,
