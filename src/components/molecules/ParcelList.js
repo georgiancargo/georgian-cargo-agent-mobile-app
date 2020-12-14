@@ -1,20 +1,19 @@
 import React from "react";
-import {SafeAreaView, FlatList, StyleSheet, Pressable} from "react-native";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import {SafeAreaView, FlatList, StyleSheet} from "react-native";
 import {ListItem} from "_atoms";
 
-const ParcelList = ({parcels = []}) => {
-    const renderItem = ({item}) => (
-        <TouchableOpacity>
-            <ListItem title={item.title} />
-        </TouchableOpacity>
-    );
+const ParcelList = ({parcels = [], navigation}) => {
+    const edit = (parcel) => {
+        console.log(parcel);
+        navigation.navigate("Edit", {parcel: parcel});
+    };
+    const renderItem = ({item}) => <ListItem parcel={item} edit={edit} />;
     return (
         <SafeAreaView style={styles.container}>
             <FlatList
                 data={parcels}
                 renderItem={renderItem}
-                keyExtractor={(item) => item}
+                keyExtractor={(parcel) => parcel.toString()}
             />
         </SafeAreaView>
     );

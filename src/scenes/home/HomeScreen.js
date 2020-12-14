@@ -1,11 +1,9 @@
 import React from "react";
-import {View, StyleSheet, Text, Button, TouchableOpacity} from "react-native";
-import {ScrollView} from "react-native-gesture-handler";
-import {ListItem} from "_atoms";
+import {View, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {ParcelList} from "_molecules";
 import {GRAY_MEDIUM} from "_styles/colors";
 
-const Home = () => (
+const Home = ({navigation}) => (
     <View style={styles.container}>
         <View style={styles.logo}>
             <Text>Logo</Text>
@@ -34,7 +32,7 @@ const Home = () => (
                 <ListItem />
                 <ListItem />
             </ScrollView> */}
-            <ParcelList parcels={[1, 2, 3, 4]} />
+            <ParcelList parcels={[1, 2, 3, 4]} navigation={navigation} />
         </View>
     </View>
 );

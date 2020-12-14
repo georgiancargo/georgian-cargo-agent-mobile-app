@@ -1,8 +1,9 @@
 import React from "react";
 import {StyleSheet, Text, View} from "react-native";
+import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
 
-const ListItem = () => {
+const ListItem = ({parcel, edit}) => {
     const list = [
         "ID",
         "weight",
@@ -14,10 +15,10 @@ const ListItem = () => {
         "reciever",
     ];
     return (
-        <View style={styles.container}>
+        <TouchableOpacity style={styles.container} onPress={() => edit(parcel)}>
             {list.map((item, i) => (
                 <Text
-                    key={i}
+                    key={item}
                     style={
                         i == 0 || i == 1 ? {...styles.text, width: "91%"} : styles.text
                     }
@@ -25,7 +26,7 @@ const ListItem = () => {
                     {item}
                 </Text>
             ))}
-        </View>
+        </TouchableOpacity>
     );
 };
 
