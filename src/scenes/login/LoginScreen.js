@@ -1,10 +1,13 @@
 import React from "react";
 import {useState} from "react";
 import {Text, View, Button, StyleSheet} from "react-native";
+import {useRequest} from "_hooks";
 import {InputWithError} from "_atoms";
+import {loginRequest} from "_requests";
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "", password: ""});
+    const [login] = useRequest(loginRequest);
     const onChangeText = (name, text) => {
         setUser({...user, [name]: text});
         console.log(name, text);
