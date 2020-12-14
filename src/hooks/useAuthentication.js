@@ -1,7 +1,7 @@
 import {useState} from "react";
 import {setItemAsync as set} from "expo-secure-store";
 
-const useAuthentication = (defaultAuth) => {
+const useAuthentication = async (defaultAuth) => {
     const [auth, setAuth] = useState(defaultAuth);
 
     const setAuthStorage = (data) => {
