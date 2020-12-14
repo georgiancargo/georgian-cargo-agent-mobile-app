@@ -10,7 +10,7 @@
       "_components": ["src/components/*"],
       "_scenes/*": ["src/scenes/*"],
       "_services": ["src/services/*"],
-      "_styles": ["src/styles/*"],
+      "_styles/*": ["src/styles/*"],
       "_utils": ["src/utils/*"],
       "_hooks": ["src/hooks/*"],
       "_context": ["src/context/*"],
