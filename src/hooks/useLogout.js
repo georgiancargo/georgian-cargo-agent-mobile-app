@@ -1,20 +1,16 @@
-import {history} from "components/History";
-import {AuthContext} from "context";
-import {useRequest} from "hooks";
+import {AuthContext} from "_context";
+import {useRequest} from "_hooks";
 import {useContext} from "react";
+import {deleteItemAsync as _delete} from "expo-secure-store";
 
 const useLogout = () => {
-    const {auth, setAuth} = useContext(AuthContext);
-    const type = auth.accountType;
+    const {setAuth} = useContext(AuthContext);
     const logoutRequest = (axios) => {
-        let url = `/auth/${type}/logout`.toLowerCase();
+        let url = `/auth/agent/logout`.toLowerCase();
         return axios.get(url);
     };
     const [_logout] = useRequest(logoutRequest);
-    const home = () => {
-        if (type === "CLIENT") return "/home";
-        else return `/${type}/login`.toLowerCase();
-    };
+    
     const logout = () => {
         _logout()
             .then((r) => {
@@ -22,10 +18,7 @@ const useLogout = () => {
                     accessToken: null,
                     refreshToken: null,
                     isLoggedIn: false,
-                    accountType: null,
                 });
-                history.push(home());
-                // window.location.reload();
             })
             .catch((e) => {});
     };
