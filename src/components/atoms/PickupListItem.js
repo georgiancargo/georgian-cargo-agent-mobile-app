@@ -1,50 +1,51 @@
 import React from "react";
 import {Text, View, StyleSheet} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {GRAY_MEDIUM} from "_styles/colors";
+import { TouchableOpacity } from "react-native-gesture-handler";
+// import {GRAY_MEDIUM} from "_styles/colors";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const PickupListItem = ({reciever = {}, parcel = {}}) => {
-    const arr = [1, 2, 3, 4, 5, 6];
+const PickupListItem = ({reciever = {}, parcel = {}, isParcel}) => {
+    const recieverKeys = ["name", "phone"];
+    const parcelKeys = ["tracking_number", "notes"];
     return (
         <>
             <View style={[s.flexRow, s.flexWrap]}>
-                <View style={styles.side}>
-                    {arr.map((i) => (
-                        <View style={[s.btnTouchable, s.m1]} key={i * 2}>
-                            <View style={[s.btn, s.btnOutlineInfo]}>
-                                <Text style={[s.btnText, s.btnOutlineInfo]}>item</Text>
-                            </View>
-                        </View>
-                    ))}
-                </View>
-                <View style={styles.side}>
-                    {arr.map((i) => (
-                        <View style={[s.btnTouchable, s.m1]} key={i}>
-                            <View style={[s.btn, s.btnOutlineInfo]}>
-                                <Text style={[s.btnText, s.btnOutlineInfo]}>
-                                    iteaaaaaaaam
-                                </Text>
-                            </View>
-                        </View>
-                    ))}
-                </View>
+                {isParcel ? (
+                    <Print obj={parcel} arr={parcelKeys} />
+                ) : (
+                    <Print obj={reciever} arr={recieverKeys} />
+                )}
             </View>
         </>
+    );
+};
+
+const Print = ({arr, obj}) => {
+    return (
+        <View style={styles.side}>
+            {arr.map((key) => (
+                <TouchableOpacity style={[s.btnTouchable, s.m1]} key={key}>
+                    <View style={[s.btn, s.btnOutlineInfo]}>
+                        <Text style={[s.btnText, s.btnOutlineInfo]}>{obj[key]}</Text>
+                    </View>
+                </TouchableOpacity>
+            ))}
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
     side: {
         flex: 1,
-        borderWidth: 1,
-        flexDirection: "row",
-        flexWrap: "wrap",
-        borderRadius: 20,
-        borderColor: GRAY_MEDIUM,
-        padding: 5,
+        // flexDirection: "row",
+        // flexWrap: "wrap",
+        // borderWidth: 1,
+        // borderRadius: 20,
+        // borderColor: GRAY_MEDIUM,
+        // padding: 5,
     },
 });
 export default PickupListItem;

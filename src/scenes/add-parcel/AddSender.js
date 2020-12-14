@@ -2,6 +2,7 @@ import React from "react";
 import {ScrollView, Text, View} from "react-native";
 import {InputWithError, Button, PickupListItem} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {PickupList} from "_molecules";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -48,7 +49,8 @@ const AddSender = ({navigation}) => {
                 </View>
 
                 <View>
-                    <PickupListItem />
+                    {/* <PickupListItem /> */}
+                    <PickupList />
                 </View>
             </ScrollView>
         </>
