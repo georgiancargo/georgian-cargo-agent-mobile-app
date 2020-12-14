@@ -1,19 +1,25 @@
-import React from "react";
-import {useState} from "react";
-import {Text, View, Button, StyleSheet} from "react-native";
+import React, {useContext, useState} from "react";
+import {View, Button, StyleSheet} from "react-native";
 import {useRequest} from "_hooks";
 import {InputWithError} from "_atoms";
 import {loginRequest} from "_requests";
+import {AuthContext} from "_context";
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "", password: ""});
+    const {setAuth} = useContext(AuthContext);
     const [request] = useRequest(loginRequest);
     const onChangeText = (name, text) => {
         setUser({...user, [name]: text});
     };
     const login = () => {
         request(user)
-            .then(() => {
+            .then(({data}) => {
+                setAuth({
+                    access_token: data.access_token,
+                    remember_token: data.remember_token,
+                    is_logged_in: true,
+                }).catch(() => {});
                 console.log("hi success");
             })
             .catch(() => {
@@ -21,6 +27,7 @@ const LoginScreen = ({navigation}) => {
             })
             .finally(() => {
                 console.log("all done");
+                navigation.navigate("Home");
             });
     };
     return (
