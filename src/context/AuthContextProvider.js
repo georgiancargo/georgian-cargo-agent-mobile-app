@@ -1,18 +1,25 @@
 import React, {useEffect} from "react";
 import AuthContext from "./AuthContext";
-import {useAuthentication} from "_hooks";
 import {getItemAsync as get, setItemAsync as set} from "expo-secure-store";
 
-const AuthContextProvider = ({children}) => {
+const AuthContextProvider = async ({children}) => {
     const defaultAuthState = {
-        accessToken: await get("accessToken") || null,
-        refreshToken: await get("refreshToken") || null,
-        isLoggedIn: await get("isLoggedIn") === "true" || false,
+        accessToken: (await get("accessToken")) || null,
+        refreshToken: (await get("refreshToken")) || null,
+        isLoggedIn: (await get("isLoggedIn")) === "true" || false,
     };
-    const authObj = useAuthentication(defaultAuthState);
-    const {auth} = authObj;
 
-    useEffect(() => {
+    const [auth, setAuth] = useState(defaultAuthState);
+
+    const setAuthStorage = async (data) => {
+        for (const key in auth) {
+            await set(key, auth[key]);
+        }
+        setAuth(data);
+    };
+    const authObj = {auth, setAuth: setAuthStorage};
+
+    useEffect(async () => {
         for (const key in auth) {
             await set(key, auth[key]);
         }
