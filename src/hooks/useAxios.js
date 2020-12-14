@@ -1,12 +1,12 @@
 import {useContext, useState, useEffect} from "react";
 import Axios from "axios";
-import {AuthContext} from "context";
+import {AuthContext} from "_context";
 
 export default function useAxios() {
     const {auth} = useContext(AuthContext);
     const {accessToken} = {...auth};
 
-    const baseURL = "http://akido.me/api";
+    const baseURL = "";
 
     const defaultAxios = Axios.create({
         baseURL,
