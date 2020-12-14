@@ -5,6 +5,7 @@ import {LoginScreen} from "_scenes/login";
 import {HomeScreen} from "_scenes/home";
 // import {StatusBar} from "expo-status-bar";
 import {EditParcel} from "_scenes/edit-parcel";
+import {AddParcel} from "_scenes/add-parcel";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
@@ -18,6 +19,7 @@ function App() {
                 />
                 <Screen name="Home" component={HomeScreen} />
                 <Screen name="Edit" component={EditParcel} />
+                <Screen name="Add" component={AddParcel} />
             </Navigator>
         </NavigationContainer>
     );
