@@ -78,7 +78,7 @@ const AddSender = ({navigation}) => {
     };
     const gotoSummary = () => {
         navigation.navigate("Summary", {
-            parcels: parcels,
+            parcels: parcelsArray,
         });
     };
     return (
