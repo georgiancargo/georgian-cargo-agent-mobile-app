@@ -9,8 +9,7 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AddSender = ({navigation}) => {
-    const [parcels, setParcels] = useState({
-    });
+    const [parcels, setParcels] = useState({});
     const [parcelsArray, setParcelsArray] = useState([]);
     const [sender, setSender] = useState({});
     const [notSaved, setNotSaved] = useState(true);
@@ -83,8 +82,8 @@ const AddSender = ({navigation}) => {
         });
     };
     return (
-        <>
-            <ScrollView style={[s.container, s.bgWhite, s.p3]}>
+        <ScrollView>
+            <View style={[s.container, s.bgWhite, s.p3]}>
                 <View style={[s.formGroup]}>
                     {labels.map((label, i) => (
                         <View style={[s.formGroup]} key={label}>
@@ -142,12 +141,12 @@ const AddSender = ({navigation}) => {
                     </Button>
                 </View>
                 <View>
-                    {/* <Text>{JSON.stringify(parcelsArray)}</Text>
-                    <Text>{JSON.stringify(parcels)}</Text> */}
+                    {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
+                    {/* <Text>{JSON.stringify(parcels)}</Text> */}
                     <PickupList parcels={parcelsArray} />
                 </View>
-            </ScrollView>
-        </>
+            </View>
+        </ScrollView>
     );
 };
 

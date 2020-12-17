@@ -67,8 +67,8 @@ const AddReciever = ({navigation, route}) => {
     };
 
     return (
-        <View style={[s.container, s.bgWhite, s.p3]}>
-            <ScrollView>
+        <ScrollView>
+            <View style={[s.container, s.bgWhite, s.p3]}>
                 <Form
                     labels={receiveLabels}
                     keys={receiverKeys}
@@ -98,8 +98,8 @@ const AddReciever = ({navigation, route}) => {
                     <Button onPress={onPress}>Next</Button>
                 </View> */}
                 {/* <Text>{JSON.stringify(parcel)}</Text> */}
-            </ScrollView>
-        </View>
+            </View>
+        </ScrollView>
     );
 };
 
