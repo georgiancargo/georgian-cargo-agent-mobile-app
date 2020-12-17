@@ -1,26 +1,26 @@
 import React from "react";
-import {FlatList, Text, View} from "react-native";
+import { FlatList, Text, View } from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {PickupListItem} from "_atoms";
+import { PickupListItem } from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const { s, c } = bootstrapStyleSheet;
 
-const PickupList = ({reciever, sender}) => {
-    const renderItem = ({item, index}) => {
+const PickupList = ({ parcels }) => {
+    const renderItem = ({ item, index }) => {
+        const { sender, receiver, ...parcel } = item;
         return (
             <View style={[s.tableRow]}>
                 <View style={[s.tableHeadCol]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
-                    {/* <Text style={[s.text]}></Text> */}
-                    <PickupListItem reciever={{name: "Ahmed", phone: "baeee"}} />
+                    <PickupListItem reciever={receiver} />
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
                     <PickupListItem
                         isParcel
-                        parcel={{tracking_number: "1234567", notes: "wertyu"}}
+                        parcel={{ tracking_number: "1234567", notes: "wertyu" }}
                     />
                 </View>
             </View>
@@ -30,7 +30,7 @@ const PickupList = ({reciever, sender}) => {
         <>
             <View>
                 <FlatList
-                    data={[1, 2, 3, 4, 5]}
+                    data={parcels}
                     style={[s.table]}
                     ListHeaderComponent={Header}
                     renderItem={renderItem}

@@ -23,7 +23,7 @@ const PickupListItem = ({reciever = {}, parcel = {}, isParcel}) => {
     );
 };
 
-const Print = ({arr, obj}) => {
+const Print = ({arr, obj={}}) => {
     return (
         <View style={styles.side}>
             {arr.map((key) => (

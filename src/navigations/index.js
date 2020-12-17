@@ -5,7 +5,8 @@ import {LoginScreen} from "_scenes/login";
 import {HomeScreen} from "_scenes/home";
 // import {StatusBar} from "expo-status-bar";
 import {EditParcel} from "_scenes/edit-parcel";
-import {AddParcel, AddReciever, AddSender} from "_scenes/add-parcel";
+import {AddReciever, AddSender} from "_scenes/add-parcel";
+import {Summary} from "_scenes/summary";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
@@ -20,7 +21,7 @@ function App() {
                 <Screen name="Home" component={HomeScreen} />
                 <Screen name="Edit" component={EditParcel} />
                 <Screen name="Add Sender" component={AddSender} />
-                <Screen name="Add Parcel" component={AddParcel} />
+                <Screen name="Summary" component={Summary} />
                 <Screen name="Add Reciever" component={AddReciever} />
             </Navigator>
         </NavigationContainer>
