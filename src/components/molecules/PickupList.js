@@ -20,7 +20,7 @@ const PickupList = ({ parcels }) => {
                 <View style={[s.tableHeadCol, s.flex6]}>
                     <PickupListItem
                         isParcel
-                        parcel={{ tracking_number: "1234567", notes: "wertyu" }}
+                        parcel={parcel}
                     />
                 </View>
             </View>

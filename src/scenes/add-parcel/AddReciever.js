@@ -9,13 +9,9 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AddReciever = ({navigation, route}) => {
-    const {
-        index = 1,
-        setParcels = () => {},
-        parcels = {
-            1: {sender: {}, receiver: {name: "sara", phone: "01026991646"}},
-        },
-    } = {...route.params};
+    const {index, setParcels, parcels = {0: {sender: {}, receiver: {}}}} = {
+        ...route.params,
+    };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
 
@@ -57,9 +53,6 @@ const AddReciever = ({navigation, route}) => {
         "extra_charges",
         "price",
     ];
-    const onPress = () => {
-        navigation.navigate("Add Parcel");
-    };
     const onChangeReceiver = (name, value) => {
         setReceiver({...receiver, [name]: value});
     };
@@ -68,13 +61,14 @@ const AddReciever = ({navigation, route}) => {
         setParcel({...parcel, [name]: value});
     };
     const onSave = () => {
-        const parcel = parcels[index] ? parcels[index] : {};
+        // const parcel = parcels[index] ? parcels[index] : {};
         setParcels({...parcels, [index]: {...parcel, receiver: receiver}});
+        navigation.goBack();
     };
 
     return (
-        <>
-            <ScrollView style={[s.container, s.bgWhite, s.p3]}>
+        <View style={[s.container, s.bgWhite, s.p3]}>
+            <ScrollView>
                 <Form
                     labels={receiveLabels}
                     keys={receiverKeys}
@@ -97,15 +91,15 @@ const AddReciever = ({navigation, route}) => {
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
-                <View style={[s.formGroup]}>
+                <View style={[s.formGroup, s.mb3]}>
                     <Button onPress={onSave}>Add</Button>
                 </View>
                 {/* <View style={[s.formGroup]}>
                     <Button onPress={onPress}>Next</Button>
                 </View> */}
-                <Text>{JSON.stringify(parcel)}</Text>
+                {/* <Text>{JSON.stringify(parcel)}</Text> */}
             </ScrollView>
-        </>
+        </View>
     );
 };
 

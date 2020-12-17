@@ -10,7 +10,6 @@ const {s, c} = bootstrapStyleSheet;
 
 const AddSender = ({navigation}) => {
     const [parcels, setParcels] = useState({
-        1: {sender: {}, receiver: {name: "sara", phone: "01026991646"}},
     });
     const [parcelsArray, setParcelsArray] = useState([]);
     const [sender, setSender] = useState({});
@@ -50,7 +49,7 @@ const AddSender = ({navigation}) => {
         {label: "Type 4", value: 4},
     ];
     const addReceiver = () => {
-        const temp = {sender: sender, receiver: {}};
+        const temp = {0: {sender: sender, receiver: {}}};
         const index = Object.keys(parcels).length;
         setParcels({...parcels, [index]: temp});
 
@@ -135,7 +134,7 @@ const AddSender = ({navigation}) => {
                     <Button onPress={onSave}>Save</Button>
                 </View>
                 <View style={[s.formGroup]}>
-                    <Button onPress={addReceiver}>Add Reciever</Button>
+                    <Button onPress={addReceiver}>Add Parcel</Button>
                 </View>
                 <View style={[s.formGroup]}>
                     <Button onPress={gotoSummary} disabled={notSaved}>
@@ -143,8 +142,9 @@ const AddSender = ({navigation}) => {
                     </Button>
                 </View>
                 <View>
+                    {/* <Text>{JSON.stringify(parcelsArray)}</Text>
+                    <Text>{JSON.stringify(parcels)}</Text> */}
                     <PickupList parcels={parcelsArray} />
-                    {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
                 </View>
             </ScrollView>
         </>
