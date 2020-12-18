@@ -11,7 +11,7 @@ const SummaryList = ({parcels}) => {
         const {price, ...parcel} = item;
         return (
             <View style={[s.tableRow]}>
-                <View style={[s.tableHeadCol]}>
+                <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
