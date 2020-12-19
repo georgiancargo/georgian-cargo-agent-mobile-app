@@ -7,3 +7,4 @@ export {default as Checkbox} from "./Checkbox";
 export {default as RadioButton} from "./RadioButton";
 export {default as SelectDropdown} from "./SelectDropdown";
 export {default as SummaryListItem} from "./SummaryListItem";
+export {default as ModalContainer} from "./ModalContainer";
