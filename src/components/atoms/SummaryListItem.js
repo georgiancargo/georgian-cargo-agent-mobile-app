@@ -10,10 +10,9 @@ const {s, c} = bootstrapStyleSheet;
 const SummaryListItem = ({price, parcel = {}, isParcel}) => {
     const parcelKeys = [
         "tracking_number",
+        "weight",
         "source_country_code",
         "destination_country_code",
-        "weight",
-        "price",
         "description",
         "notes",
         "extra_charges",
@@ -26,7 +25,6 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
         "description",
         "notes",
         "extra charges",
-        "price",
     ];
     return (
         <>
@@ -38,7 +36,7 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
                         labels={parcelLabels}
                     />
                 ) : (
-                    <View >
+                    <View>
                         <Text>{price}</Text>
                     </View>
                 )}
@@ -53,7 +51,9 @@ const Print = ({arr, obj = {}, labels}) => {
             {arr.map((key, i) => (
                 // <TouchableOpacity style={[s.btnTouchable, s.m1]} key={key}>
                 // <View style={[s.btn, s.btnOutlineInfo]}>
-                <Text style={[s.text]}>{labels[i] + ": " + obj[key]}</Text>
+                <Text style={[s.text]} key={key}>
+                    {labels[i] + ": " + obj[key]}
+                </Text>
                 // </View>
                 // </TouchableOpacity>
             ))}

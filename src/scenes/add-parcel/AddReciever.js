@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {ScrollView, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button} from "_atoms";
@@ -9,11 +9,19 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AddReciever = ({navigation, route}) => {
-    const {index, setParcels, parcels = {0: {sender: {}, receiver: {}}}} = {
+    const {index, setParcels, parcels, newReceiver = {}, newParcel} = {
         ...route.params,
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
+
+    useEffect(() => {
+        setReceiver(newReceiver);
+    }, [newReceiver]);
+
+    useEffect(() => {
+        setParcel(newParcel);
+    }, [newParcel]);
 
     const receiveLabels = [
         "Receiver name",
@@ -27,7 +35,7 @@ const AddReciever = ({navigation, route}) => {
     const receiverKeys = [
         "name",
         "phone",
-        "Email",
+        "email",
         "country_code",
         "addrees_line_1",
         "address_line_2",
@@ -72,7 +80,7 @@ const AddReciever = ({navigation, route}) => {
                 <Form
                     labels={receiveLabels}
                     keys={receiverKeys}
-                    receiver={parcels[index]}
+                    receiver={receiver}
                     onChange={onChangeReceiver}
                 />
                 <Divider style={{backgroundColor: "blue"}} />
@@ -80,7 +88,7 @@ const AddReciever = ({navigation, route}) => {
                 <Form
                     labels={parcelLabels}
                     keys={parcelKeys}
-                    receiver={parcels[index]}
+                    receiver={parcel}
                     onChange={onChangeParcel}
                 />
                 <RadioButtonGroup
@@ -106,15 +114,16 @@ const AddReciever = ({navigation, route}) => {
 const Form = ({labels, keys, receiver, onChange}) => {
     return (
         <View style={[s.formGroup]}>
-            {labels.map((label, i) => (
-                <View style={[s.formGroup]}>
+            {keys.map((key, i) => (
+                <View style={[s.formGroup]} key={key}>
+                    {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
                     <InputWithError
-                        name={keys[i]}
-                        key={keys[i]}
-                        placeholder={label}
+                        name={key}
+                        placeholder={labels[i]}
                         onChangeText={onChange}
-                        value={receiver[keys[i]]}
+                        value={receiver[key] ? receiver[key].toString() : ""}
                         // label={label}
+                        isNumber={key === "price" || key === "weight"}
                     />
                 </View>
             ))}

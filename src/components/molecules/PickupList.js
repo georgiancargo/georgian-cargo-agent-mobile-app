@@ -1,34 +1,36 @@
 import React from "react";
-import { FlatList, Text, View } from "react-native";
+import {SafeAreaView} from "react-native";
+import {FlatList, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import { PickupListItem } from "_atoms";
+import {PickupListItem} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const { s, c } = bootstrapStyleSheet;
+const {s, c} = bootstrapStyleSheet;
 
-const PickupList = ({ parcels }) => {
-    const renderItem = ({ item, index }) => {
-        const { sender, receiver, ...parcel } = item;
+const PickupList = ({parcels, editParcel}) => {
+    const renderItem = ({item, index}) => {
+        const {sender, receiver, ...parcel} = item;
+        const edit = () => {
+            editParcel(index, parcel, receiver);
+            // console.log(item);
+        };
         return (
             <View style={[s.tableRow]}>
                 <View style={[s.tableHeadCol]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
-                    <PickupListItem reciever={receiver} />
+                    <PickupListItem reciever={receiver} edit={edit} />
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
-                    <PickupListItem
-                        isParcel
-                        parcel={parcel}
-                    />
+                    <PickupListItem isParcel parcel={parcel} edit={edit} />
                 </View>
             </View>
         );
     };
     return (
         <>
-            <View>
+            <SafeAreaView style={{flex: 1}}>
                 <FlatList
                     data={parcels}
                     style={[s.table]}
@@ -36,7 +38,7 @@ const PickupList = ({ parcels }) => {
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                 />
-            </View>
+            </SafeAreaView>
         </>
     );
 };

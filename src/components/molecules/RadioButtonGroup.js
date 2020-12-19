@@ -26,7 +26,7 @@ const RadioButtonGroup = ({
                 <Text style={[s.text]}>{label}</Text>
             </View>
             {values.map((value, i) => (
-                <View style={{flex: 2}}>
+                <View style={{flex: 2}} key={value}>
                     <RadioButton
                         name={name}
                         original={val}

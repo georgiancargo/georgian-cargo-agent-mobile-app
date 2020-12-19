@@ -1,4 +1,5 @@
 import React from "react";
+import { SafeAreaView } from "react-native";
 import {FlatList, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SummaryListItem} from "_atoms";
@@ -31,7 +32,7 @@ const SummaryList = ({parcels}) => {
     };
     return (
         <>
-            <View>
+            <SafeAreaView style={{flex: 1}}>
                 <FlatList
                     data={parcels}
                     style={[s.table]}
@@ -39,7 +40,7 @@ const SummaryList = ({parcels}) => {
                     renderItem={renderItem}
                     keyExtractor={(item) => item.id}
                 />
-            </View>
+            </SafeAreaView>
         </>
     );
 };

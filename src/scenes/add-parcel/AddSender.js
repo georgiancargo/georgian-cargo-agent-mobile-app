@@ -48,14 +48,27 @@ const AddSender = ({navigation}) => {
         {label: "Type 4", value: 4},
     ];
     const addReceiver = () => {
-        const temp = {0: {sender: sender, receiver: {}}};
+        // const temp = {0: {sender: sender, receiver: {}}};
         const index = Object.keys(parcels).length;
-        setParcels({...parcels, [index]: temp});
+        // setParcels({...parcels, [index]: temp});
 
         navigation.navigate("Add Reciever", {
             index: index,
             setParcels: setParcels,
-            parcels: index ? {...parcels, [index]: temp} : temp,
+            // parcels: index ? {...parcels, [index]: temp} : temp,
+            parcels: parcels,
+            newParcel: {},
+            newReceiver: {},
+        });
+    };
+
+    const editParcel = (index, parcel, receiver) => {
+        navigation.navigate("Add Reciever", {
+            index: index,
+            setParcels: setParcels,
+            parcels: parcels,
+            newParcel: parcel,
+            newReceiver: receiver,
         });
     };
     const onChange = (name, value) => {
@@ -96,38 +109,24 @@ const AddSender = ({navigation}) => {
                             />
                         </View>
                     ))}
-                </View>
-                <View
-                    style={[
-                        s.formGroup,
-                        {
-                            justifyContent: "center",
-                            flexDirection: "row",
-                            alignItems: "center",
-                        },
-                    ]}
-                >
-                    <View style={{flex: 2}}>
-                        <Text>Parcel Type</Text>
-                    </View>
-                    <View style={{flex: 3}}>
+                    <View style={[s.formGroup]}>
                         <SelectDropdown
                             list={parcelType}
                             name="parcel_type"
                             onSelect={onChangeParcel}
                             selectedValue={globalSettings.parcel_type}
+                            placeholder="Parcel Type"
                         />
                     </View>
-                    {/* <AddParcel /> */}
+                    <RadioButtonGroup
+                        label="Customer Type"
+                        onValueChange={onChangeParcel}
+                        val={globalSettings.customer_type}
+                        values={["INDIVIDUAL", "CORPORATE"]}
+                        name="customer_type"
+                        checkLabels={["Individual", "Corporate"]}
+                    />
                 </View>
-                <RadioButtonGroup
-                    label="Customer Type"
-                    onValueChange={onChangeParcel}
-                    val={globalSettings.customer_type}
-                    values={["INDIVIDUAL", "CORPORATE"]}
-                    name="customer_type"
-                    checkLabels={["Individual", "Corporate"]}
-                />
 
                 <View style={[s.formGroup]}>
                     <Button onPress={onSave}>Save</Button>
@@ -141,9 +140,12 @@ const AddSender = ({navigation}) => {
                     </Button>
                 </View>
                 <View>
-                    {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
+                    <Text>{JSON.stringify(parcelsArray)}</Text>
                     {/* <Text>{JSON.stringify(parcels)}</Text> */}
-                    <PickupList parcels={parcelsArray} />
+                    <PickupList
+                        parcels={parcelsArray}
+                        editParcel={editParcel}
+                    />
                 </View>
             </View>
         </ScrollView>
