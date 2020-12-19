@@ -8,47 +8,56 @@ import {Button} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const ItemProcessingScanner = ({navigation, route: {params}}) => {
-    // const [barCodes, setBarCodes] = useState([
-    //     "First",
-    //     "Second",
-    //     "Third",
-    //     "Fourth",
-    // ]);
+function arraysEqual(a, b) {
+    if (a === b) return true;
+    if (a == null || b == null) return false;
+    if (a.length !== b.length) return false;
 
+    for (var i = 0; i < a.length; ++i) {
+        if (a[i] !== b[i]) return false;
+    }
+    return true;
+}
+
+const ItemProcessingScanner = ({navigation, route: {params}}) => {
     const {barCodes, setBarCodes} = params;
     const [barcodes, setBarcodes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [barcode, setBarcode] = useState({});
+
     useEffect(() => {
-        setBarcodes(barCodes);
+        if (!arraysEqual(barCodes, barcodes)) setBarcodes(barCodes);
     }, [barCodes]);
+
+    useEffect(() => {
+        setBarCodes(barcodes);
+    }, [barcodes]);
     const remove = (i) => {
         const newBars = [];
-        for (let index = 0; index < barCodes.length; index++) {
-            if (i !== index) newBars.push(barCodes[index]);
+        for (let index = 0; index < barcodes.length; index++) {
+            if (i !== index) newBars.push(barcodes[index]);
         }
-        setBarCodes(newBars);
+        setBarcodes(newBars);
     };
 
     const edit = (index) => {
         setModalVisible(true);
-        setBarcode({barcode: barCodes[index].toString(), index: index});
+        setBarcode({barcode: barcodes[index].toString(), index: index});
     };
     const save = () => {
         setModalVisible(false);
-        const newBarcodes = barCodes;
+        const newBarcodes = barcodes;
         newBarcodes[barcode.index] = barcode.barcode;
-        setBarCodes(newBarcodes);
+        setBarcodes(newBarcodes);
     };
 
     return (
         <>
             <React.Fragment>
-                <Scanner barCodes={barCodes} setBarCodes={setBarCodes} />
+                <Scanner barCodes={barcodes} setBarCodes={setBarcodes} />
             </React.Fragment>
             <View style={[s.container, styles.camera, s.m2]}>
-                <Text>{JSON.stringify(barcodes)}</Text>
+                {/* <Text>{JSON.stringify(barcodes)}</Text> */}
                 <EditBarCode
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}

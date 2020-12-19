@@ -25,6 +25,7 @@ function App() {
                 <Screen name="Summary" component={Summary} />
                 <Screen name="Add Parcel" component={AddReciever} />
                 <Screen name="Item Processing" component={ItemProcessing} />
+                <Screen name="Scanner" component={ItemProcessingScanner} />
             </Navigator>
         </NavigationContainer>
     );

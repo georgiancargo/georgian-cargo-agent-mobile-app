@@ -1,25 +1,13 @@
-import React, {useState, createContext, useContext} from "react";
-import {StyleSheet, View, Text} from "react-native";
+import React, {useState} from "react";
+import {View} from "react-native";
 import {ProcessingList, EditBarCode} from "_molecules";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Button, InputWithError} from "_atoms";
-import {createStackNavigator} from "@react-navigation/stack";
-// import {NavigationContainer} from "@react-navigation/native";
-// import {LoginScreen} from "_scenes/login";
-// import {HomeScreen} from "_scenes/home";
-// import {StatusBar} from "expo-status-bar";
-// import {EditParcel} from "_scenes/edit-parcel";
-// import {AddReciever, AddSender} from "_scenes/add-parcel";
-// import {Summary} from "_scenes/summary";
-// import {ItemProcessingScanner, Scanner} from ".";
-import ItemProcessingScanner from "./ItemProcessingScanner";
-import Scanner from "./Scanner";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-const {Navigator, Screen} = createStackNavigator();
+const {s} = bootstrapStyleSheet;
 
-const ItemProcessing = (props) => {
+const ItemProcessing = ({navigation}) => {
     const [barCodes, setBarCodes] = useState([
         "First",
         "Second",
@@ -47,14 +35,6 @@ const ItemProcessing = (props) => {
         setBarCodes(newBarcodes);
     };
 
-    const BarcodesContext = createContext({
-        save: save,
-        edit: edit,
-        remove: remove,
-        barCodes: barCodes,
-        setBarCodes: setBarCodes,
-        barcode: barcode,
-    });
     const gotoScanner = () => {
         navigation.navigate("Scanner", {
             save: save,
@@ -117,13 +97,8 @@ const ItemProcessing = (props) => {
                     <Button>Done</Button>
                 </View>
             </View>
-            {/* </ScrollView> */}
         </>
     );
 };
-
-const styles = StyleSheet.create({
-    camera: {flex: 1, borderWidth: 1, borderRadius: 10},
-});
 
 export default ItemProcessing;
