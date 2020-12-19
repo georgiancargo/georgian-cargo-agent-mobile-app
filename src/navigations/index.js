@@ -7,7 +7,7 @@ import {HomeScreen} from "_scenes/home";
 import {EditParcel} from "_scenes/edit-parcel";
 import {AddReciever, AddSender} from "_scenes/add-parcel";
 import {Summary} from "_scenes/summary";
-import {ItemProcessing, Scanner} from "_scenes/item-processing";
+import {ItemProcessingScanner, ItemProcessing} from "_scenes/item-processing";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
@@ -25,7 +25,6 @@ function App() {
                 <Screen name="Summary" component={Summary} />
                 <Screen name="Add Parcel" component={AddReciever} />
                 <Screen name="Item Processing" component={ItemProcessing} />
-                <Screen name="scan" component={Scanner} />
             </Navigator>
         </NavigationContainer>
     );

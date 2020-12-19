@@ -16,8 +16,8 @@ const Scanner = ({barCodes, setBarCodes}) => {
     }, []);
 
     const handleBarCodeScanned = ({type, data}) => {
-        if (barCodes.indexOf(data) == -1) setBarCodes([data].concat(barCodes));
-        // if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
+        // if (barCodes.indexOf(data) == -1) setBarCodes([data].concat(barCodes));
+        if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
         // setScanned(true);
         // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };

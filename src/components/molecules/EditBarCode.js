@@ -1,25 +1,36 @@
 import React from "react";
-import {
-    StyleSheet,
-    Text,
-    TouchableHighlight,
-    View,
-    TextInput,
-} from "react-native";
-import {ModalContainer} from "_atoms";
+import {StyleSheet, Text, TouchableHighlight, View} from "react-native";
+import {ModalContainer, InputWithError} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const EditBarCode = ({modalVisible, setModalVisible}) => {
+const EditBarCode = ({
+    modalVisible,
+    setModalVisible,
+    barcode,
+    setBarcode,
+    save,
+}) => {
+    const onChangeText = (name, value) => {
+        setBarcode({...barcode, [name]: value});
+    };
     return (
         <ModalContainer
             modalVisible={modalVisible}
             setModalVisible={setModalVisible}
         >
             <View style={[s.container]}>
+                {/* <Text>{JSON.stringify(barcode)}</Text> */}
                 <View style={[s.formGroup]}>
-                    <TextInput style={[s.formControl]} />
+                    <InputWithError
+                        style={[s.formControl]}
+                        onChangeText={onChangeText}
+                        placeholder="Barcode"
+                        name="barcode"
+                        autoFocus={true}
+                        value={barcode.barcode}
+                    />
                 </View>
                 <View
                     style={[
@@ -35,11 +46,9 @@ const EditBarCode = ({modalVisible, setModalVisible}) => {
                             ...styles.openButton,
                             backgroundColor: "#2196F3",
                         }}
-                        onPress={() => {
-                            setModalVisible(false);
-                        }}
+                        onPress={save}
                     >
-                        <Text style={styles.textStyle}>     Save     </Text>
+                        <Text style={styles.textStyle}> Save </Text>
                     </TouchableHighlight>
                     <TouchableHighlight
                         style={{
