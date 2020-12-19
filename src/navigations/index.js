@@ -7,12 +7,13 @@ import {HomeScreen} from "_scenes/home";
 import {EditParcel} from "_scenes/edit-parcel";
 import {AddReciever, AddSender} from "_scenes/add-parcel";
 import {Summary} from "_scenes/summary";
+import {ItemProcessing} from "_scenes/item-processing";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
     return (
         <NavigationContainer>
-            <Navigator initialRouteName="Add Sender">
+            <Navigator initialRouteName="Login">
                 <Screen
                     name="Login"
                     component={LoginScreen}
@@ -23,6 +24,7 @@ function App() {
                 <Screen name="Add Sender" component={AddSender} />
                 <Screen name="Summary" component={Summary} />
                 <Screen name="Add Parcel" component={AddReciever} />
+                <Screen name="Item Processing" component={ItemProcessing} />
             </Navigator>
         </NavigationContainer>
     );

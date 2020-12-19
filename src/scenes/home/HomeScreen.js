@@ -14,7 +14,10 @@ const Home = ({navigation}) => {
             </View>
             <View style={styles.buttonContainer}>
                 <View style={styles.verticalButtons}>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => goto("Login")}
+                    >
                         <Text>Logout</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.button}>
@@ -22,10 +25,16 @@ const Home = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.horizontalButtons}>
-                    <TouchableOpacity style={styles.button} onPress={() => goto("Add Sender")}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => goto("Add Sender")}
+                    >
                         <Text>Pickup items</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
+                    <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => goto("Item Processing")}
+                    >
                         <Text>Item processing</Text>
                     </TouchableOpacity>
                 </View>

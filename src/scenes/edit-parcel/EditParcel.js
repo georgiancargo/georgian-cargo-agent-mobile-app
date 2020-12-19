@@ -28,12 +28,12 @@ const EditParcel = ({
         setParcel({...parcel, [name]: value});
     };
     return (
-        <ScrollView style={styles.outerContainer}>
+        <View style={styles.outerContainer}>
             <View style={[s.formGroup]}>
                 {list.map((label, i) => (
                     <View style={[s.formGroup]}>
                         <InputWithError
-                            label={label}
+                            // label={label}
                             name={label}
                             placeholder={label}
                             value={parcel[label]}
@@ -51,7 +51,7 @@ const EditParcel = ({
                     </View>
                 </TouchableOpacity>
             </View>
-        </ScrollView>
+        </View>
     );
 };
 
@@ -60,6 +60,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         backgroundColor: "#fff",
+        justifyContent: "center",
     },
 });
 
