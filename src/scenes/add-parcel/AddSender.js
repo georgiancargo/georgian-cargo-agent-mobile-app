@@ -4,6 +4,7 @@ import {InputWithError, Button, SelectDropdown} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {PickupList} from "_molecules";
 import {RadioButtonGroup} from "_molecules";
+import {countries} from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -23,7 +24,7 @@ const AddSender = ({navigation}) => {
         "Sender name",
         "Sender phone",
         "Sender Email",
-        "Sender address country code",
+        // "Sender address country code",
         "Sender addrees line 1",
         "Sender address line 2",
         "Sender address postal code",
@@ -33,7 +34,7 @@ const AddSender = ({navigation}) => {
         "name",
         "phone",
         "Email",
-        "country_code",
+        // "country_code",
         "addrees_line_1",
         "address_line_2",
         "postal_code",
@@ -52,7 +53,7 @@ const AddSender = ({navigation}) => {
         const index = Object.keys(parcels).length;
         // setParcels({...parcels, [index]: temp});
 
-        navigation.navigate("Add Reciever", {
+        navigation.navigate("Add Parcel", {
             index: index,
             setParcels: setParcels,
             // parcels: index ? {...parcels, [index]: temp} : temp,
@@ -63,7 +64,7 @@ const AddSender = ({navigation}) => {
     };
 
     const editParcel = (index, parcel, receiver) => {
-        navigation.navigate("Add Reciever", {
+        navigation.navigate("Add Parcel", {
             index: index,
             setParcels: setParcels,
             parcels: parcels,
@@ -109,6 +110,15 @@ const AddSender = ({navigation}) => {
                             />
                         </View>
                     ))}
+                    <View style={[s.formGroup]}>
+                        <SelectDropdown
+                            list={countries}
+                            name="country_code"
+                            onSelect={onChange}
+                            selectedValue={sender.country_code}
+                            placeholder="Sender address country code"
+                        />
+                    </View>
                     <View style={[s.formGroup]}>
                         <SelectDropdown
                             list={parcelType}

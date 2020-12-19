@@ -4,6 +4,8 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button} from "_atoms";
 import {RadioButtonGroup} from "_molecules";
 import {Divider} from "react-native-elements";
+import {countries} from "_utils";
+import {SelectDropdown} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -27,7 +29,7 @@ const AddReciever = ({navigation, route}) => {
         "Receiver name",
         "Receiver phone",
         "Receiver Email",
-        "Receiver address country code",
+        // "Receiver address country code",
         "Receiver addrees line 1",
         "Receiver address line 2",
         "Receiver address postal code",
@@ -36,7 +38,7 @@ const AddReciever = ({navigation, route}) => {
         "name",
         "phone",
         "email",
-        "country_code",
+        // "country_code",
         "addrees_line_1",
         "address_line_2",
         "postal_code",
@@ -44,8 +46,8 @@ const AddReciever = ({navigation, route}) => {
     const parcelLabels = [
         "Tracking number",
         "weight",
-        "source country code",
-        "destination country code",
+        // "source country code",
+        // "destination country code",
         "description",
         "notes",
         "extra charges",
@@ -54,8 +56,8 @@ const AddReciever = ({navigation, route}) => {
     const parcelKeys = [
         "tracking_number",
         "weight",
-        "source_country_code",
-        "destination_country_code",
+        // "source_country_code",
+        // "destination_country_code",
         "description",
         "notes",
         "extra_charges",
@@ -75,45 +77,80 @@ const AddReciever = ({navigation, route}) => {
     };
 
     return (
-        <ScrollView>
-            <View style={[s.container, s.bgWhite, s.p3]}>
-                <Form
-                    labels={receiveLabels}
-                    keys={receiverKeys}
-                    receiver={receiver}
-                    onChange={onChangeReceiver}
-                />
-                <Divider style={{backgroundColor: "blue"}} />
-                <Divider style={{backgroundColor: "blue", marginBottom: 10}} />
-                <Form
-                    labels={parcelLabels}
-                    keys={parcelKeys}
-                    receiver={parcel}
-                    onChange={onChangeParcel}
-                />
-                <RadioButtonGroup
-                    label="Collection Option"
-                    onValueChange={onChangeParcel}
-                    val={parcel.collection_option}
-                    values={["HOME", "OFFICE"]}
-                    name="collection_option"
-                    checkLabels={["Home", "Office"]}
-                />
-                <View style={[s.formGroup, s.mb3]}>
-                    <Button onPress={onSave}>Add</Button>
-                </View>
-                {/* <View style={[s.formGroup]}>
+        <>
+            <ScrollView>
+                <View style={[s.container, s.bgWhite, s.p3]}>
+                    <View style={[s.formGroup]}>
+                        <Form
+                            labels={receiveLabels}
+                            keys={receiverKeys}
+                            receiver={receiver}
+                            onChange={onChangeReceiver}
+                        />
+                        <View style={[s.formGroup]}>
+                            <SelectDropdown
+                                list={countries}
+                                name="country_code"
+                                onSelect={onChangeReceiver}
+                                selectedValue={receiver.country_code}
+                                placeholder="Receiver address country code"
+                            />
+                        </View>
+                    </View>
+                    <Divider style={{backgroundColor: "blue"}} />
+                    <Divider
+                        style={{backgroundColor: "blue", marginBottom: 10}}
+                    />
+                    <View style={[s.formGroup]}>
+                        <Form
+                            labels={parcelLabels}
+                            keys={parcelKeys}
+                            receiver={parcel}
+                            onChange={onChangeParcel}
+                        />
+                        <View style={[s.formGroup]}>
+                            <SelectDropdown
+                                list={countries}
+                                name="source_country_code"
+                                onSelect={onChangeParcel}
+                                selectedValue={parcel.source_country_code}
+                                placeholder="source country code"
+                            />
+                        </View>
+                        <View style={[s.formGroup]}>
+                            <SelectDropdown
+                                list={countries}
+                                name="destination_country_code"
+                                onSelect={onChangeParcel}
+                                selectedValue={parcel.destination_country_code}
+                                placeholder="destination country code"
+                            />
+                        </View>
+                        <RadioButtonGroup
+                            label="Collection Option"
+                            onValueChange={onChangeParcel}
+                            val={parcel.collection_option}
+                            values={["HOME", "OFFICE"]}
+                            name="collection_option"
+                            checkLabels={["Home", "Office"]}
+                        />
+                    </View>
+                    {/* <View style={[s.formGroup]}>
                     <Button onPress={onPress}>Next</Button>
                 </View> */}
-                {/* <Text>{JSON.stringify(parcel)}</Text> */}
+                    {/* <Text>{JSON.stringify(parcel)}</Text> */}
+                </View>
+            </ScrollView>
+            <View style={[s.formGroup]}>
+                <Button onPress={onSave}>Add</Button>
             </View>
-        </ScrollView>
+        </>
     );
 };
 
 const Form = ({labels, keys, receiver, onChange}) => {
     return (
-        <View style={[s.formGroup]}>
+        <>
             {keys.map((key, i) => (
                 <View style={[s.formGroup]} key={key}>
                     {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
@@ -132,7 +169,7 @@ const Form = ({labels, keys, receiver, onChange}) => {
                     ))} */}
             {/* <Text>{index}</Text> */}
             {/* <Text>{JSON.stringify(parcels[index].receiver)}</Text> */}
-        </View>
+        </>
     );
 };
 export default AddReciever;

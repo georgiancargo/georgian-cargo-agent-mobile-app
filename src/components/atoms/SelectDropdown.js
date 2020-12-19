@@ -54,7 +54,9 @@ const SelectDropdown = ({
                         //     },
                         // ]}
                     >
-                        <Picker.Item label={placeholder} value="" />
+                        {selectedValue && selectedValue !== "" ? null : (
+                            <Picker.Item label={placeholder} value="" />
+                        )}
                         {list.map((item, i) => (
                             <Picker.Item
                                 label={item.label}

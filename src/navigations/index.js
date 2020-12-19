@@ -22,7 +22,7 @@ function App() {
                 <Screen name="Edit" component={EditParcel} />
                 <Screen name="Add Sender" component={AddSender} />
                 <Screen name="Summary" component={Summary} />
-                <Screen name="Add Reciever" component={AddReciever} />
+                <Screen name="Add Parcel" component={AddReciever} />
             </Navigator>
         </NavigationContainer>
     );

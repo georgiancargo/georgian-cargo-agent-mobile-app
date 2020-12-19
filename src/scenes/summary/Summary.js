@@ -31,40 +31,45 @@ const Summary = ({navigation, route: {params}}) => {
         {label: "Bank", value: "BANK"},
     ];
     return (
-        <ScrollView style={[s.container, s.bgWhite]}>
-            <View style={[s.container, s.p3]}>
-                <View style={[s.formGroup]}>
-                    <InputWithError
-                        label="Coupon"
-                        name="coupon"
-                        placeholder="Coupon"
-                        onChangeText={onChange}
-                        value={summaryData.coupon}
+        <>
+            <ScrollView style={[s.container, s.bgWhite]}>
+                <View style={[s.container, s.p3]}>
+                    <View style={[s.formGroup]}>
+                        <InputWithError
+                            // label="Coupon"
+                            name="coupon"
+                            placeholder="Coupon"
+                            onChangeText={onChange}
+                            value={summaryData.coupon}
+                        />
+                    </View>
+                    <View style={[s.formGroup]}>
+                        {/* <Text style={[s.text]}>Payment method</Text> */}
+                        <SelectDropdown
+                            list={payment_methods}
+                            name="payment_method"
+                            onSelect={onChange}
+                            selectedValue={summaryData.payment_method}
+                            placeholder="Payment method"
+                        />
+                    </View>
+                    <View style={[s.formGroup]}>
+                        {/* <Text>{JSON.stringify(summaryData)}</Text> */}
+                        <SummaryList parcels={parcels} />
+                    </View>
+                    <Divider
+                        style={{backgroundColor: "blue", marginBottom: 10}}
                     />
+                    <View style={[s.formGroup]}>
+                        <Text>Sum is: {sum}</Text>
+                        {/* <SummaryList parcels={parcels} /> */}
+                    </View>
                 </View>
-                <View style={[s.formGroup]}>
-                    <Text style={[s.text]}>Payment method</Text>
-                    <SelectDropdown
-                        list={payment_methods}
-                        name="payment_method"
-                        onSelect={onChange}
-                        selectedValue={summaryData.payment_method}
-                    />
-                </View>
-                <View style={[s.formGroup]}>
-                    {/* <Text>{JSON.stringify(summaryData)}</Text> */}
-                    <SummaryList parcels={parcels} />
-                </View>
-                <Divider style={{backgroundColor: "blue", marginBottom: 10}} />
-                <View style={[s.formGroup]}>
-                    <Text>Sum is: {sum}</Text>
-                    {/* <SummaryList parcels={parcels} /> */}
-                </View>
-                <View style={[s.formGroup]}>
-                    <Button>Checkout</Button>
-                </View>
+            </ScrollView>
+            <View style={[s.formGroup]}>
+                <Button>Checkout</Button>
             </View>
-        </ScrollView>
+        </>
     );
 };
 export default Summary;
