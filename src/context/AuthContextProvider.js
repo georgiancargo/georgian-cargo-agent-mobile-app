@@ -5,7 +5,7 @@ import {getItemAsync, setItemAsync as set} from "expo-secure-store";
 const AuthContextProvider = ({children}) => {
     const get = async (key) => {
         const value = await getItemAsync(key.toString());
-        return value;
+        return JSON.parse(value);
     };
     const defaultAuthState = {
         access_token: get("access_token") || null,

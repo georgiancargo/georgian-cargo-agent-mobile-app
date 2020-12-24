@@ -1,31 +1,25 @@
 import {useContext, useState} from "react";
 import useAxios from "./useAxios";
 import {AuthContext} from "_context";
-import {NetInfo, Platform} from "react-native";
+import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
+import {parseRequest} from "_requests";
 
-export default function useRequest(request, load = false) {
+export default function useRequest(r, saveRequest, load = false) {
     const axios = useAxios();
     const [isProcessing, setIsProcessing] = useState(false);
     const {setAuth} = useContext(AuthContext);
 
-    NetInfo.isConnected.addEventListener(
-        "connectionChange",
-        handleFirstConnectivityChange
-    );
-    const handleFirstConnectivityChange = (isConnected) => {
-        // NetInfo.isConnected.removeEventListener(
-        //     "connectionChange",
-        //     this.handleFirstConnectivityChange
-        // );
-        if (isConnected === false) {
-            Alert.alert("You are offline!");
-        } else {
-            Alert.alert("You are online!");
+    const isConnected = async () => {
+        let hasInternet = true;
+        try {
+            const request = await axios.get("google.com");
+        } catch (e) {
+            hasInternet = false;
         }
-    };
 
-    const send = async (data) => {
-        setIsProcessing(true);
+        return hasInternet;
+    };
+    const makeRequest = async (request, data) => {
         const response = request(axios, data)
             .catch((e) => {
                 switch (e.response.status) {
@@ -42,6 +36,30 @@ export default function useRequest(request, load = false) {
                 setIsProcessing(false);
             });
         return response;
+    };
+    const send = async (data) => {
+        setIsProcessing(true);
+        if (saveRequest) {
+            const config = {
+                url: r.url,
+                method: r.method,
+                data: data,
+            };
+
+            if (isConnected) return makeRequest(parseRequest, config);
+            else {
+                let requests = [];
+                const store = "requests";
+                get(store)
+                    .then((res) => {
+                        if (res !== null) requests = JSON.parse(res);
+                        requests.push(config);
+                        return set(store, JSON.stringify(requests));
+                    })
+                    .then(() => {})
+                    .catch((e) => {});
+            }
+        } else return makeRequest(request, data);
     };
     return [send, isProcessing];
 }

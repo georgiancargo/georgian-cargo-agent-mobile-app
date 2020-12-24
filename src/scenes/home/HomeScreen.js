@@ -2,6 +2,11 @@ import React from "react";
 import {View, StyleSheet, Text, TouchableOpacity} from "react-native";
 import {ParcelList} from "_molecules";
 import {GRAY_MEDIUM} from "_styles/colors";
+import SyncButton from "./SyncButton";
+import BootstrapStyleSheet from "react-native-bootstrap-styles";
+
+const bootstrapStyleSheet = new BootstrapStyleSheet();
+const {s, c} = bootstrapStyleSheet;
 
 const Home = ({navigation}) => {
     const goto = (route) => {
@@ -12,32 +17,38 @@ const Home = ({navigation}) => {
             <View style={styles.logo}>
                 <Text>Logo</Text>
             </View>
-            <View style={styles.buttonContainer}>
-                <View style={styles.verticalButtons}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => goto("Login")}
-                    >
-                        <Text>Logout</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.button}>
-                        <Text>Upload items</Text>
-                    </TouchableOpacity>
-                </View>
-                <View style={styles.horizontalButtons}>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => goto("Add Sender")}
-                    >
-                        <Text>Pickup items</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                        style={styles.button}
-                        onPress={() => goto("Item Processing")}
-                    >
-                        <Text>Item processing</Text>
-                    </TouchableOpacity>
-                </View>
+            <View style={{flexDirection: "row", justifyContent: "center"}}>
+                <TouchableOpacity
+                    onPress={() => goto("Login")}
+                    style={[s.btnTouchable, s.flex1, s.ml2, s.mr1]}
+                >
+                    <View style={[s.btn, s.btnLight]}>
+                        <Text style={[s.btnText, s.btnLightText]}>Logout</Text>
+                    </View>
+                </TouchableOpacity>
+                <SyncButton />
+            </View>
+            <View>
+                <TouchableOpacity
+                    style={[s.btnTouchable, s.mx2, s.my2]}
+                    onPress={() => goto("Add Sender")}
+                >
+                    <View style={[s.btn, s.btnLight]}>
+                        <Text style={[s.btnText, s.btnLightText]}>
+                            Pickup items
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[s.btnTouchable, s.mx2]}
+                    onPress={() => goto("Item Processing")}
+                >
+                    <View style={[s.btn, s.btnLight]}>
+                        <Text style={[s.btnText, s.btnLightText]}>
+                            Item processing
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
             <View style={styles.listContainer}>
                 <ParcelList parcels={[1, 2, 3, 4]} navigation={navigation} />

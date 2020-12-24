@@ -6,7 +6,7 @@ const useAuthentication = (defaultAuth) => {
 
     const setAuthStorage = async (data) => {
         for (const key in auth) {
-            await set(key, auth[key]);
+            await set(key, JSON.stringify(auth[key]));
         }
         setAuth(data);
     };
