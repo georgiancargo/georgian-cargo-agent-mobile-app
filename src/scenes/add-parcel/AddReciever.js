@@ -108,24 +108,24 @@ const AddReciever = ({navigation, route}) => {
                             receiver={parcel}
                             onChange={onChangeParcel}
                         />
-                        <View style={[s.formGroup]}>
-                            <SelectDropdown
-                                list={countries}
-                                name="source_country_code"
-                                onSelect={onChangeParcel}
-                                selectedValue={parcel.source_country_code}
-                                placeholder="source country code"
-                            />
-                        </View>
-                        <View style={[s.formGroup]}>
-                            <SelectDropdown
-                                list={countries}
-                                name="destination_country_code"
-                                onSelect={onChangeParcel}
-                                selectedValue={parcel.destination_country_code}
-                                placeholder="destination country code"
-                            />
-                        </View>
+                        {/* <View style={[s.formGroup]}> */}
+                        <SelectDropdown
+                            list={countries}
+                            name="source_country_code"
+                            onSelect={onChangeParcel}
+                            selectedValue={parcel.source_country_code}
+                            placeholder="source country code"
+                        />
+                        {/* </View> */}
+                        {/* <View style={[s.formGroup]}> */}
+                        <SelectDropdown
+                            list={countries}
+                            name="destination_country_code"
+                            onSelect={onChangeParcel}
+                            selectedValue={parcel.destination_country_code}
+                            placeholder="destination country code"
+                        />
+                        {/* </View> */}
                         <RadioButtonGroup
                             label="Collection Option"
                             onValueChange={onChangeParcel}
@@ -152,17 +152,18 @@ const Form = ({labels, keys, receiver, onChange}) => {
     return (
         <>
             {keys.map((key, i) => (
-                <View style={[s.formGroup]} key={key}>
-                    {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
-                    <InputWithError
-                        name={key}
-                        placeholder={labels[i]}
-                        onChangeText={onChange}
-                        value={receiver[key] ? receiver[key].toString() : ""}
-                        // label={label}
-                        isNumber={key === "price" || key === "weight"}
-                    />
-                </View>
+                // <View style={[s.formGroup]} key={key}>
+                // {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
+                <InputWithError
+                    name={key}
+                    key={key}
+                    placeholder={labels[i]}
+                    onChangeText={onChange}
+                    value={receiver[key] ? receiver[key].toString() : ""}
+                    // label={label}
+                    isNumber={key === "price" || key === "weight"}
+                />
+                // </View>
             ))}
             {/* {keys.map((name, i) => (
                         <Text>{name + ": " + receiver[name]}</Text>

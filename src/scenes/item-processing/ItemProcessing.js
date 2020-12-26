@@ -7,7 +7,7 @@ import {Button, InputWithError} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
 
-const ItemProcessing = ({navigation}) => {
+const ItemProcessing = ({navigation, route: {params}}) => {
     const [barCodes, setBarCodes] = useState([
         "First",
         "Second",
@@ -91,6 +91,7 @@ const ItemProcessing = ({navigation}) => {
                     ]}
                 >
                     <Text>Total Items: {barCodes.length}</Text>
+                    <Text>Mode: {params.mode}</Text>
                 </View>
                 <View style={[s.flex3]}>
                     <EditBarCode

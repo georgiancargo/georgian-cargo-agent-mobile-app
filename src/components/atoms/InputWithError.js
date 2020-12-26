@@ -1,6 +1,7 @@
 import React from "react";
-import {TextInput, Text} from "react-native";
+import {Text} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {TextInput} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -9,7 +10,7 @@ const InputWithError = ({
     name,
     label,
     error,
-    style,
+    style = {},
     onChangeText,
     isNumber,
     ...rest
@@ -23,13 +24,20 @@ const InputWithError = ({
     };
     return (
         <>
-            {label ? (
+            {/* {label ? (
                 <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
-            ) : null}
+            ) : null} */}
             <TextInput
-                style={[s.formControl]}
+                // label="Email"
+                // value={text}
+                style={{height: 35, ...style}}
+                mode="outlined"
+                // onChangeText={(text) => setText(text)}
                 onChangeText={onChangeWrapper}
+                label={label ? label : rest.placeholder}
+                // style={[s.formControl]}
                 keyboardType={isNumber ? "numeric" : "default"}
+                error={error}
                 {...rest}
             />
             {error ? (

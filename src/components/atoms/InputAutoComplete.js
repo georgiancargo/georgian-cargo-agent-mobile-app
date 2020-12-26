@@ -1,21 +1,14 @@
 import React, {useState} from "react";
-import {StyleSheet, SafeAreaView, TextInput} from "react-native";
+import {StyleSheet, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {FlatList, Text, TouchableOpacity} from "react-native";
 import Axios from "axios";
+import InputWithError from "./InputWithError";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const InputAutoComplete = ({
-    name,
-    label,
-    error,
-    style,
-    // onChangeText,
-    isNumber,
-    ...rest
-}) => {
+const InputAutoComplete = (props) => {
     const [data, setData] = useState([]);
     const [user, setUser] = useState({});
     const [text, setText] = useState();
@@ -52,15 +45,7 @@ const InputAutoComplete = ({
     };
     return (
         <>
-            {label ? (
-                <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
-            ) : null}
-            <TextInput
-                style={[s.formControl]}
-                onChangeText={onChangeText}
-                keyboardType={isNumber ? "numeric" : "default"}
-                {...rest}
-            />
+            <InputWithError onChangeText={onChangeText} {...props} />
             <SafeAreaView style={styles.dropdown}>
                 <FlatList
                     data={data}
@@ -68,18 +53,6 @@ const InputAutoComplete = ({
                     keyExtractor={(item) => item.id}
                 />
             </SafeAreaView>
-            {error ? (
-                <Text
-                    style={[
-                        s.textSmall,
-                        s.formText,
-                        s.invalidFeedback,
-                        s.textMuted,
-                    ]}
-                >
-                    {error}
-                </Text>
-            ) : null}
         </>
     );
 };

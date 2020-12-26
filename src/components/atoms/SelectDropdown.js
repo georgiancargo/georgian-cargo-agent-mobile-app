@@ -3,6 +3,7 @@ import {Picker} from "@react-native-picker/picker";
 import {View, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Text} from "react-native";
+import {useTheme} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -15,12 +16,23 @@ const SelectDropdown = ({
     label,
     placeholder,
 }) => {
-    const [style, setStyle] = useState({height: 35});
+    const {colors, roundness} = useTheme();
+    const [pickerStyle, setPickerStyle] = useState({height: 35});
+    const [viewStyle, setViewStyle] = useState({
+        borderWidth: 1,
+        borderColor: colors.backdrop,
+        backgroundColor: colors.background,
+        borderRadius: roundness,
+        marginTop: 6,
+    });
 
     useEffect(() => {
-        if (selectedValue && selectedValue !== "")
-            setStyle({...style, color: "black"});
-        else setStyle({...style, color: "rgb(181, 175, 166)"});
+        if (selectedValue && selectedValue !== "") {
+            setPickerStyle({...pickerStyle, color: colors.accent});
+            setViewStyle({...viewStyle, borderColor: colors.primary});
+        } else {
+            setPickerStyle({...pickerStyle, color: colors.placeholder});
+        }
     }, [selectedValue]);
 
     const onSelectWrapper = (itemValue, itemIndex) => {
@@ -33,26 +45,11 @@ const SelectDropdown = ({
                     <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
                 ) : null}
                 {/* <Text>{JSON.stringify(style)}</Text> */}
-                <View
-                    style={{
-                        borderWidth: 0.8,
-                        borderColor: "#ced4da",
-                        borderRadius: 5,
-                    }}
-                >
+                <View style={viewStyle}>
                     <Picker
                         selectedValue={selectedValue}
                         onValueChange={onSelectWrapper}
-                        style={style}
-                        // style={[
-                        //     s.textMuted,
-                        //     {
-                        //         borderWidth: 30,
-                        //         borderColor: "black",
-                        //         height: 35,
-                        //         maxHeight: 35,
-                        //     },
-                        // ]}
+                        style={pickerStyle}
                     >
                         {selectedValue && selectedValue !== "" ? null : (
                             <Picker.Item label={placeholder} value="" />

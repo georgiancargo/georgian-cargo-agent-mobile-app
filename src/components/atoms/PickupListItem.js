@@ -3,6 +3,7 @@ import {Text, View, StyleSheet} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 // import {GRAY_MEDIUM} from "_styles/colors";
+import {Button} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -27,17 +28,14 @@ const Print = ({arr, obj = {}, edit}) => {
     return (
         <View style={styles.side}>
             {arr.map((key) => (
-                <TouchableOpacity
-                    style={[s.btnTouchable, s.m1]}
+                <Button
+                    style={{marginBottom: 2}}
                     key={key}
                     onPress={edit}
+                    mode="outlined"
                 >
-                    <View style={[s.btn, s.btnOutlineInfo]}>
-                        <Text style={[s.btnText, s.btnOutlineInfo]}>
-                            {obj[key]}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+                    {obj[key]}
+                </Button>
             ))}
         </View>
     );

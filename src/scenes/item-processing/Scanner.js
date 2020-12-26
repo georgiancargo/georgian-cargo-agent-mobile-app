@@ -1,11 +1,13 @@
 import React, {useState, useEffect} from "react";
 import {Text, View, StyleSheet} from "react-native";
 import {BarCodeScanner} from "expo-barcode-scanner";
+import {Alert} from "react-native";
 
-const Scanner = ({barCodes, setBarCodes}) => {
+const Scanner = (props) => {
     // const Scanner = ({navigation, route: {params}}) => {
     const [hasPermission, setHasPermission] = useState(null);
     const [scanned, setScanned] = useState(false);
+    const {barCodes, setBarCodes} = props.barCodes ? props : props.route.params;
     // const {barCodes, setBarCodes} = params;
 
     useEffect(() => {
@@ -17,9 +19,16 @@ const Scanner = ({barCodes, setBarCodes}) => {
 
     const handleBarCodeScanned = ({type, data}) => {
         // if (barCodes.indexOf(data) == -1) setBarCodes([data].concat(barCodes));
-        if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
+        if (props.barCodes)
+            if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
+            else {
+            }
+        else {
+            setBarCodes({...barCodes, barcode: data});
+            alert(`Barcode ${data} has been scanned!`);
+            props.navigation.goBack();
+        }
         // setScanned(true);
-        // alert(`Bar code with type ${type} and data ${data} has been scanned!`);
     };
 
     if (hasPermission === null) {

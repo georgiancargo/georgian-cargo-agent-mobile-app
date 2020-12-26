@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Text} from "react-native";
 import {Appbar} from "react-native-paper";
 
 const Header = ({navigation, layout, previous, scene, ...rest}) => {

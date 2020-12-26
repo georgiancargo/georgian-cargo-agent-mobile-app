@@ -104,43 +104,44 @@ const AddSender = ({navigation}) => {
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
             <View style={[s.formGroup]}>
-                <View style={[s.formGroup]}>
-                    <InputAutoComplete
-                        name={"name"}
-                        // label={label}
-                        placeholder="Sender name"
-                        // onChangeText={onChange}
-                    />
-                </View>
+                {/* <View style={[s.formGroup]}> */}
+                <InputAutoComplete
+                    name="name"
+                    // label={label}
+                    placeholder="Sender name"
+                    // onChangeText={onChange}
+                />
+                {/* </View> */}
                 {labels.map((label, i) => (
-                    <View style={[s.formGroup]} key={label}>
-                        <InputWithError
-                            name={keys[i]}
-                            // label={label}
-                            placeholder={label}
-                            onChangeText={onChange}
-                        />
-                    </View>
+                    // <View style={[s.formGroup]} key={label}>
+                    <InputWithError
+                        name={keys[i]}
+                        // label={label}
+                        placeholder={label}
+                        onChangeText={onChange}
+                        key={label}
+                    />
+                    // </View>
                 ))}
                 <ScrollView>
-                    <View style={[s.formGroup]}>
-                        <SelectDropdown
-                            list={countries}
-                            name="country_code"
-                            onSelect={onChange}
-                            selectedValue={sender.country_code}
-                            placeholder="Sender address country code"
-                        />
-                    </View>
-                    <View style={[s.formGroup]}>
-                        <SelectDropdown
-                            list={parcelType}
-                            name="parcel_type"
-                            onSelect={onChangeParcel}
-                            selectedValue={globalSettings.parcel_type}
-                            placeholder="Parcel Type"
-                        />
-                    </View>
+                    {/* <View style={[s.formGroup, s.mt2]}> */}
+                    <SelectDropdown
+                        list={countries}
+                        name="country_code"
+                        onSelect={onChange}
+                        selectedValue={sender.country_code}
+                        placeholder="Sender address country code"
+                    />
+                    {/* </View> */}
+                    {/* <View style={[s.formGroup]}> */}
+                    <SelectDropdown
+                        list={parcelType}
+                        name="parcel_type"
+                        onSelect={onChangeParcel}
+                        selectedValue={globalSettings.parcel_type}
+                        placeholder="Parcel Type"
+                    />
+                    {/* </View> */}
                     <RadioButtonGroup
                         label="Customer Type"
                         onValueChange={onChangeParcel}
@@ -167,6 +168,7 @@ const AddSender = ({navigation}) => {
                     Summary
                 </Button>
             </View>
+
             <View>
                 {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
                 {/* <Text>{JSON.stringify(parcels)}</Text> */}

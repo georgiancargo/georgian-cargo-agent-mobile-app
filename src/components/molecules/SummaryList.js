@@ -1,5 +1,5 @@
 import React from "react";
-import { SafeAreaView } from "react-native";
+import {SafeAreaView} from "react-native";
 import {FlatList, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SummaryListItem} from "_atoms";
@@ -11,7 +11,7 @@ const SummaryList = ({parcels}) => {
     const renderItem = ({item, index}) => {
         const {price, ...parcel} = item;
         return (
-            <View style={[s.tableRow]}>
+            <View style={[s.tableRow, s.tableStripedRow(index)]}>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>

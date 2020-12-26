@@ -11,6 +11,8 @@ import {
     ItemProcessingScanner,
     ItemProcessing,
     ItemModes,
+    DeliveredItemProcessing,
+    Scanner,
 } from "_scenes/item-processing";
 import {Button} from "react-native";
 import Header from "./Header";
@@ -20,7 +22,7 @@ function App() {
     return (
         <NavigationContainer>
             <Navigator
-                initialRouteName="Login"
+                initialRouteName="Delivered Item Processing"
                 screenOptions={{header: Header}}
             >
                 <Screen name="Login" component={LoginScreen} />
@@ -31,7 +33,12 @@ function App() {
                 <Screen name="Add Parcel" component={AddReciever} />
                 <Screen name="Item Processing" component={ItemProcessing} />
                 <Screen name="Scanner" component={ItemProcessingScanner} />
+                <Screen name="cameraScanner" component={Scanner} />
                 <Screen name="Modes" component={ItemModes} />
+                <Screen
+                    name="Delivered Item Processing"
+                    component={DeliveredItemProcessing}
+                />
             </Navigator>
         </NavigationContainer>
     );

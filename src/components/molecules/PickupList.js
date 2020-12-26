@@ -15,7 +15,10 @@ const PickupList = ({parcels, editParcel}) => {
             // console.log(item);
         };
         return (
-            <View style={[s.tableRow]}>
+            <View
+                style={[s.tableRow, s.tableStripedRow(index)]}
+                key={parcel.tracking_number}
+            >
                 <View style={[s.tableHeadCol]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
@@ -30,7 +33,7 @@ const PickupList = ({parcels, editParcel}) => {
     };
     return (
         <>
-            <SafeAreaView style={{flex: 1}}>
+            <SafeAreaView>
                 <FlatList
                     data={parcels}
                     style={[s.table]}
