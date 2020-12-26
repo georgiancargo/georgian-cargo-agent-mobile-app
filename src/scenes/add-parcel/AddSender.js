@@ -1,6 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {ScrollView, Text, View} from "react-native";
-import {InputWithError, Button, SelectDropdown} from "_atoms";
+import {ScrollView, Text, View, SafeAreaView} from "react-native";
+import {
+    InputWithError,
+    Button,
+    SelectDropdown,
+    InputAutoComplete,
+} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {PickupList} from "_molecules";
 import {RadioButtonGroup} from "_molecules";
@@ -20,8 +25,8 @@ const AddSender = ({navigation}) => {
         setParcelsArray(arr);
     }, [parcels]);
     const labels = [
-        "Sender id",
-        "Sender name",
+        // "Sender id",
+        // "Sender name",
         "Sender phone",
         "Sender Email",
         // "Sender address country code",
@@ -30,8 +35,8 @@ const AddSender = ({navigation}) => {
         "Sender address postal code",
     ];
     const keys = [
-        "client_id",
-        "name",
+        // "client_id",
+        // "name",
         "phone",
         "Email",
         // "country_code",
@@ -96,20 +101,27 @@ const AddSender = ({navigation}) => {
         });
     };
     return (
-        <ScrollView>
-            <View style={[s.container, s.bgWhite, s.p3]}>
+        <View style={[s.container, s.bgWhite, s.p3]}>
+            <View style={[s.formGroup]}>
                 <View style={[s.formGroup]}>
-                    {labels.map((label, i) => (
-                        <View style={[s.formGroup]} key={label}>
-                            <InputWithError
-                                name={keys[i]}
-                                key={keys[i]}
-                                // label={label}
-                                placeholder={label}
-                                onChangeText={onChange}
-                            />
-                        </View>
-                    ))}
+                    <InputAutoComplete
+                        name={"name"}
+                        // label={label}
+                        placeholder="Sender name"
+                        // onChangeText={onChange}
+                    />
+                </View>
+                {labels.map((label, i) => (
+                    <View style={[s.formGroup]} key={label}>
+                        <InputWithError
+                            name={keys[i]}
+                            // label={label}
+                            placeholder={label}
+                            onChangeText={onChange}
+                        />
+                    </View>
+                ))}
+                <ScrollView>
                     <View style={[s.formGroup]}>
                         <SelectDropdown
                             list={countries}
@@ -136,29 +148,26 @@ const AddSender = ({navigation}) => {
                         name="customer_type"
                         checkLabels={["Individual", "Corporate"]}
                     />
-                </View>
-
-                <View style={[s.formGroup]}>
-                    <Button onPress={onSave}>Save</Button>
-                </View>
-                <View style={[s.formGroup]}>
-                    <Button onPress={addReceiver}>Add Parcel</Button>
-                </View>
-                <View style={[s.formGroup]}>
-                    <Button onPress={gotoSummary} disabled={notSaved}>
-                        Summary
-                    </Button>
-                </View>
-                <View>
-                    <Text>{JSON.stringify(parcelsArray)}</Text>
-                    {/* <Text>{JSON.stringify(parcels)}</Text> */}
-                    <PickupList
-                        parcels={parcelsArray}
-                        editParcel={editParcel}
-                    />
-                </View>
+                </ScrollView>
             </View>
-        </ScrollView>
+
+            <View style={[s.formGroup]}>
+                <Button onPress={onSave}>Save</Button>
+            </View>
+            <View style={[s.formGroup]}>
+                <Button onPress={addReceiver}>Add Parcel</Button>
+            </View>
+            <View style={[s.formGroup]}>
+                <Button onPress={gotoSummary} disabled={notSaved}>
+                    Summary
+                </Button>
+            </View>
+            <View>
+                <Text>{JSON.stringify(parcelsArray)}</Text>
+                {/* <Text>{JSON.stringify(parcels)}</Text> */}
+                <PickupList parcels={parcelsArray} editParcel={editParcel} />
+            </View>
+        </View>
     );
 };
 

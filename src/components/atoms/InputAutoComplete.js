@@ -7,7 +7,15 @@ import Axios from "axios";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const InputAutoComplete = () => {
+const InputAutoComplete = ({
+    name,
+    label,
+    error,
+    style,
+    // onChangeText,
+    isNumber,
+    ...rest
+}) => {
     const [data, setData] = useState([]);
     const [user, setUser] = useState({});
     const [text, setText] = useState();
@@ -44,11 +52,14 @@ const InputAutoComplete = () => {
     };
     return (
         <>
+            {label ? (
+                <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
+            ) : null}
             <TextInput
                 style={[s.formControl]}
-                placeholder="Text here"
                 onChangeText={onChangeText}
-                value={text}
+                keyboardType={isNumber ? "numeric" : "default"}
+                {...rest}
             />
             <SafeAreaView style={styles.dropdown}>
                 <FlatList
@@ -57,6 +68,18 @@ const InputAutoComplete = () => {
                     keyExtractor={(item) => item.id}
                 />
             </SafeAreaView>
+            {error ? (
+                <Text
+                    style={[
+                        s.textSmall,
+                        s.formText,
+                        s.invalidFeedback,
+                        s.textMuted,
+                    ]}
+                >
+                    {error}
+                </Text>
+            ) : null}
         </>
     );
 };
