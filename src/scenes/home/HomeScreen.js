@@ -14,17 +14,22 @@ const Home = ({navigation}) => {
             <View style={s.logo}>
                 <Text>Logo</Text>
             </View>
-            <View style={s.horizontalButtons}>
-                <Button style={s.mr} onPress={() => goto("Login")}>
-                    Logout
-                </Button>
-                <SyncButton />
-            </View>
-            <View style={s.verticalButtons}>
-                <Button style={s.mb} onPress={() => goto("Add Sender")}>
-                    Pickup items
-                </Button>
-                <Button onPress={() => goto("Modes")}>Item processing</Button>
+            <View style={s.buttons}>
+                <View style={s.horizontalButtons}>
+                    <Button style={s.mr} onPress={() => goto("Login")}>
+                        Logout
+                    </Button>
+                    <SyncButton />
+                </View>
+                <View style={s.verticalButtons}>
+                    <Button style={s.mb} onPress={() => goto("Add Sender")}>
+                        Pickup items
+                    </Button>
+                    <Button style={s.mb} onPress={() => goto("Modes")}>
+                        Item processing
+                    </Button>
+                    <Button onPress={() => goto("Search")}>Search</Button>
+                </View>
             </View>
             <View style={s.listContainer}>
                 <ParcelList parcels={[1, 2, 3, 4]} navigation={navigation} />
@@ -41,7 +46,7 @@ const s = StyleSheet.create({
         justifyContent: "center",
     },
     listContainer: {
-        flex: 6,
+        flex: 5,
         margin: 5,
     },
     logo: {
@@ -49,14 +54,20 @@ const s = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
     },
+    buttons: {
+        flex: 2,
+    },
     horizontalButtons: {
         flexDirection: "row",
         justifyContent: "center",
+        flex: 1,
         margin: 3,
     },
     verticalButtons: {
         margin: 3,
-        flex: 1,
+        flex: 4,
+        // borderWidth: 1,
+        // flexWrap: "wrap",
     },
     mr: {
         marginRight: 5,

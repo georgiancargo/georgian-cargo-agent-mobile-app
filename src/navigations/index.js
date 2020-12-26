@@ -2,7 +2,7 @@ import * as React from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "_scenes/login";
-import {HomeScreen} from "_scenes/home";
+import {HomeScreen, SearchScreen} from "_scenes/home";
 // import {StatusBar} from "expo-status-bar";
 import {EditParcel} from "_scenes/edit-parcel";
 import {AddReciever, AddSender} from "_scenes/add-parcel";
@@ -22,7 +22,7 @@ function App() {
     return (
         <NavigationContainer>
             <Navigator
-                initialRouteName="Delivered Item Processing"
+                initialRouteName="Login"
                 screenOptions={{header: Header}}
             >
                 <Screen name="Login" component={LoginScreen} />
@@ -35,6 +35,7 @@ function App() {
                 <Screen name="Scanner" component={ItemProcessingScanner} />
                 <Screen name="cameraScanner" component={Scanner} />
                 <Screen name="Modes" component={ItemModes} />
+                <Screen name="Search" component={SearchScreen} />
                 <Screen
                     name="Delivered Item Processing"
                     component={DeliveredItemProcessing}
