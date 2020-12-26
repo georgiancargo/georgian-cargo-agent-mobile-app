@@ -8,3 +8,4 @@ export {default as RadioButton} from "./RadioButton";
 export {default as SelectDropdown} from "./SelectDropdown";
 export {default as SummaryListItem} from "./SummaryListItem";
 export {default as ModalContainer} from "./ModalContainer";
+export {default as InputAutoComplete} from "./InputAutoComplete";
