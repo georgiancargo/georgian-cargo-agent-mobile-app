@@ -3,6 +3,7 @@ import {TouchableOpacity, View, Text} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {getItemAsync, setItemAsync as set} from "expo-secure-store";
 import {useStoredRequest} from "_hooks";
+import {Button} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -52,15 +53,9 @@ const SyncButton = () => {
             .catch((e) => {});
     };
     return (
-        <TouchableOpacity
-            style={[s.btnTouchable, s.flex1, s.mr2, !sync ? s.btnDisabled : {}]}
-            disabled={sync}
-            onPress={synItems}
-        >
-            <View style={[s.btn, s.btnLight]}>
-                <Text style={[s.btnText, s.btnLightText]}>{label}</Text>
-            </View>
-        </TouchableOpacity>
+        <Button style={{flex: 1}} disabled={!sync} onPress={synItems}>
+            {label}
+        </Button>
     );
 };
 

@@ -1,71 +1,44 @@
 import React from "react";
-import {View, StyleSheet, Text, TouchableOpacity} from "react-native";
+import {View, StyleSheet, Text} from "react-native";
 import {ParcelList} from "_molecules";
+import {Button} from "_atoms";
 import {GRAY_MEDIUM} from "_styles/colors";
 import SyncButton from "./SyncButton";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
-
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
 
 const Home = ({navigation}) => {
     const goto = (route) => {
         navigation.navigate(route);
     };
     return (
-        <View style={styles.container}>
-            <View style={styles.logo}>
+        <View style={s.container}>
+            <View style={s.logo}>
                 <Text>Logo</Text>
             </View>
-            <View style={{flexDirection: "row", justifyContent: "center"}}>
-                <TouchableOpacity
-                    onPress={() => goto("Login")}
-                    style={[s.btnTouchable, s.flex1, s.ml2, s.mr1]}
-                >
-                    <View style={[s.btn, s.btnLight]}>
-                        <Text style={[s.btnText, s.btnLightText]}>Logout</Text>
-                    </View>
-                </TouchableOpacity>
+            <View style={s.horizontalButtons}>
+                <Button style={s.mr} onPress={() => goto("Login")}>
+                    Logout
+                </Button>
                 <SyncButton />
             </View>
-            <View>
-                <TouchableOpacity
-                    style={[s.btnTouchable, s.mx2, s.my2]}
-                    onPress={() => goto("Add Sender")}
-                >
-                    <View style={[s.btn, s.btnLight]}>
-                        <Text style={[s.btnText, s.btnLightText]}>
-                            Pickup items
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                    style={[s.btnTouchable, s.mx2]}
-                    onPress={() => goto("Item Processing")}
-                >
-                    <View style={[s.btn, s.btnLight]}>
-                        <Text style={[s.btnText, s.btnLightText]}>
-                            Item processing
-                        </Text>
-                    </View>
-                </TouchableOpacity>
+            <View style={s.verticalButtons}>
+                <Button style={s.mb} onPress={() => goto("Add Sender")}>
+                    Pickup items
+                </Button>
+                <Button onPress={() => goto("Modes")}>Item processing</Button>
             </View>
-            <View style={styles.listContainer}>
+            <View style={s.listContainer}>
                 <ParcelList parcels={[1, 2, 3, 4]} navigation={navigation} />
             </View>
         </View>
     );
 };
 
-const styles = StyleSheet.create({
+const s = StyleSheet.create({
     container: {
         flex: 1,
         padding: 5,
         backgroundColor: "#fff",
         justifyContent: "center",
-    },
-    buttonContainer: {
-        flex: 2,
     },
     listContainer: {
         flex: 6,
@@ -77,20 +50,20 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     horizontalButtons: {
-        flex: 2,
+        flexDirection: "row",
+        justifyContent: "center",
+        margin: 3,
     },
     verticalButtons: {
+        margin: 3,
         flex: 1,
-        flexDirection: "row",
     },
-    button: {
+    mr: {
+        marginRight: 5,
         flex: 1,
-        margin: 5,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundColor: GRAY_MEDIUM,
-        borderRadius: 20,
+    },
+    mb: {
+        marginBottom: 5,
     },
 });
 

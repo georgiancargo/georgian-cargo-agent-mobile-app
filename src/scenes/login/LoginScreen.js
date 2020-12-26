@@ -1,7 +1,7 @@
 import React, {useContext, useState} from "react";
-import {View, Button, StyleSheet, ScrollView} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {useRequest} from "_hooks";
-import {InputWithError} from "_atoms";
+import {InputWithError, Button} from "_atoms";
 import {loginRequest} from "_requests";
 import {AuthContext} from "_context";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
@@ -52,7 +52,7 @@ const LoginScreen = ({navigation}) => {
                 />
             </View>
             <View style={styles.formButton}>
-                <Button style={styles.button} title="Login" onPress={login}></Button>
+                <Button onPress={login}>Login</Button>
             </View>
         </View>
     );
@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     },
     formButton: {
         flex: 5,
-        margin: 30,
+        // margin: 30,
         // borderWidth: 10,
         // justifyContent: "flex-end",
         // margin: 20,

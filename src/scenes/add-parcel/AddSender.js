@@ -15,6 +15,7 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AddSender = ({navigation}) => {
+    const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const [parcels, setParcels] = useState({});
     const [parcelsArray, setParcelsArray] = useState([]);
     const [sender, setSender] = useState({});
@@ -101,7 +102,7 @@ const AddSender = ({navigation}) => {
         });
     };
     return (
-        <View style={[s.container, s.bgWhite, s.p3]}>
+        <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
             <View style={[s.formGroup]}>
                 <View style={[s.formGroup]}>
                     <InputAutoComplete
@@ -151,19 +152,23 @@ const AddSender = ({navigation}) => {
                 </ScrollView>
             </View>
 
-            <View style={[s.formGroup]}>
-                <Button onPress={onSave}>Save</Button>
-            </View>
-            <View style={[s.formGroup]}>
-                <Button onPress={addReceiver}>Add Parcel</Button>
-            </View>
-            <View style={[s.formGroup]}>
-                <Button onPress={gotoSummary} disabled={notSaved}>
+            <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}>
+                <Button style={[btnGroup]} onPress={onSave}>
+                    Save
+                </Button>
+                <Button style={[btnGroup]} onPress={addReceiver}>
+                    Add Parcel
+                </Button>
+                <Button
+                    style={[btnGroup]}
+                    onPress={gotoSummary}
+                    disabled={notSaved}
+                >
                     Summary
                 </Button>
             </View>
             <View>
-                <Text>{JSON.stringify(parcelsArray)}</Text>
+                {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
                 {/* <Text>{JSON.stringify(parcels)}</Text> */}
                 <PickupList parcels={parcelsArray} editParcel={editParcel} />
             </View>

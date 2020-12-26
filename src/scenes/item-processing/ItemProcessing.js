@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View} from "react-native";
+import {View, Text} from "react-native";
 import {ProcessingList, EditBarCode} from "_molecules";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Button, InputWithError} from "_atoms";
@@ -78,6 +78,19 @@ const ItemProcessing = ({navigation}) => {
                     <View style={[s.formGroup, s.flex1, s.ml2]}>
                         <Button onPress={add}>Add</Button>
                     </View>
+                </View>
+                <View
+                    View
+                    style={[
+                        s.formGroup,
+                        {
+                            alignItems: "center",
+                            borderWidth: 1,
+                            borderRadius: 20,
+                        },
+                    ]}
+                >
+                    <Text>Total Items: {barCodes.length}</Text>
                 </View>
                 <View style={[s.flex3]}>
                     <EditBarCode
