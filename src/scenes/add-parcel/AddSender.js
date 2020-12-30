@@ -16,11 +16,41 @@ const {s, c} = bootstrapStyleSheet;
 
 const AddSender = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
-    const [parcels, setParcels] = useState({});
+    const [parcels, setParcels] = useState({
+        0: {
+            tracking_number: "G123654", // Must be >= 4 characters && Unique
+            weight: 10, // > 0
+            source_country_code: "US", // Two uppercase chars
+            destination_country_code: "UK", // Two uppercase chars
+            collection_option: "HOME", // HOME or OFFICE
+            receiver: {
+                name: "Ahmed",
+                email: "ah@gm.co", // Valid Email
+                phone: "+22123",
+                country_code: "UK", // Two uppercase chars
+                address_line_1: "line 1",
+                address_line_2: "line 2",
+                postal_code: "VUE 123",
+            },
+            notes: "notes",
+            description: "Clothes",
+        },
+    });
     const [parcelsArray, setParcelsArray] = useState([]);
-    const [sender, setSender] = useState({});
+    const [sender, setSender] = useState({
+        name: "Ahmed",
+        email: "ah@gm.co", // Valid Email
+        phone: "+22123",
+        country_code: "US", // Two uppercase chars
+        address_line_1: "line 1",
+        address_line_2: "line 2",
+        postal_code: "VUE 123",
+    });
     const [notSaved, setNotSaved] = useState(true);
-    const [globalSettings, setGlobal] = useState({});
+    const [globalSettings, setGlobal] = useState({
+        customer_type: "INDIVIDUAL", // INDIVIDUAL or CORPORATE
+        parcel_type: "PARCEL", // FREIGHT or PARCEL (will add more later)
+    });
     useEffect(() => {
         const arr = Object.keys(parcels).map((key) => parcels[key]);
         setParcelsArray(arr);
@@ -41,7 +71,7 @@ const AddSender = ({navigation}) => {
         "phone",
         "email",
         // "country_code",
-        "addrees_line_1",
+        "address_line_1",
         "address_line_2",
         "postal_code",
     ];
@@ -49,10 +79,8 @@ const AddSender = ({navigation}) => {
         setGlobal({...globalSettings, [name]: value});
     };
     const parcelType = [
-        {label: "Type 1", value: 1},
-        {label: "Type 2", value: 2},
-        {label: "Type 3", value: 3},
-        {label: "Type 4", value: 4},
+        {label: "Freight", value: "FREIGHT"},
+        {label: "Parcel", value: "PARCEL"},
     ];
     const addReceiver = () => {
         // const temp = {0: {sender: sender, receiver: {}}};
@@ -107,19 +135,20 @@ const AddSender = ({navigation}) => {
                 {/* <View style={[s.formGroup]}> */}
                 <InputAutoComplete
                     name="name"
+                    value={sender.name}
                     // label={label}
                     placeholder="Sender name"
                     // onChangeText={onChange}
                 />
                 {/* </View> */}
-                {labels.map((label, i) => (
+                {keys.map((key, i) => (
                     // <View style={[s.formGroup]} key={label}>
                     <InputWithError
-                        name={keys[i]}
-                        // label={label}
-                        placeholder={label}
+                        name={key}
+                        value={sender[key]}
+                        placeholder={labels[i]}
                         onChangeText={onChange}
-                        key={"sender_"+label}
+                        key={"sender_" + key}
                     />
                     // </View>
                 ))}

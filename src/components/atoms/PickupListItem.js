@@ -3,7 +3,7 @@ import {Text, View, StyleSheet} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {TouchableOpacity} from "react-native-gesture-handler";
 // import {GRAY_MEDIUM} from "_styles/colors";
-import {Button} from "react-native-paper";
+import Button from "./Button";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -29,7 +29,7 @@ const Print = ({arr, obj = {}, edit}) => {
         <View style={styles.side}>
             {arr.map((key) => (
                 <Button
-                    style={{marginBottom: 2}}
+                    // style={{marginBottom: 2}}
                     key={key}
                     onPress={edit}
                     mode="outlined"
