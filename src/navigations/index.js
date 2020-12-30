@@ -5,7 +5,7 @@ import {LoginScreen} from "_scenes/login";
 import {HomeScreen, SearchScreen} from "_scenes/home";
 // import {StatusBar} from "expo-status-bar";
 import {EditParcel} from "_scenes/edit-parcel";
-import {AddReciever, PickupItemScreen} from "_scenes/add-parcel";
+import {AddReciever, PickupItemScreen} from "_scenes/pickup-item";
 import {Summary} from "_scenes/summary";
 import {
     ItemProcessingScanner,

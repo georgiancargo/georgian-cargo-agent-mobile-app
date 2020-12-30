@@ -1,7 +1,7 @@
 import React from "react";
 import {Text} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {TextInput} from "react-native-paper";
+import {TextInput, HelperText} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -13,6 +13,7 @@ const InputWithError = ({
     style = {},
     onChangeText,
     isNumber,
+    info,
     ...rest
 }) => {
     const onChangeWrapper = (text) => {
@@ -24,33 +25,19 @@ const InputWithError = ({
     };
     return (
         <>
-            {/* {label ? (
-                <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
-            ) : null} */}
             <TextInput
-                // label="Email"
-                // value={text}
                 style={{height: 35, ...style}}
                 mode="outlined"
-                // onChangeText={(text) => setText(text)}
                 onChangeText={onChangeWrapper}
                 label={label ? label : rest.placeholder}
-                // style={[s.formControl]}
                 keyboardType={isNumber ? "numeric" : "default"}
                 error={error}
                 {...rest}
             />
-            {error ? (
-                <Text
-                    style={[
-                        s.textSmall,
-                        s.formText,
-                        s.invalidFeedback,
-                        s.textMuted,
-                    ]}
-                >
-                    {error}
-                </Text>
+            {info || error ? (
+                <HelperText type={error ? "error" : "info"} visible={true}>
+                    {error ? error : info}
+                </HelperText>
             ) : null}
         </>
     );
