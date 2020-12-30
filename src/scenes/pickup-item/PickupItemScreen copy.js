@@ -14,7 +14,7 @@ import {countries} from "_utils";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const AddSender = ({navigation}) => {
+const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const [parcels, setParcels] = useState({
         0: {
@@ -207,4 +207,4 @@ const AddSender = ({navigation}) => {
     );
 };
 
-export default AddSender;
+export default PickupItemScreen;
