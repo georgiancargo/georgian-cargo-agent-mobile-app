@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {ScrollView, Text, View, SafeAreaView} from "react-native";
+import {ScrollView, View} from "react-native";
 import {
     InputWithError,
     Button,
@@ -7,8 +7,7 @@ import {
     InputAutoComplete,
 } from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {PickupList} from "_molecules";
-import {RadioButtonGroup} from "_molecules";
+import {PickupList, RadioButtonGroup} from "_molecules";
 import {countries} from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
