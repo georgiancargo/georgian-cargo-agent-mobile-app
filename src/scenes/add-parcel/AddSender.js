@@ -39,7 +39,7 @@ const AddSender = ({navigation}) => {
         // "client_id",
         // "name",
         "phone",
-        "Email",
+        "email",
         // "country_code",
         "addrees_line_1",
         "address_line_2",
@@ -119,7 +119,7 @@ const AddSender = ({navigation}) => {
                         // label={label}
                         placeholder={label}
                         onChangeText={onChange}
-                        key={label}
+                        key={"sender_"+label}
                     />
                     // </View>
                 ))}

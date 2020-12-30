@@ -3,7 +3,7 @@ import {ScrollView, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
-import {SummaryList} from "_molecules";
+import {SummaryList, ExtraChargesTable} from "_molecules";
 import {Divider} from "react-native-elements";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -11,7 +11,32 @@ const {s, c} = bootstrapStyleSheet;
 
 const Summary = ({navigation, route: {params}}) => {
     const {parcels = []} = params;
-    const [summaryData, setSummary] = useState({});
+    const [summaryData, setSummary] = useState({
+        coupon_code: "FREE50",
+        customer_id: 123,
+        extra_charges: [
+            {
+                note: "VAT0",
+                amount: 123,
+            },
+            {
+                note: "VAT1",
+                amount: 123,
+            },
+            {
+                note: "VAT2",
+                amount: 123,
+            },
+            {
+                note: "VAT3",
+                amount: 123,
+            },
+            {
+                note: "VAT4",
+                amount: 123,
+            },
+        ],
+    });
     const [sum, setSum] = useState(0);
 
     useEffect(() => {
@@ -30,6 +55,11 @@ const Summary = ({navigation, route: {params}}) => {
         {label: "Online", value: "ONLINE"},
         {label: "Bank", value: "BANK"},
     ];
+    const removeExtraCharge = (index) => {
+        const newExtra = summaryData.extra_charges.slice();
+        newExtra.splice(index, 1);
+        setSummary({...summaryData, extra_charges: newExtra});
+    };
     return (
         <>
             <ScrollView style={[s.container, s.bgWhite]}>
@@ -37,7 +67,7 @@ const Summary = ({navigation, route: {params}}) => {
                     <View style={[s.formGroup]}>
                         <InputWithError
                             // label="Coupon"
-                            name="coupon"
+                            name="coupon_code"
                             placeholder="Coupon"
                             onChangeText={onChange}
                             value={summaryData.coupon}
@@ -51,6 +81,12 @@ const Summary = ({navigation, route: {params}}) => {
                             onSelect={onChange}
                             selectedValue={summaryData.payment_method}
                             placeholder="Payment method"
+                        />
+                    </View>
+                    <View style={[s.formGroup]}>
+                        <ExtraChargesTable
+                            extra_charges={summaryData.extra_charges}
+                            removeExtraCharge={removeExtraCharge}
                         />
                     </View>
                     <View style={[s.formGroup]}>

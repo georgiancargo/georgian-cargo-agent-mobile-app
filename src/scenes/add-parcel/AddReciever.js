@@ -156,7 +156,7 @@ const Form = ({labels, keys, receiver, onChange}) => {
                 // {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
                 <InputWithError
                     name={key}
-                    key={key}
+                    key={"receiver_"+key}
                     placeholder={labels[i]}
                     onChangeText={onChange}
                     value={receiver[key] ? receiver[key].toString() : ""}
