@@ -60,8 +60,8 @@ const AddReciever = ({navigation, route}) => {
         // "destination_country_code",
         "description",
         "notes",
-        "extra_charges",
-        "price",
+        // "extra_charges",
+        // "price",
     ];
     const onChangeReceiver = (name, value) => {
         setReceiver({...receiver, [name]: value});

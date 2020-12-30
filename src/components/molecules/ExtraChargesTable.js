@@ -1,52 +1,35 @@
-import React, {useState, useEffect} from "react";
+import React from "react";
 import {Text} from "react-native";
-import {DataTable} from "react-native-paper";
+import {Table, Cell, Row} from "_atoms";
 
 const ExtraChargesTable = ({
     extra_charges = [],
-    removeExtraCharge = () => {},
+    removeExtraCharge: rm = () => {},
+    title = "Extra charges",
 }) => {
-    const [numberOfPages, setNumberOfPages] = useState();
-    const [page, setPage] = useState(0);
-    useEffect(() => {
-        const num = Math.ceil(extra_charges.length / 4);
-        if (num > 1) setNumberOfPages(num);
-        else setNumberOfPages(0);
-    }, [extra_charges]);
+    const Rows = ({page, rowsPerPage}) =>
+        extra_charges
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((extra_charge, i) => (
+                <Row key={i}>
+                    <Cell>{extra_charge.note}</Cell>
+                    <Cell numeric>{extra_charge.amount}</Cell>
+                    <Cell
+                        style={{justifyContent: "flex-end"}}
+                        onPress={() => rm(page * rowsPerPage + i)}
+                    >
+                        <Text style={{color: "red"}}>X{"    "}</Text>
+                    </Cell>
+                </Row>
+            ));
     return (
-        <DataTable>
-            <DataTable.Header>
-                <DataTable.Title>Note</DataTable.Title>
-                <DataTable.Title numeric>Amount</DataTable.Title>
-                <DataTable.Title style={{justifyContent: "flex-end"}}>
-                    Action
-                </DataTable.Title>
-            </DataTable.Header>
-            {extra_charges
-                .slice(page * 4, page * 4 + 4)
-                .map((extra_charge, i) => (
-                    <DataTable.Row key={i}>
-                        <DataTable.Cell>{extra_charge.note}</DataTable.Cell>
-                        <DataTable.Cell numeric>
-                            {extra_charge.amount}
-                        </DataTable.Cell>
-                        <DataTable.Cell
-                            style={{justifyContent: "flex-end"}}
-                            onPress={() => removeExtraCharge(page * 4 + i)}
-                        >
-                            <Text style={{color: "red"}}>X{"    "}</Text>
-                        </DataTable.Cell>
-                    </DataTable.Row>
-                ))}
-
-            <DataTable.Pagination
-                page={page}
-                numberOfPages={numberOfPages}
-                onPageChange={(page) => {
-                    setPage(page);
-                }}
-            />
-        </DataTable>
+        <Table
+            headers={["Note", "Amount", "Action"]}
+            title={title}
+            totalNumOfRows={extra_charges.length}
+            rowsPerPage={4}
+            RenderItems={Rows}
+        />
     );
 };
 

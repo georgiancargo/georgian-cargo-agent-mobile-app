@@ -21,7 +21,7 @@ function App() {
     return (
         <NavigationContainer>
             <Navigator
-                initialRouteName="Login"
+                initialRouteName="Add Sender"
                 screenOptions={{header: Header}}
             >
                 <Screen name="Login" component={LoginScreen} />

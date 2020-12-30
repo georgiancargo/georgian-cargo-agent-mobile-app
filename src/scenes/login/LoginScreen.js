@@ -23,7 +23,7 @@ const LoginScreen = ({navigation}) => {
         validate(newUser, name).catch((e) => {});
     };
     const login = () => {
-        validate()
+        validate(user)
             .then((r) => {
                 request(user)
                     .then(({data}) => {
@@ -50,6 +50,7 @@ const LoginScreen = ({navigation}) => {
                 <InputWithError
                     name="username"
                     error={errors.username}
+                    value={user.username}
                     label="username"
                     placeholder="Username"
                     onChangeText={onChangeText}
@@ -57,6 +58,7 @@ const LoginScreen = ({navigation}) => {
                 <InputWithError
                     name="password"
                     error={errors.password}
+                    value={user.password}
                     label="password"
                     placeholder="Password"
                     onChangeText={onChangeText}

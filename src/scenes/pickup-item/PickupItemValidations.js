@@ -1,17 +1,18 @@
 import vest, {validate, test, enforce} from "vest";
 import {truncate} from "_utils";
 
-const pickupItemValidations = (data, field) => {
+const senderDataValidations = (data, field) => {
     return validate("PickupItemScreen", () => {
         vest.only(field);
 
         [
             "name",
             "email",
-            "password",
-            "passwordConfirm",
-            "mobile",
-            "national_personal_number",
+            "phone",
+            "country_code",
+            "address_line_1",
+            "address_line_2",
+            "postal_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {
                 enforce(data[elem].toString()).isNotEmpty();
@@ -24,31 +25,7 @@ const pickupItemValidations = (data, field) => {
                 .isNotEmpty()
                 .matches(/[^@]+@[^.]+\..+/g);
         });
-
-        test(
-            "citizenship",
-            formatMessage({
-                id: "select_account_type",
-                defaultMessage: "Please select an account citizenship",
-            }),
-            () => {
-                enforce(data.citizenship !== null).isTruthy();
-            }
-        );
-        test(
-            "password",
-            formatMessage({
-                id: "password_min_length",
-                defaultMessage: "Password should be atleast 8 characters long",
-            }),
-            () => {
-                enforce(data.password.toString()).longerThanOrEquals(8);
-            }
-        );
-        // test("mobile", data.mobile + "is not valid phone number", () => {
-        //     enforce(parseInt(data.mobile)).isNumeric();
-        // });
     });
 };
 
-export default pickupItemValidations;
+export default senderDataValidations;
