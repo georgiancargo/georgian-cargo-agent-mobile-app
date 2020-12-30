@@ -7,6 +7,7 @@ const Table = ({
     rowsPerPage = 1,
     title = "Extra charges",
     RenderItems,
+    justifyContent = "center",
 }) => {
     const {colors, roundness} = useTheme();
     const [numberOfPages, setNumberOfPages] = useState();
@@ -31,7 +32,14 @@ const Table = ({
             <Subheading style={{marginLeft: 5}}>{title}</Subheading>
             <DataTable.Header style={headerBorderStyle}>
                 {headers.map((header, i) => (
-                    <DataTable.Title>{header}</DataTable.Title>
+                    <DataTable.Title
+                        style={{
+                            justifyContent:
+                                i === 0 ? "flex-start" : justifyContent,
+                        }}
+                    >
+                        {header}
+                    </DataTable.Title>
                 ))}
             </DataTable.Header>
             <RenderItems page={page} rowsPerPage={rowsPerPage} />

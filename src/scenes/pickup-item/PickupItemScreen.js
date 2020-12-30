@@ -19,8 +19,8 @@ const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const {errors, validate, hasErrors} = useValidation(senderDataValidations);
 
-    const [parcels, setParcels] = useState({
-        0: {
+    const [parcels, setParcels] = useState([
+        {
             tracking_number: "G123654", // Must be >= 4 characters && Unique
             weight: 10, // > 0
             source_country_code: "US", // Two uppercase chars
@@ -38,8 +38,8 @@ const PickupItemScreen = ({navigation}) => {
             notes: "notes",
             description: "Clothes",
         },
-    });
-    const [parcelsArray, setParcelsArray] = useState([]);
+    ]);
+    // const [parcelsArray, setParcelsArray] = useState([]);
     const [sender, setSender] = useState({
         name: "Ahmed",
         email: "ah@gm.co", // Valid Email
@@ -54,10 +54,11 @@ const PickupItemScreen = ({navigation}) => {
         customer_type: "INDIVIDUAL", // INDIVIDUAL or CORPORATE
         parcel_type: "PARCEL", // FREIGHT or PARCEL (will add more later)
     });
+
     useEffect(() => {
-        const arr = Object.keys(parcels).map((key) => parcels[key]);
-        setParcelsArray(arr);
-    }, [parcels]);
+        setNotSaved(true);
+    }, [parcels.length]);
+
     const labels = ["Sender phone", "Sender Email", "Sender addrees line 1", "Sender address line 2", "Sender address postal code"];
     const keys = ["phone", "email", "address_line_1", "address_line_2", "postal_code"];
     
@@ -72,7 +73,7 @@ const PickupItemScreen = ({navigation}) => {
     
     const addReceiver = () => {
         // const temp = {0: {sender: sender, receiver: {}}};
-        const index = Object.keys(parcels).length;
+        const index = parcels.length;
         // setParcels({...parcels, [index]: temp});
 
         navigation.navigate("Add Parcel", {
@@ -103,19 +104,20 @@ const PickupItemScreen = ({navigation}) => {
     const onSave = () => {
         validate(sender)
             .then((r) => {
-                const parcelsTemp = parcels;
-                for (const key in parcels) {
-                    parcelsTemp[key] = {...parcelsTemp[key], ...globalSettings};
-                    parcelsTemp[key].sender = sender;
-                    const r = parcelsTemp[key].receiver;
-                    parcelsTemp[key].receiver = r ? r : {};
+                if (parcels.length > 0) {
+                    const parcelsTemp = parcels.slice();
+                    for (let key = 0; key < parcelsTemp.length; key++) {
+                        parcelsTemp[key] = {
+                            ...parcelsTemp[key],
+                            ...globalSettings,
+                        };
+                        parcelsTemp[key].sender = sender;
+                        const r = parcelsTemp[key].receiver;
+                        parcelsTemp[key].receiver = r ? r : {};
+                    }
+                    setParcels(parcelsTemp);
+                    setNotSaved(false);
                 }
-                const index = Object.keys(parcels).length;
-                const temp = {0: {sender: sender, receiver: {}}};
-                if (index === 0) setParcels(temp);
-
-                setParcels(parcelsTemp);
-                setNotSaved(false);
             })
             .catch((e) => {});
     };
@@ -123,10 +125,15 @@ const PickupItemScreen = ({navigation}) => {
         validate(sender)
             .then((r) => {
                 navigation.navigate("Summary", {
-                    parcels: parcelsArray,
+                    parcels: parcels,
                 });
             })
             .catch((e) => {});
+    };
+    const removeParcel = (index) => {
+        const newParcels = parcels.slice();
+        newParcels.splice(index, 1);
+        setParcels(newParcels);
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
@@ -203,7 +210,11 @@ const PickupItemScreen = ({navigation}) => {
                 {/* <Text>{JSON.stringify(sender)}</Text> */}
                 {/* <Text>{JSON.stringify(parcels)}</Text> */}
                 {/* <Text>{JSON.stringify(notSaved)}</Text> */}
-                <PickupList parcels={parcelsArray} editParcel={editParcel} />
+                <PickupList
+                    parcels={parcels}
+                    editParcel={editParcel}
+                    removeParcel={removeParcel}
+                />
             </View>
         </View>
     );

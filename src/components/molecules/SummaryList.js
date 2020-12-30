@@ -1,63 +1,61 @@
 import React from "react";
-import {SafeAreaView} from "react-native";
-import {FlatList, Text, View} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {SummaryListItem} from "_atoms";
+import {Text} from "react-native";
+import {Subheading} from "react-native-paper";
+import {Table, Cell, Row} from "_atoms";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-
-const SummaryList = ({parcels}) => {
-    const renderItem = ({item, index}) => {
-        const {price, ...parcel} = item;
-        return (
-            <View style={[s.tableRow, s.tableStripedRow(index)]}>
-                <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
-                    <Text style={[s.text]}>{index + 1}</Text>
-                </View>
-                <View style={[s.tableHeadCol, s.flex6]}>
-                    <SummaryListItem isParcel parcel={parcel} />
-                </View>
-                <View
-                    style={[
-                        s.tableHeadCol,
-                        s.flex2,
-                        {justifyContent: "center"},
-                    ]}
-                >
-                    <SummaryListItem price={price} />
-                </View>
-            </View>
-        );
-    };
-    return (
-        <>
-            <SafeAreaView style={{flex: 1}}>
-                <FlatList
-                    data={parcels}
-                    style={[s.table]}
-                    ListHeaderComponent={Header}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
-            </SafeAreaView>
-        </>
+const SummaryList = ({
+    parcels = [],
+    removeParcel: rm = () => {},
+    title = "Parcel Summary",
+}) => {
+    const parcelKeys = [
+        "tracking_number",
+        "weight",
+        "source_country_code",
+        "destination_country_code",
+        // "description",
+        // "notes",
+    ];
+    const parcelLabels = [
+        // "#",
+        "Tracking",
+        "weight",
+        "source",
+        "dest.",
+        // "description",
+        // "notes",
+        // "",
+    ];
+    const Rows = ({page, rowsPerPage}) =>
+        parcels
+            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+            .map((parcel, i) => (
+                <Row key={i}>
+                    {/* <Cell>{page * rowsPerPage + i + 1}</Cell> */}
+                    {parcelKeys.map((key) => (
+                        <Cell key={key} style={{justifyContent: "center"}}>
+                            {parcel[key]}
+                        </Cell>
+                    ))}
+                    {/* <Cell
+                        style={{justifyContent: "flex-end"}}
+                        onPress={() => rm(page * rowsPerPage + i)}
+                    >
+                        <Text style={{color: "red"}}>X{"    "}</Text>
+                    </Cell> */}
+                </Row>
+            ));
+    return parcels.length > 0 ? (
+        <Table
+            headers={parcelLabels}
+            title={title}
+            totalNumOfRows={parcels.length}
+            rowsPerPage={4}
+            RenderItems={Rows}
+        />
+    ) : (
+        <Subheading>No Parcels</Subheading>
     );
 };
 
-const Header = () => {
-    return (
-        <View style={[s.tableHead]}>
-            <View style={[s.tableHeadCol]}>
-                <Text style={[s.text]}>#</Text>
-            </View>
-            <View style={[s.tableHeadCol, s.flex6]}>
-                <Text style={[s.text]}>Parcel</Text>
-            </View>
-            <View style={[s.tableHeadCol, s.flex2]}>
-                <Text style={[s.text]}>Price</Text>
-            </View>
-        </View>
-    );
-};
 export default SummaryList;

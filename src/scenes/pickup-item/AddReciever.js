@@ -72,14 +72,19 @@ const AddReciever = ({navigation, route}) => {
     };
     const onSave = () => {
         // const parcel = parcels[index] ? parcels[index] : {};
-        setParcels({...parcels, [index]: {...parcel, receiver: receiver}});
+        if (index <= parcels.length) {
+            const newParcels = parcels.slice();
+            newParcels[index] = {...parcel, receiver: receiver};
+            setParcels(newParcels);
+        }
+        // setParcels({...parcels, [index]: {...parcel, receiver: receiver}});
         navigation.goBack();
     };
 
     return (
         <>
-            <ScrollView>
-                <View style={[s.container, s.bgWhite, s.p3]}>
+            <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+                <View>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}
@@ -109,23 +114,6 @@ const AddReciever = ({navigation, route}) => {
                             onChange={onChangeParcel}
                         />
                         {/* <View style={[s.formGroup]}> */}
-                        <SelectDropdown
-                            list={countries}
-                            name="source_country_code"
-                            onSelect={onChangeParcel}
-                            selectedValue={parcel.source_country_code}
-                            placeholder="source country code"
-                        />
-                        {/* </View> */}
-                        {/* <View style={[s.formGroup]}> */}
-                        <SelectDropdown
-                            list={countries}
-                            name="destination_country_code"
-                            onSelect={onChangeParcel}
-                            selectedValue={parcel.destination_country_code}
-                            placeholder="destination country code"
-                        />
-                        {/* </View> */}
                         <RadioButtonGroup
                             label="Collection Option"
                             onValueChange={onChangeParcel}
@@ -156,7 +144,7 @@ const Form = ({labels, keys, receiver, onChange}) => {
                 // {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
                 <InputWithError
                     name={key}
-                    key={"receiver_"+key}
+                    key={"receiver_" + key}
                     placeholder={labels[i]}
                     onChangeText={onChange}
                     value={receiver[key] ? receiver[key].toString() : ""}

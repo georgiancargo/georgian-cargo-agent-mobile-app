@@ -5,37 +5,21 @@ import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
 import {SummaryList, ExtraChargesTable} from "_molecules";
 import {Divider} from "react-native-elements";
+import {useOfflineRequest} from "_hooks";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const Summary = ({navigation, route: {params}}) => {
     const {parcels = []} = params;
+    const [pickupRequest, loading] = useOfflineRequest({
+        url: "/cargo/pickup",
+        method: "POST",
+    });
     const [summaryData, setSummary] = useState({
         coupon_code: "FREE50",
         customer_id: 123,
-        extra_charges: [
-            {
-                note: "VAT0",
-                amount: 123,
-            },
-            {
-                note: "VAT1",
-                amount: 123,
-            },
-            {
-                note: "VAT2",
-                amount: 123,
-            },
-            {
-                note: "VAT3",
-                amount: 123,
-            },
-            {
-                note: "VAT4",
-                amount: 123,
-            },
-        ],
+        extra_charges: [],
     });
     const [sum, setSum] = useState(0);
 
@@ -46,6 +30,7 @@ const Summary = ({navigation, route: {params}}) => {
         });
         setSum(s);
     }, [parcels]);
+
     const onChange = (name, value) => {
         setSummary({...summaryData, [name]: value});
     };
@@ -55,10 +40,19 @@ const Summary = ({navigation, route: {params}}) => {
         {label: "Online", value: "ONLINE"},
         {label: "Bank", value: "BANK"},
     ];
+
     const removeExtraCharge = (index) => {
         const newExtra = summaryData.extra_charges.slice();
         newExtra.splice(index, 1);
         setSummary({...summaryData, extra_charges: newExtra});
+    };
+
+    const onCheckout = () => {
+        parcels.forEach(async (data) => {
+            try {
+                await pickupRequest({...summaryData, ...data});
+            } catch (error) {}
+        });
     };
     return (
         <>
@@ -70,7 +64,7 @@ const Summary = ({navigation, route: {params}}) => {
                             name="coupon_code"
                             placeholder="Coupon"
                             onChangeText={onChange}
-                            value={summaryData.coupon}
+                            value={summaryData.coupon_code}
                         />
                     </View>
                     <View style={[s.formGroup]}>
@@ -103,7 +97,8 @@ const Summary = ({navigation, route: {params}}) => {
                 </View>
             </ScrollView>
             <View style={[s.formGroup]}>
-                <Button>Checkout</Button>
+                <Text>{JSON.stringify(loading)}</Text>
+                <Button onPress={onCheckout}>Checkout</Button>
             </View>
         </>
     );

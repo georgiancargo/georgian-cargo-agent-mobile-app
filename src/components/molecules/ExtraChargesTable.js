@@ -1,5 +1,6 @@
 import React from "react";
 import {Text} from "react-native";
+import {Subheading} from "react-native-paper";
 import {Table, Cell, Row} from "_atoms";
 
 const ExtraChargesTable = ({
@@ -11,9 +12,9 @@ const ExtraChargesTable = ({
         extra_charges
             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
             .map((extra_charge, i) => (
-                <Row key={i}>
+                <Row key={extra_charge.note}>
                     <Cell>{extra_charge.note}</Cell>
-                    <Cell numeric>{extra_charge.amount}</Cell>
+                    <Cell>{extra_charge.amount}</Cell>
                     <Cell
                         style={{justifyContent: "flex-end"}}
                         onPress={() => rm(page * rowsPerPage + i)}
@@ -22,14 +23,17 @@ const ExtraChargesTable = ({
                     </Cell>
                 </Row>
             ));
-    return (
+    return extra_charges.length > 0 ? (
         <Table
-            headers={["Note", "Amount", "Action"]}
+            headers={["Note", "Amount", ""]}
             title={title}
             totalNumOfRows={extra_charges.length}
             rowsPerPage={4}
             RenderItems={Rows}
+            justifyContent="flex-start"
         />
+    ) : (
+        <Subheading> No Extra Charges </Subheading>
     );
 };
 

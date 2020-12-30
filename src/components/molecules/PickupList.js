@@ -2,12 +2,13 @@ import React from "react";
 import {SafeAreaView} from "react-native";
 import {FlatList, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {TouchableOpacity} from "react-native";
 import {PickupListItem} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const PickupList = ({parcels, editParcel}) => {
+const PickupList = ({parcels, editParcel, removeParcel}) => {
     const renderItem = ({item, index}) => {
         const {sender, receiver, ...parcel} = item;
         const edit = () => {
@@ -19,7 +20,7 @@ const PickupList = ({parcels, editParcel}) => {
                 style={[s.tableRow, s.tableStripedRow(index)]}
                 key={parcel.tracking_number}
             >
-                <View style={[s.tableHeadCol]}>
+                <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
@@ -27,6 +28,18 @@ const PickupList = ({parcels, editParcel}) => {
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
                     <PickupListItem isParcel parcel={parcel} edit={edit} />
+                </View>
+                <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
+                    <TouchableOpacity
+                        style={{
+                            flex: 1,
+                            alignItems: "center",
+                            justifyContent: "center",
+                        }}
+                        onPress={() => removeParcel(index)}
+                    >
+                        <Text style={{color: "red"}}>X</Text>
+                    </TouchableOpacity>
                 </View>
             </View>
         );
@@ -50,13 +63,16 @@ const Header = () => {
     return (
         <View style={[s.tableHead]}>
             <View style={[s.tableHeadCol]}>
-                <Text style={[s.text]}>#</Text>
+                <Text style={[s.text, s.flex1]}>#</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex6]}>
-                <Text style={[s.text]}>Reciever</Text>
+                <Text style={[s.text, s.textCenter]}>Reciever</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex6]}>
-                <Text style={[s.text]}>Parcel</Text>
+                <Text style={[s.text, s.textCenter]}>Parcel</Text>
+            </View>
+            <View style={[s.tableHeadCol, s.flex1]}>
+                <Text style={[s.text]}></Text>
             </View>
         </View>
     );
