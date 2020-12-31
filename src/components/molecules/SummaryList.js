@@ -11,8 +11,8 @@ const SummaryList = ({
     const parcelKeys = [
         "tracking_number",
         "weight",
-        "source_country_code",
-        "destination_country_code",
+        // "source_country_code",
+        // "destination_country_code",
         // "description",
         // "notes",
     ];
@@ -37,6 +37,12 @@ const SummaryList = ({
                             {parcel[key]}
                         </Cell>
                     ))}
+                    <Cell style={{justifyContent: "center"}}>
+                        {parcel.sender.country_code}
+                    </Cell>
+                    <Cell style={{justifyContent: "center"}}>
+                        {parcel.receiver.country_code}
+                    </Cell>
                     {/* <Cell
                         style={{justifyContent: "flex-end"}}
                         onPress={() => rm(page * rowsPerPage + i)}

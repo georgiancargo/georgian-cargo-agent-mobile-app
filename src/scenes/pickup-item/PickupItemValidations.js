@@ -11,7 +11,7 @@ const senderDataValidations = (data, field) => {
             "phone",
             "country_code",
             "address_line_1",
-            "address_line_2",
+            // "address_line_2",
             "postal_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {

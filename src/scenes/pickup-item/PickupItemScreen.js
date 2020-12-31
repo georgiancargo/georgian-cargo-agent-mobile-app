@@ -23,14 +23,14 @@ const PickupItemScreen = ({navigation}) => {
         {
             tracking_number: "G123654", // Must be >= 4 characters && Unique
             weight: 10, // > 0
-            source_country_code: "US", // Two uppercase chars
-            destination_country_code: "UK", // Two uppercase chars
+            // source_country_code: "US", // Two uppercase chars
+            // destination_country_code: "UK", // Two uppercase chars
             collection_option: "HOME", // HOME or OFFICE
             receiver: {
                 name: "Ahmed",
                 email: "ah@gm.co", // Valid Email
                 phone: "+22123",
-                country_code: "UK", // Two uppercase chars
+                country_code: "JP", // Two uppercase chars
                 address_line_1: "line 1",
                 address_line_2: "line 2",
                 postal_code: "VUE 123",
@@ -99,7 +99,7 @@ const PickupItemScreen = ({navigation}) => {
         const newSender = {...sender, [name]: value};
         setSender(newSender);
         setNotSaved(true);
-        validate(newSender, name);
+        validate(newSender, name).catch((e) => {});
     };
     const onSave = () => {
         validate(sender)

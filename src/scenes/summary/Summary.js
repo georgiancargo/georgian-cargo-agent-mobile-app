@@ -6,6 +6,7 @@ import {InputWithError, Button} from "_atoms";
 import {SummaryList, ExtraChargesTable} from "_molecules";
 import {Divider} from "react-native-elements";
 import {useOfflineRequest} from "_hooks";
+import {HelperText} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -18,10 +19,10 @@ const Summary = ({navigation, route: {params}}) => {
     });
     const [summaryData, setSummary] = useState({
         coupon_code: "FREE50",
-        customer_id: 123,
         extra_charges: [],
     });
     const [sum, setSum] = useState(0);
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         let s = 0;
@@ -50,8 +51,15 @@ const Summary = ({navigation, route: {params}}) => {
     const onCheckout = () => {
         parcels.forEach(async (data) => {
             try {
-                await pickupRequest({...summaryData, ...data});
-            } catch (error) {}
+                await pickupRequest({
+                    ...summaryData,
+                    ...data,
+                    source_country_code: data.sender.country_code,
+                    destination_country_code: data.receiver.country_code,
+                });
+            } catch (error) {
+                setErrors(error);
+            }
         });
     };
     return (
@@ -93,11 +101,11 @@ const Summary = ({navigation, route: {params}}) => {
                     <View style={[s.formGroup]}>
                         <Text>Sum is: {sum}</Text>
                         {/* <SummaryList parcels={parcels} /> */}
+                        <Text>{JSON.stringify(errors)}</Text>
                     </View>
                 </View>
             </ScrollView>
             <View style={[s.formGroup]}>
-                <Text>{JSON.stringify(loading)}</Text>
                 <Button onPress={onCheckout}>Checkout</Button>
             </View>
         </>
