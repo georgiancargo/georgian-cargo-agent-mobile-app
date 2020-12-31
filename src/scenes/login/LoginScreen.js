@@ -12,7 +12,7 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const LoginScreen = ({navigation}) => {
-    const [user, setUser] = useState({username: "", password: ""});
+    const [user, setUser] = useState({username: "user", password: "pass"});
     const {setAuth, auth} = useContext(AuthContext);
     const [request] = useRequest(loginRequest);
     const {errors, validate} = useValidation(loginScreenValidations);

@@ -142,9 +142,11 @@ const PickupItemScreen = ({navigation}) => {
                 <InputAutoComplete
                     name="name"
                     value={sender.name}
+                    error={errors.name}
                     // label={label}
                     placeholder="Sender name"
-                    // onChangeText={onChange}
+                    onChangeText={onChange}
+                    setUser={setSender}
                 />
                 {/* </View> */}
                 {keys.map((key, i) => (

@@ -1,18 +1,33 @@
-import React, {useState} from "react";
-import {StyleSheet, SafeAreaView} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {FlatList, Text, TouchableOpacity} from "react-native";
+import React, {useEffect, useState} from "react";
+import {
+    StyleSheet,
+    SafeAreaView,
+    FlatList,
+    Text,
+    TouchableOpacity,
+} from "react-native";
+import {useTheme} from "react-native-paper";
 import Axios from "axios";
 import InputWithError from "./InputWithError";
+import {getUserRequest} from "_requests";
+import {useRequest} from "_hooks";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-
-const InputAutoComplete = (props) => {
+const InputAutoComplete = ({value, setUser, ...props}) => {
     const [data, setData] = useState([]);
-    const [user, setUser] = useState({});
-    const [text, setText] = useState();
+    const {colors, roundness} = useTheme();
+    const [request, requesting] = useRequest(getUserRequest);
 
+    const styles = {
+        dropdown: {
+            maxHeight: 100,
+            borderWidth: 1,
+            borderColor: colors.placeholder,
+            borderRadius: roundness,
+            padding: 5,
+            margin: 2,
+            marginTop: 5,
+        },
+    };
     const onPress = (user) => {
         setData([]);
         setUser(user);
@@ -34,32 +49,27 @@ const InputAutoComplete = (props) => {
         }
     };
 
-    const apiUrl = "https://api.github.com/search/users?q=";
-
-    const onChangeText = (text) => {
-        setText(text);
-        if (text.length >= 3)
-            Axios.get(`${apiUrl}${text}`)
+    useEffect(() => {
+        if (value.length >= 3)
+            request(value)
                 .then((r) => setData(r.data.items))
                 .catch((e) => setData(["No Data"]));
-    };
+    }, [value]);
+
     return (
         <>
-            <InputWithError onChangeText={onChangeText} {...props} />
-            <SafeAreaView style={styles.dropdown}>
-                <FlatList
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
-            </SafeAreaView>
+            <InputWithError value={value} {...props} />
+            {data && data.length > 0 ? (
+                <SafeAreaView style={styles.dropdown}>
+                    <FlatList
+                        data={data}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                    />
+                </SafeAreaView>
+            ) : null}
         </>
     );
 };
-const styles = StyleSheet.create({
-    dropdown: {
-        maxHeight: 100,
-    },
-});
 
 export default InputAutoComplete;
