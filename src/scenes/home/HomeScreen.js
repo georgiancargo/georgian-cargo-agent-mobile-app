@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import {View, StyleSheet, Text} from "react-native";
 import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
@@ -9,10 +9,12 @@ const Home = ({navigation}) => {
     const goto = (route) => {
         navigation.navigate(route);
     };
+
     return (
         <View style={s.container}>
             <View style={s.logo}>
                 <Text>Logo</Text>
+                {/* <Text>{JSON.stringify(auth)}</Text> */}
             </View>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>

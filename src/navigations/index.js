@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, {useContext} from "react";
 import {createStackNavigator} from "@react-navigation/stack";
 import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "_scenes/login";
@@ -15,13 +15,16 @@ import {
     Scanner,
 } from "_scenes/item-processing";
 import Header from "./Header";
+import {AuthContext} from "_context";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
+    const {setAuth, auth} = useContext(AuthContext);
+
     return (
         <NavigationContainer>
             <Navigator
-                initialRouteName="Add Sender"
+                initialRouteName={auth.is_logged_in ? "Home" : "Login"}
                 screenOptions={{header: Header}}
             >
                 <Screen name="Login" component={LoginScreen} />

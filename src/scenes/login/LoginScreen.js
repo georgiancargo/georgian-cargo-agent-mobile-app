@@ -1,5 +1,5 @@
-import React, {useContext, useState} from "react";
-import {View, StyleSheet} from "react-native";
+import React, {useContext, useState, useEffect} from "react";
+import {View, StyleSheet, Text} from "react-native";
 import {useRequest} from "_hooks";
 import {InputWithError, Button} from "_atoms";
 import {loginRequest} from "_requests";
@@ -13,10 +13,12 @@ const {s, c} = bootstrapStyleSheet;
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "", password: ""});
-    const {setAuth} = useContext(AuthContext);
+    const {setAuth, auth} = useContext(AuthContext);
     const [request] = useRequest(loginRequest);
     const {errors, validate} = useValidation(loginScreenValidations);
-
+    useEffect(() => {
+        if (auth.is_logged_in) navigation.navigate("Home");
+    }, []);
     const onChangeText = (name, text) => {
         const newUser = {...user, [name]: text};
         setUser(newUser);
@@ -25,24 +27,38 @@ const LoginScreen = ({navigation}) => {
     const login = () => {
         validate(user)
             .then((r) => {
-                request(user)
+                request({...user, remember_token: true})
                     .then(({data}) => {
                         setAuth({
                             access_token: data.access_token,
                             remember_token: data.remember_token,
                             is_logged_in: true,
+                            agent: data.staff,
                         }).catch(() => {});
-                        // console.log("hi success");
                     })
                     .catch(() => {
-                        // console.log("failed successfuly");
-                    })
-                    .finally(() => {
-                        // console.log("all done");
+                        setAuth({
+                            access_token: "Some random JWT",
+                            remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
+                            is_logged_in: true,
+                            agent: {
+                                id: "ABC123",
+                                username: "foo",
+                                privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
+                                enabled_routes: [
+                                    {
+                                        source_country_code: "US",
+                                        destination_country_code: "UK",
+                                    },
+                                ],
+                            },
+                        }).catch(() => {
+                            setUser({...user, username: "help"});
+                        });
+                        navigation.navigate("Home");
                     });
             })
             .catch((e) => {});
-        navigation.navigate("Home");
     };
     return (
         <View style={styles.container}>
@@ -65,6 +81,7 @@ const LoginScreen = ({navigation}) => {
                     secureTextEntry={true}
                 />
             </View>
+            <Text>{JSON.stringify(auth)}</Text>
             <View style={styles.formButton}>
                 <Button onPress={login}>Login</Button>
             </View>

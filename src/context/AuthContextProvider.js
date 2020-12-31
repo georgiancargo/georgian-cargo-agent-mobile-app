@@ -4,8 +4,10 @@ import {getItemAsync, setItemAsync as set} from "expo-secure-store";
 
 const AuthContextProvider = ({children}) => {
     const get = async (key) => {
-        const value = await getItemAsync(key.toString());
-        return JSON.parse(value);
+        try {
+            const value = await getItemAsync(key.toString());
+            return JSON.parse(value);
+        } catch (error) {}
     };
     const defaultAuthState = {
         access_token: get("access_token") || null,
@@ -17,14 +19,18 @@ const AuthContextProvider = ({children}) => {
 
     const setAuthStorage = async (data) => {
         for (const key in auth) {
-            await set(key.toString(), auth[key]);
+            try {
+                await set(key.toString(), auth[key]);
+            } catch (error) {}
         }
         setAuth(data);
     };
     const authObj = {auth, setAuth: setAuthStorage};
     const update = async () => {
         for (const key in auth) {
-            await set(key.toString(), auth[key]);
+            try {
+                await set(key.toString(), auth[key]);
+            } catch (error) {}
         }
     };
     useEffect(() => {
@@ -34,7 +40,9 @@ const AuthContextProvider = ({children}) => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [auth]);
-    return <AuthContext.Provider value={authObj}>{children}</AuthContext.Provider>;
+    return (
+        <AuthContext.Provider value={authObj}>{children}</AuthContext.Provider>
+    );
 };
 
 export default AuthContextProvider;
