@@ -4,7 +4,7 @@ import {InputWithError, Button} from "_atoms";
 import {releaseRequest} from "_requests";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {useRequest} from "_hooks";
-import {HelperText} from "react-native-paper";
+import {ErrorText} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -52,11 +52,7 @@ const DeliveredItemProcessing = ({navigation}) => {
                     Scan
                 </Button>
             </View>
-            {error !== "" ? (
-                <HelperText type="error" visible={true}>
-                    {error}
-                </HelperText>
-            ) : null}
+            <ErrorText error={error} />
             <Button
                 onPress={release}
                 style={{marginVertical: 8}}

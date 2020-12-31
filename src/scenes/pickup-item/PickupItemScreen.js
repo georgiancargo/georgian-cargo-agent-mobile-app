@@ -37,6 +37,74 @@ const PickupItemScreen = ({navigation}) => {
             },
             notes: "notes",
             description: "Clothes",
+        },    {
+            tracking_number: "G123654", // Must be >= 4 characters && Unique
+            weight: 10, // > 0
+            // source_country_code: "US", // Two uppercase chars
+            // destination_country_code: "UK", // Two uppercase chars
+            collection_option: "HOME", // HOME or OFFICE
+            receiver: {
+                name: "sue",
+                email: "ah@gm.co", // Valid Email
+                phone: "+22123",
+                country_code: "JP", // Two uppercase chars
+                address_line_1: "line 1",
+                address_line_2: "line 2",
+                postal_code: "VUE 123",
+            },
+            notes: "notes",
+            description: "Clothes",
+        },    {
+            tracking_number: "G123654", // Must be >= 4 characters && Unique
+            weight: 10, // > 0
+            // source_country_code: "US", // Two uppercase chars
+            // destination_country_code: "UK", // Two uppercase chars
+            collection_option: "HOME", // HOME or OFFICE
+            receiver: {
+                name: "Sara",
+                email: "ah@gm.co", // Valid Email
+                phone: "+22123",
+                country_code: "JP", // Two uppercase chars
+                address_line_1: "line 1",
+                address_line_2: "line 2",
+                postal_code: "VUE 123",
+            },
+            notes: "notes",
+            description: "Clothes",
+        },    {
+            tracking_number: "G123654", // Must be >= 4 characters && Unique
+            weight: 10, // > 0
+            // source_country_code: "US", // Two uppercase chars
+            // destination_country_code: "UK", // Two uppercase chars
+            collection_option: "HOME", // HOME or OFFICE
+            receiver: {
+                name: "Ahmed",
+                email: "ah@gm.co", // Valid Email
+                phone: "+22123",
+                country_code: "JP", // Two uppercase chars
+                address_line_1: "line 1",
+                address_line_2: "line 2",
+                postal_code: "VUE 123",
+            },
+            notes: "notes",
+            description: "Clothes",
+        },    {
+            tracking_number: "G123654", // Must be >= 4 characters && Unique
+            weight: 10, // > 0
+            // source_country_code: "US", // Two uppercase chars
+            // destination_country_code: "UK", // Two uppercase chars
+            collection_option: "HOME", // HOME or OFFICE
+            receiver: {
+                name: "Ahmed",
+                email: "ah@gm.co", // Valid Email
+                phone: "+22123",
+                country_code: "JP", // Two uppercase chars
+                address_line_1: "line 1",
+                address_line_2: "line 2",
+                postal_code: "VUE 123",
+            },
+            notes: "notes",
+            description: "Clothes",
         },
     ]);
     // const [parcelsArray, setParcelsArray] = useState([]);
@@ -50,6 +118,7 @@ const PickupItemScreen = ({navigation}) => {
         postal_code: "VUE 123",
     });
     const [notSaved, setNotSaved] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [globalSettings, setGlobal] = useState({
         customer_type: "INDIVIDUAL", // INDIVIDUAL or CORPORATE
         parcel_type: "PARCEL", // FREIGHT or PARCEL (will add more later)
@@ -102,6 +171,7 @@ const PickupItemScreen = ({navigation}) => {
         validate(newSender, name).catch((e) => {});
     };
     const onSave = () => {
+        setSaving(true);
         validate(sender)
             .then((r) => {
                 if (parcels.length > 0) {
@@ -119,7 +189,10 @@ const PickupItemScreen = ({navigation}) => {
                     setNotSaved(false);
                 }
             })
-            .catch((e) => {});
+            .catch((e) => {})
+            .finally(() => {
+                setSaving(false);
+            });
     };
     const gotoSummary = () => {
         validate(sender)
@@ -137,7 +210,7 @@ const PickupItemScreen = ({navigation}) => {
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
-            <View style={[s.formGroup]}>
+            <View style={{borderWidth: 0, flex: 5.1}}>
                 {/* <View style={[s.formGroup]}> */}
                 <InputAutoComplete
                     name="name"
@@ -191,8 +264,9 @@ const PickupItemScreen = ({navigation}) => {
                 </ScrollView>
             </View>
 
-            <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}>
-                <Button style={[btnGroup]} onPress={onSave}>
+            <View style={{borderWidth: 0, flex: 0.5, flexDirection:"row"}}>
+            {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
+                <Button style={[btnGroup]} onPress={onSave} loading={saving}>
                     Save
                 </Button>
                 <Button style={[btnGroup]} onPress={addReceiver}>
@@ -207,7 +281,7 @@ const PickupItemScreen = ({navigation}) => {
                 </Button>
             </View>
 
-            <View>
+            <View style={{borderWidth: 0, flex: 3}}>
                 {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
                 {/* <Text>{JSON.stringify(sender)}</Text> */}
                 {/* <Text>{JSON.stringify(parcels)}</Text> */}

@@ -6,14 +6,14 @@ import {InputWithError, Button} from "_atoms";
 import {SummaryList, ExtraChargesTable} from "_molecules";
 import {Divider} from "react-native-elements";
 import {useOfflineRequest} from "_hooks";
-import {HelperText} from "react-native-paper";
+import {ErrorText} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const Summary = ({navigation, route: {params}}) => {
     const {parcels = []} = params;
-    const [pickupRequest, loading] = useOfflineRequest({
+    const [pickupRequest, requesting] = useOfflineRequest({
         url: "/cargo/pickup",
         method: "POST",
     });
@@ -57,8 +57,11 @@ const Summary = ({navigation, route: {params}}) => {
                     source_country_code: data.sender.country_code,
                     destination_country_code: data.receiver.country_code,
                 });
+                setErrors("");
             } catch (error) {
-                setErrors(error);
+                try {
+                    setErrors(error.response.data.message);
+                } catch (error) {}
             }
         });
     };
@@ -85,12 +88,14 @@ const Summary = ({navigation, route: {params}}) => {
                             placeholder="Payment method"
                         />
                     </View>
+                    {/* <Text>{JSON.stringify(errors)}</Text> */}
                     <View style={[s.formGroup]}>
                         <ExtraChargesTable
                             extra_charges={summaryData.extra_charges}
                             removeExtraCharge={removeExtraCharge}
                         />
                     </View>
+                    <ErrorText error={errors} />
                     <View style={[s.formGroup]}>
                         {/* <Text>{JSON.stringify(summaryData)}</Text> */}
                         <SummaryList parcels={parcels} />
@@ -101,12 +106,14 @@ const Summary = ({navigation, route: {params}}) => {
                     <View style={[s.formGroup]}>
                         <Text>Sum is: {sum}</Text>
                         {/* <SummaryList parcels={parcels} /> */}
-                        <Text>{JSON.stringify(errors)}</Text>
                     </View>
                 </View>
             </ScrollView>
             <View style={[s.formGroup]}>
-                <Button onPress={onCheckout}>Checkout</Button>
+                {/* <Text>{JSON.stringify(loading)}</Text> */}
+                <Button onPress={onCheckout} loading={requesting}>
+                    Checkout
+                </Button>
             </View>
         </>
     );

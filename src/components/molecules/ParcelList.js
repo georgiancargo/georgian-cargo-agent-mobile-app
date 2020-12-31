@@ -4,7 +4,6 @@ import {ListItem} from "_atoms";
 
 const ParcelList = ({parcels = [], navigation}) => {
     const edit = (parcel) => {
-        console.log(parcel);
         navigation.navigate("Edit", {parcel: parcel});
     };
     const renderItem = ({item}) => <ListItem parcel={item} edit={edit} />;
@@ -13,7 +12,7 @@ const ParcelList = ({parcels = [], navigation}) => {
             <FlatList
                 data={parcels}
                 renderItem={renderItem}
-                keyExtractor={(parcel) => parcel.toString()}
+                keyExtractor={(item) => item.id}
             />
         </SafeAreaView>
     );

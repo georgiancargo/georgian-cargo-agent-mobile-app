@@ -1,15 +1,82 @@
-import React, {useContext} from "react";
+import React, {useEffect, useState} from "react";
 import {View, StyleSheet, Text} from "react-native";
 import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
-import {GRAY_MEDIUM} from "_styles/colors";
 import SyncButton from "./SyncButton";
+import {useRequest} from "_hooks";
+import {getGargosRequest} from "_requests";
 
 const Home = ({navigation}) => {
     const goto = (route) => {
         navigation.navigate(route);
     };
-
+    const [parcels, setParcels] = useState([
+        {
+            trackingNumber: "G123456",
+            item: {
+                itemId: "123",
+                weight: 10,
+                description: "Blah",
+            },
+            shippingSpecs: {
+                route: {
+                    sourceCountryCode: "US",
+                    destinationCountryCode: "UK",
+                },
+                senderInformation: {
+                    name: "Name",
+                    email: "email@example.com",
+                    phone: "+123456",
+                    address: {
+                        countryCode: "US",
+                        addressLine1: "",
+                        addressLine2: "",
+                        postalCode: "XX",
+                    },
+                },
+                receiverInformation: {
+                    name: "Name",
+                    email: "email@example.com",
+                    phone: "+123456",
+                    address: {
+                        countryCode: "US",
+                        addressLine1: "",
+                        addressLine2: "",
+                        postalCode: "XX",
+                    },
+                },
+                collectionOption: "HOME",
+                customerType: "INDIVIDUAL",
+                parcelType: "PARCEL",
+                comments: [
+                    {
+                        id: "123",
+                        content: "Send nudes ASAP",
+                        authorType: "CUSTOMER", // or STAFF,
+                        authorId: "123",
+                    },
+                ],
+                notes: "note1",
+                status: "ARRIVED",
+                customerId: null, // Or an ID
+                createdAt: "2020-12-31 00:00:00",
+                releaseCode: null, // Or Release code
+            },
+        },
+    ]);
+    const [request] = useRequest(getGargosRequest);
+    useEffect(() => {
+        request({
+            paging_specification: {
+                page_offset: 0,
+                page_size: 30,
+            }
+        })
+            .then((r) => {
+                setParcels(r.data.cargos);
+            })
+            .catch((e) => {});
+    }, []);
     return (
         <View style={s.container}>
             <View style={s.logo}>
@@ -34,7 +101,7 @@ const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={s.listContainer}>
-                <ParcelList parcels={[1, 2, 3, 4]} navigation={navigation} />
+                <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>
     );

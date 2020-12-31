@@ -14,7 +14,7 @@ const {s, c} = bootstrapStyleSheet;
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "admin", password: "12341234"});
     const {setAuth, auth} = useContext(AuthContext);
-    const [request] = useRequest(loginRequest);
+    const [request, requesting] = useRequest(loginRequest);
     const {errors, validate} = useValidation(loginScreenValidations);
     useEffect(() => {
         if (auth.is_logged_in) navigation.navigate("Home");
@@ -84,9 +84,11 @@ const LoginScreen = ({navigation}) => {
                     secureTextEntry={true}
                 />
             </View>
-            <Text>{JSON.stringify(auth)}</Text>
+            {/* <Text>{JSON.stringify(auth)}</Text> */}
             <View style={styles.formButton}>
-                <Button onPress={login}>Login</Button>
+                <Button onPress={login} loading={requesting}>
+                    Login
+                </Button>
             </View>
         </View>
     );

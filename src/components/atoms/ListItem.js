@@ -1,43 +1,39 @@
 import React from "react";
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
+import {Chip, useTheme} from "react-native-paper";
 
-const ListItem = ({parcel, edit}) => {
-    const list = [
-        "ID",
-        "weight",
-        "price",
-        "status",
-        "place",
-        "type",
-        "sender",
-        "reciever",
-    ];
+const ListItem = ({parcel: p, edit}) => {
+    const {colors, roundness} = useTheme();
+    const container = {
+        flexDirection: "row",
+        borderWidth: 1,
+        padding: 8,
+        flexWrap: "wrap",
+        borderRadius: roundness,
+        borderColor: colors.placeholder,
+    };
+    const C = ({children}) => (
+        <Chip mode="outlined" style={{margin: 3}}>
+            {children}
+        </Chip>
+    );
     return (
-        <TouchableOpacity style={styles.container} onPress={() => edit(parcel)}>
-            {list.map((item, i) => (
-                <Text
-                    key={item}
-                    style={
-                        i == 0 || i == 1 ? {...styles.text, width: "91%"} : styles.text
-                    }
-                >
-                    {item}
-                </Text>
-            ))}
+        <TouchableOpacity style={container} onPress={() => edit(p)}>
+            <C>{p.trackingNumber}</C>
+            <C>{p.item.weight + " Kg"}</C>
+            <C>{p.shippingSpecs.route.sourceCountryCode} </C>
+            <C>{p.shippingSpecs.route.destinationCountryCode} </C>
+            <C>{p.shippingSpecs.senderInformation.name} </C>
+            <C>{p.shippingSpecs.receiverInformation.name} </C>
+            <C>{p.shippingSpecs.collectionOption}</C>
+            <C>{p.shippingSpecs.customerType}</C>
         </TouchableOpacity>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: "row",
-        borderWidth: 1,
-        padding: 5,
-        flexWrap: "wrap",
-        borderRadius: 10,
-    },
     text: {
         margin: 2,
         borderWidth: 1,

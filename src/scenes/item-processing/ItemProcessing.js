@@ -5,25 +5,21 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Button, InputWithError} from "_atoms";
 import {processRequest} from "_requests";
 import {useRequest} from "_hooks";
+import {ErrorText} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
 
 const ItemProcessing = ({navigation, route: {params}}) => {
     const [request, requesting] = useRequest(processRequest);
-    const [barCodes, setBarCodes] = useState([
-        "First",
-        "Second",
-        "Third",
-        "Fourth",
-    ]);
+    const [barCodes, setBarCodes] = useState(["G123456"]);
     const [modalVisible, setModalVisible] = useState(false);
     const [barcode, setBarcode] = useState({});
+    const [error, setErrors] = useState([]);
+
     const remove = (i) => {
-        const newBars = [];
-        for (let index = 0; index < barCodes.length; index++) {
-            if (i !== index) newBars.push(barCodes[index]);
-        }
+        const newBars = barCodes.slice();
+        newBars.splice(i, 1);
         setBarCodes(newBars);
     };
 
@@ -60,7 +56,11 @@ const ItemProcessing = ({navigation, route: {params}}) => {
     const send = () => {
         request({tracking_numbers: barCodes, event: params.event})
             .then((r) => {})
-            .catch((e) => {});
+            .catch((e) => {
+                try {
+                    setErrors(e.response.data.message);
+                } catch (error) {}
+            });
     };
     return (
         <>
@@ -72,6 +72,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                         value={barcode.barcode}
                         onChangeText={onChangeText}
                     />
+                    <ErrorText error={error} />
                 </View>
                 <View
                     style={[
@@ -115,7 +116,9 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     />
                 </View>
                 <View style={[s.formGroup]}>
-                    <Button onPress={send}>Done</Button>
+                    <Button onPress={send} loading={requesting}>
+                        Done
+                    </Button>
                 </View>
             </View>
         </>

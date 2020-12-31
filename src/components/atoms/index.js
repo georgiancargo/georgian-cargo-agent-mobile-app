@@ -12,3 +12,4 @@ export {default as InputAutoComplete} from "./InputAutoComplete";
 export {default as Table} from "./DataTable";
 export {default as Row} from "./Row";
 export {default as Cell} from "./Cell";
+export {default as ErrorText} from "./ErrorText";
