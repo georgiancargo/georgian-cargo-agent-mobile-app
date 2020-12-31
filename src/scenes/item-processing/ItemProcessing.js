@@ -3,11 +3,14 @@ import {View, Text} from "react-native";
 import {ProcessingList, EditBarCode} from "_molecules";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Button, InputWithError} from "_atoms";
+import {processRequest} from "_requests";
+import {useRequest} from "_hooks";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
 
 const ItemProcessing = ({navigation, route: {params}}) => {
+    const [request, requesting] = useRequest(processRequest);
     const [barCodes, setBarCodes] = useState([
         "First",
         "Second",
@@ -54,7 +57,11 @@ const ItemProcessing = ({navigation, route: {params}}) => {
             setBarcode({});
         }
     };
-
+    const send = () => {
+        request({tracking_numbers: barCodes, event: params.event})
+            .then((r) => {})
+            .catch((e) => {});
+    };
     return (
         <>
             <View style={[s.container, s.bgWhite, s.flex1, s.p2]}>
@@ -91,7 +98,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     ]}
                 >
                     <Text>Total Items: {barCodes.length}</Text>
-                    <Text>Mode: {params.mode}</Text>
+                    <Text>Mode: {params.event}</Text>
                 </View>
                 <View style={[s.flex3]}>
                     <EditBarCode
@@ -108,7 +115,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     />
                 </View>
                 <View style={[s.formGroup]}>
-                    <Button>Done</Button>
+                    <Button onPress={send}>Done</Button>
                 </View>
             </View>
         </>

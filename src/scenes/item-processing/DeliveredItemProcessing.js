@@ -1,13 +1,17 @@
 import React from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
+import {releaseRequest} from "_requests";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {useRequest} from "_hooks";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DeliveredItemProcessing = ({navigation}) => {
     const [query, setQuery] = React.useState({barcode: ""});
+    const [request, requesting] = useRequest(releaseRequest);
+
     const goToScanner = () => {
         navigation.navigate("cameraScanner", {
             barCodes: query,
@@ -16,6 +20,11 @@ const DeliveredItemProcessing = ({navigation}) => {
     };
     const onChangeText = (name, value) => {
         setQuery({[name]: value});
+    };
+    const release = () => {
+        request({release_code: query.barcode})
+            .then((r) => {})
+            .catch((e) => {});
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
@@ -35,7 +44,9 @@ const DeliveredItemProcessing = ({navigation}) => {
                     Scan
                 </Button>
             </View>
-            <Button style={{marginVertical: 8}}>Release</Button>
+            <Button onPress={release} style={{marginVertical: 8}}>
+                Release
+            </Button>
         </View>
     );
 };

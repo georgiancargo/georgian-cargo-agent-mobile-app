@@ -15,15 +15,9 @@ const ItemModes = ({navigation}) => {
         "Recieved Mode",
         "Delayed Mode",
     ];
-    const modes = [
-        "PROCCESSED",
-        "IN_TRANSIT",
-        "ARRIVED",
-        "RECIEVED",
-        "DELAYED",
-    ];
+    const modes = ["PROCESS", "TRANSIT", "ARRIVE", "RECEIVE", "DELAY"];
     const goToScanner = (index) => {
-        navigation.navigate("Item Processing", {mode: modes[index]});
+        navigation.navigate("Item Processing", {event: modes[index]});
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
@@ -35,10 +29,8 @@ const ItemModes = ({navigation}) => {
                     <Text>Select Item Processing Mode</Text>
                 </View>
                 {buttons.map((label, i) => (
-                    <View style={[s.formGroup]}>
-                        <Button key={label} onPress={() => goToScanner(i)}>
-                            {label}
-                        </Button>
+                    <View style={[s.formGroup]} key={label}>
+                        <Button onPress={() => goToScanner(i)}>{label}</Button>
                     </View>
                 ))}
                 <View style={[s.formGroup]}>
