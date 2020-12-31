@@ -31,20 +31,20 @@ const SyncButton = () => {
         getItemAsync("requests")
             .then((requests) => {
                 const requestsArray = JSON.parse(requests);
-                const remove = Array(requestsArray.length);
+                const stays = Array(requestsArray.length);
 
                 requestsArray.forEach(async (element, i) => {
                     try {
-                        const res = await request(element);
-                        remove[i] = true;
+                        await request(element);
+                        stays[i] = false;
                     } catch (error) {
-                        remove[i] = false;
+                        stays[i] = true;
                     }
                 });
 
                 const remainingRequests = [];
 
-                remove.forEach((val) => {
+                stays.forEach((val) => {
                     if (val) remainingRequests.push(requestsArray[i]);
                 });
 
