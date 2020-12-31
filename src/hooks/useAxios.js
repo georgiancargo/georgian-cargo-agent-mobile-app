@@ -4,7 +4,7 @@ import {AuthContext} from "_context";
 
 export default function useAxios() {
     const {auth} = useContext(AuthContext);
-    const {accessToken} = {...auth};
+    const {access_token} = {...auth};
 
     const baseURL = "";
 
@@ -13,7 +13,7 @@ export default function useAxios() {
         headers: {
             "Content-Type": "application/json",
             Accept: "application/json",
-            Authorization: `Bearer ${accessToken}`,
+            Authorization: `Bearer ${access_token}`,
         },
     });
 
@@ -25,11 +25,11 @@ export default function useAxios() {
                 headers: {
                     "Content-Type": "application/json",
                     Accept: "application/json",
-                    Authorization: `Bearer ${accessToken}`,
+                    Authorization: `Bearer ${access_token}`,
                 },
             }),
         });
-    }, [accessToken]);
+    }, [access_token]);
 
     return axios.instance;
 }
