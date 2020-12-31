@@ -12,7 +12,7 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const LoginScreen = ({navigation}) => {
-    const [user, setUser] = useState({username: "user", password: "pass"});
+    const [user, setUser] = useState({username: "admin", password: "12341234"});
     const {setAuth, auth} = useContext(AuthContext);
     const [request] = useRequest(loginRequest);
     const {errors, validate} = useValidation(loginScreenValidations);
@@ -34,28 +34,31 @@ const LoginScreen = ({navigation}) => {
                             remember_token: data.remember_token,
                             is_logged_in: true,
                             agent: data.staff,
-                        }).catch(() => {});
+                        })
+                            .then((r) => {
+                                navigation.navigate("Home");
+                            })
+                            .catch(() => {});
                     })
                     .catch(() => {
-                        setAuth({
-                            access_token: "Some random JWT",
-                            remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
-                            is_logged_in: true,
-                            agent: {
-                                id: "ABC123",
-                                username: "foo",
-                                privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
-                                enabled_routes: [
-                                    {
-                                        source_country_code: "US",
-                                        destination_country_code: "UK",
-                                    },
-                                ],
-                            },
-                        }).catch(() => {
-                            setUser({...user, username: "help"});
-                        });
-                        navigation.navigate("Home");
+                        // setAuth({
+                        //     access_token: "Some random JWT",
+                        //     remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
+                        //     is_logged_in: true,
+                        //     agent: {
+                        //         id: "ABC123",
+                        //         username: "foo",
+                        //         privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
+                        //         enabled_routes: [
+                        //             {
+                        //                 source_country_code: "US",
+                        //                 destination_country_code: "UK",
+                        //             },
+                        //         ],
+                        //     },
+                        // }).catch(() => {
+                        //     setUser({...user, username: "help"});
+                        // });
                     });
             })
             .catch((e) => {});
