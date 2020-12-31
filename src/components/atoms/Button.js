@@ -3,11 +3,18 @@ import React from "react";
 // import BootstrapStyleSheet from "react-native-bootstrap-styles";
 
 import {Button} from "react-native-paper";
+import {ActivityIndicator, Colors} from "react-native-paper";
 
 // const bootstrapStyleSheet = new BootstrapStyleSheet();
 // const {s, c} = bootstrapStyleSheet;
 
-const ButtonWrapper = ({children, style = [], ...rest}) => {
+const ButtonWrapper = ({
+    children,
+    loading = false,
+    disabled,
+    style = [],
+    ...rest
+}) => {
     return (
         // <TouchableOpacity
         //     style={[s.btnTouchable, ...style, disabled ? s.btnDisabled : {}]}
@@ -19,7 +26,14 @@ const ButtonWrapper = ({children, style = [], ...rest}) => {
         //         <Text style={[s.btnText, s.btnPrimaryText]}>{children}</Text>
         //     </View>
         // </TouchableOpacity>
-        <Button mode="contained" style={style} uppercase={false} {...rest}>
+        <Button
+            mode="contained"
+            style={style}
+            disabled={disabled || loading}
+            loading={loading}
+            uppercase={false}
+            {...rest}
+        >
             {children}
         </Button>
     );

@@ -4,12 +4,14 @@ import {InputWithError, Button} from "_atoms";
 import {releaseRequest} from "_requests";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {useRequest} from "_hooks";
+import {HelperText} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DeliveredItemProcessing = ({navigation}) => {
     const [query, setQuery] = React.useState({barcode: ""});
+    const [error, setError] = React.useState("");
     const [request, requesting] = useRequest(releaseRequest);
 
     const goToScanner = () => {
@@ -23,8 +25,14 @@ const DeliveredItemProcessing = ({navigation}) => {
     };
     const release = () => {
         request({release_code: query.barcode})
-            .then((r) => {})
-            .catch((e) => {});
+            .then((r) => {
+                setError("");
+            })
+            .catch((e) => {
+                try {
+                    setError(e.response.data.message);
+                } catch (error) {}
+            });
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
@@ -44,7 +52,16 @@ const DeliveredItemProcessing = ({navigation}) => {
                     Scan
                 </Button>
             </View>
-            <Button onPress={release} style={{marginVertical: 8}}>
+            {error !== "" ? (
+                <HelperText type="error" visible={true}>
+                    {error}
+                </HelperText>
+            ) : null}
+            <Button
+                onPress={release}
+                style={{marginVertical: 8}}
+                loading={requesting}
+            >
                 Release
             </Button>
         </View>
