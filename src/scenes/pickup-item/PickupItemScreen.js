@@ -210,7 +210,6 @@ const PickupItemScreen = ({navigation}) => {
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
-            <View style={{borderWidth: 0, flex: 5.1}}>
                 {/* <View style={[s.formGroup]}> */}
                 <InputAutoComplete
                     name="name"
@@ -223,19 +222,20 @@ const PickupItemScreen = ({navigation}) => {
                     isCustomer
                 />
                 {/* </View> */}
-                {keys.map((key, i) => (
-                    // <View style={[s.formGroup]} key={label}>
-                    <InputWithError
-                        name={key}
-                        value={sender[key]}
-                        error={errors[key]}
-                        placeholder={labels[i]}
-                        onChangeText={onChange}
-                        key={"sender_" + key}
-                    />
-                    // </View>
-                ))}
                 <ScrollView>
+            <View style={{borderWidth: 0, flex: 5.1}}>
+                    {keys.map((key, i) => (
+                        // <View style={[s.formGroup]} key={label}>
+                        <InputWithError
+                            name={key}
+                            value={sender[key]}
+                            error={errors[key]}
+                            placeholder={labels[i]}
+                            onChangeText={onChange}
+                            key={"sender_" + key}
+                        />
+                        // </View>
+                    ))}
                     {/* <View style={[s.formGroup, s.mt2]}> */}
                     <SelectDropdown
                         list={countries}
@@ -262,37 +262,38 @@ const PickupItemScreen = ({navigation}) => {
                         name="customer_type"
                         checkLabels={["Individual", "Corporate"]}
                     />
+                <View style={{borderWidth: 0,  flex: 0.5, flexDirection:"row"}}>
+                {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
+                    <Button style={[btnGroup]} onPress={onSave} loading={saving}>
+                        Save
+                    </Button>
+                    <Button style={[btnGroup]} onPress={addReceiver}>
+                        Add Parcel
+                    </Button>
+                    <Button
+                        style={[btnGroup]}
+                        onPress={gotoSummary}
+                        disabled={hasErrors || notSaved}
+                    >
+                        Summary
+                    </Button>
+                </View>
+
+                <View style={{borderWidth: 0, flex: 3}}>
+                    {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
+                    {/* <Text>{JSON.stringify(sender)}</Text> */}
+                    {/* <Text>{JSON.stringify(parcels)}</Text> */}
+                    {/* <Text>{JSON.stringify(notSaved)}</Text> */}
+                    <PickupList
+                        parcels={parcels}
+                        editParcel={editParcel}
+                        removeParcel={removeParcel}
+                    />
+                </View>
+        
+            </View>
                 </ScrollView>
-            </View>
 
-            <View style={{borderWidth: 0, flex: 0.5, flexDirection:"row"}}>
-            {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
-                <Button style={[btnGroup]} onPress={onSave} loading={saving}>
-                    Save
-                </Button>
-                <Button style={[btnGroup]} onPress={addReceiver}>
-                    Add Parcel
-                </Button>
-                <Button
-                    style={[btnGroup]}
-                    onPress={gotoSummary}
-                    disabled={hasErrors || notSaved}
-                >
-                    Summary
-                </Button>
-            </View>
-
-            <View style={{borderWidth: 0, flex: 3}}>
-                {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
-                {/* <Text>{JSON.stringify(sender)}</Text> */}
-                {/* <Text>{JSON.stringify(parcels)}</Text> */}
-                {/* <Text>{JSON.stringify(notSaved)}</Text> */}
-                <PickupList
-                    parcels={parcels}
-                    editParcel={editParcel}
-                    removeParcel={removeParcel}
-                />
-            </View>
         </View>
     );
 };
