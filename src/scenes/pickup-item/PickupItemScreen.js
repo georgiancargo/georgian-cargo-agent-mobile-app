@@ -220,6 +220,7 @@ const PickupItemScreen = ({navigation}) => {
                     placeholder="Sender name"
                     onChangeText={onChange}
                     setUser={setSender}
+                    isCustomer
                 />
                 {/* </View> */}
                 {keys.map((key, i) => (

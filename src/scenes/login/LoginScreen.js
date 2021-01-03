@@ -41,6 +41,7 @@ const LoginScreen = ({navigation}) => {
                             .catch(() => {});
                     })
                     .catch(() => {
+                        navigation.navigate("Home");
                         // setAuth({
                         //     access_token: "Some random JWT",
                         //     remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}

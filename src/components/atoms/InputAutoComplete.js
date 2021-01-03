@@ -1,18 +1,11 @@
 import React, {useEffect, useState} from "react";
-import {
-    StyleSheet,
-    SafeAreaView,
-    FlatList,
-    Text,
-    TouchableOpacity,
-} from "react-native";
-import {useTheme} from "react-native-paper";
-import Axios from "axios";
+import {SafeAreaView, FlatList, Text, TouchableOpacity} from "react-native";
+import {useTheme, ActivityIndicator} from "react-native-paper";
 import InputWithError from "./InputWithError";
 import {getUserRequest} from "_requests";
 import {useRequest} from "_hooks";
 
-const InputAutoComplete = ({value, setUser, ...props}) => {
+const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     const [data, setData] = useState([]);
     const {colors, roundness} = useTheme();
     const [request, requesting] = useRequest(getUserRequest);
@@ -30,7 +23,15 @@ const InputAutoComplete = ({value, setUser, ...props}) => {
     };
     const onPress = (user) => {
         setData([]);
-        setUser(user);
+        setUser({
+            name: user.name,
+            phone: user.email,
+            email: user.phone,
+            country_code: user.address.countryCode,
+            addrees_line_1: user.address.addressLine1,
+            address_line_2: user.address.addressLine2,
+            postal_code: user.address.postalCode,
+        });
     };
     const renderItem = ({item}) => {
         switch (typeof item) {
@@ -43,7 +44,7 @@ const InputAutoComplete = ({value, setUser, ...props}) => {
                         style={{borderBottomWidth: 1, height: 30}}
                         onPress={() => onPress(item)}
                     >
-                        <Text>{item.login}</Text>
+                        <Text>{item.name}</Text>
                     </TouchableOpacity>
                 );
         }
@@ -51,21 +52,27 @@ const InputAutoComplete = ({value, setUser, ...props}) => {
 
     useEffect(() => {
         if (value.length >= 3)
-            request(value)
-                .then((r) => setData(r.data.items))
+            request({name: value})
+                .then((r) =>
+                    setData(isCustomer ? r.data.customers : r.data.receivers)
+                )
                 .catch((e) => setData(["No Data"]));
     }, [value]);
 
     return (
         <>
             <InputWithError value={value} {...props} />
-            {data && data.length > 0 ? (
+            {data && value && value != "" && data.length > 0 ? (
                 <SafeAreaView style={styles.dropdown}>
-                    <FlatList
-                        data={data}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                    />
+                    {requesting ? (
+                        <ActivityIndicator animating={requesting} />
+                    ) : (
+                        <FlatList
+                            data={data}
+                            renderItem={renderItem}
+                            keyExtractor={(item) => item.id}
+                        />
+                    )}
                 </SafeAreaView>
             ) : null}
         </>
