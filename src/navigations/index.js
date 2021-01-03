@@ -4,7 +4,7 @@ import {NavigationContainer} from "@react-navigation/native";
 import {LoginScreen} from "_scenes/login";
 import {HomeScreen, SearchScreen} from "_scenes/home";
 // import {StatusBar} from "expo-status-bar";
-import {EditParcel} from "_scenes/edit-parcel";
+import {EditParcel, EditUser} from "_scenes/edit-parcel";
 import {AddReciever, PickupItemScreen} from "_scenes/pickup-item";
 import {Summary} from "_scenes/summary";
 import {
@@ -29,7 +29,9 @@ function App() {
             >
                 <Screen name="Login" component={LoginScreen} />
                 <Screen name="Home" component={HomeScreen} />
-                <Screen name="Edit" component={EditParcel} />
+                <Screen name="Edit Parcel" component={EditParcel} />
+                <Screen name="Edit Sender" component={EditUser} />
+                <Screen name="Edit Receiver" component={EditUser} />
                 <Screen name="Add Sender" component={PickupItemScreen} />
                 <Screen name="Summary" component={Summary} />
                 <Screen name="Add Parcel" component={AddReciever} />

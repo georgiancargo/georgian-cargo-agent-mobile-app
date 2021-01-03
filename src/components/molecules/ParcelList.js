@@ -4,7 +4,7 @@ import {ListItem} from "_atoms";
 
 const ParcelList = ({parcels = [], navigation}) => {
     const edit = (parcel) => {
-        navigation.navigate("Edit", {parcel: parcel});
+        navigation.navigate("Edit Parcel", {parcel: parcel});
     };
     const renderItem = ({item}) => <ListItem parcel={item} edit={edit} />;
     return (
