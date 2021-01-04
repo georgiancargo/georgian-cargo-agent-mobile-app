@@ -4,6 +4,7 @@ import {View, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Text} from "react-native";
 import {useTheme} from "react-native-paper";
+import { ScrollView } from "react-native";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -46,7 +47,7 @@ const SelectDropdown = ({
     };
     return (
         <>
-            <SafeAreaView style={{flex: 1}}>
+            {/* <ScrollView style={{flex: 1}}> */}
                 {label ? (
                     <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
                 ) : null}
@@ -70,7 +71,7 @@ const SelectDropdown = ({
                         ))}
                     </Picker>
                 </View>
-            </SafeAreaView>
+            {/* </ScrollView> */}
         </>
     );
 };

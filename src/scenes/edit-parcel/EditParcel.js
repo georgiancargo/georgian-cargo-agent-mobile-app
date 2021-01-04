@@ -2,9 +2,12 @@ import React, {useContext, useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {RadioButtonGroup} from "_molecules";
+import {
+    RadioButtonGroup,
+    SourceRoutesDropdown,
+    DestinationRoutesDropdown,
+} from "_molecules";
 import {SelectDropdown} from "_atoms";
-import {ScrollView} from "react-native";
 import {useRequest} from "_hooks";
 import {editParcel} from "_requests";
 import {useValidation} from "_hooks";
@@ -59,7 +62,7 @@ const EditParcel = ({
             postal_code: "VUE 123",
         },
     };
-    const [request, requesting] = useRequest(editWeight);
+    const [request, requesting] = useRequest(editParcel);
     const [isValidating, setValidating] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
     const {auth} = useContext(AuthContext);
@@ -161,16 +164,30 @@ const EditParcel = ({
                         />
                     );
                 })}
-                <ScrollView>
-                    <SelectDropdown
-                        list={parcelType}
-                        name="parcel_type"
-                        onSelect={onChange}
-                        selectedValue={parcel.parcel_type}
-                        placeholder="Parcel Type"
-                        disabled={!privileges.parcel_type}
-                    />
-                </ScrollView>
+                {/* <ScrollView> */}
+                <SelectDropdown
+                    list={parcelType}
+                    name="parcel_type"
+                    onSelect={onChange}
+                    selectedValue={parcel.parcel_type}
+                    placeholder="Parcel Type"
+                    disabled={!privileges.parcel_type}
+                />
+                <SourceRoutesDropdown
+                    name="source_country_code"
+                    onSelect={onChange}
+                    selectedValue={parcel.source_country_code}
+                    placeholder="Source country"
+                    disabled={!privileges.source_country_code}
+                />
+                <DestinationRoutesDropdown
+                    name="destination_country_code"
+                    onSelect={onChange}
+                    selectedValue={parcel.destination_country_code}
+                    placeholder="Destination country"
+                    disabled={!privileges.destination_country_code}
+                />
+                {/* </ScrollView> */}
                 <RadioButtonGroup
                     label="Customer Type"
                     onValueChange={onChange}
@@ -179,7 +196,7 @@ const EditParcel = ({
                     values={["INDIVIDUAL", "CORPORATE"]}
                     name="customer_type"
                     checkLabels={["Individual", "Corporate"]}
-                    />
+                />
                 <RadioButtonGroup
                     label="Collection Option"
                     onValueChange={onChange}
