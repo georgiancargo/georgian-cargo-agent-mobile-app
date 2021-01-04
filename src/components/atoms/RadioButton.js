@@ -2,7 +2,7 @@ import React from "react";
 import {View, Text} from "react-native";
 import {RadioButton} from "react-native-paper";
 
-const RadioButtonR = ({name, original, value, onSelect, label}) => {
+const RadioButtonR = ({name, original, value, onSelect, label, disabled}) => {
     const OnSelectWrapper = () => {
         onSelect(name, value);
     };
@@ -20,6 +20,7 @@ const RadioButtonR = ({name, original, value, onSelect, label}) => {
                 status={original === value ? "checked" : "unchecked"}
                 onPress={OnSelectWrapper}
                 name={name}
+                disabled={disabled}
             />
             <Text>{label}</Text>
         </View>

@@ -10,6 +10,7 @@ const {s, c} = bootstrapStyleSheet;
 
 const SelectDropdown = ({
     list = [],
+    disabled,
     name,
     onSelect,
     selectedValue,
@@ -28,8 +29,13 @@ const SelectDropdown = ({
 
     useEffect(() => {
         if (selectedValue && selectedValue !== "") {
-            setPickerStyle({...pickerStyle, color: colors.accent});
-            setViewStyle({...viewStyle, borderColor: colors.primary});
+            if (disabled) {
+                setViewStyle({...viewStyle, borderColor: colors.disabled});
+                setPickerStyle({...pickerStyle, color: colors.disabled});
+            } else {
+                setPickerStyle({...pickerStyle, color: colors.accent});
+                setViewStyle({...viewStyle, borderColor: colors.primary});
+            }
         } else {
             setPickerStyle({...pickerStyle, color: colors.placeholder});
         }
@@ -50,6 +56,7 @@ const SelectDropdown = ({
                         selectedValue={selectedValue}
                         onValueChange={onSelectWrapper}
                         style={pickerStyle}
+                        enabled={!disabled}
                     >
                         {selectedValue && selectedValue !== "" ? null : (
                             <Picker.Item label={placeholder} value="" />

@@ -1,10 +1,7 @@
 import React from "react";
 import {Text, View} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {RadioButton} from "_atoms";
-
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+import {useTheme} from "react-native-paper";
 
 const RadioButtonGroup = ({
     label,
@@ -13,7 +10,10 @@ const RadioButtonGroup = ({
     name,
     onValueChange,
     val,
+    disabled,
 }) => {
+    const {colors} = useTheme();
+    const style = disabled ? {color: colors.disabled} : {};
     return (
         <View
             style={{
@@ -23,7 +23,7 @@ const RadioButtonGroup = ({
             }}
         >
             <View style={{flex: 2}}>
-                <Text style={[s.text]}>{label}</Text>
+                <Text style={style}>{label}</Text>
             </View>
             {values.map((value, i) => (
                 <View style={{flex: 2}} key={value}>
@@ -33,6 +33,7 @@ const RadioButtonGroup = ({
                         value={value}
                         onSelect={onValueChange}
                         label={checkLabels[i]}
+                        disabled={disabled}
                     />
                 </View>
             ))}

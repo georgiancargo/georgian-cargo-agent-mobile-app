@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
@@ -9,6 +9,7 @@ import {useRequest} from "_hooks";
 import {editParcel} from "_requests";
 import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
+import {AuthContext} from "_context";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -58,10 +59,10 @@ const EditParcel = ({
             postal_code: "VUE 123",
         },
     };
-    const [request, requesting] = useRequest(editParcel);
+    const [request, requesting] = useRequest(editWeight);
     const [isValidating, setValidating] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
-
+    const {auth} = useContext(AuthContext);
     const [parcel, setParcel] = useState(p);
 
     const labels = [
@@ -89,7 +90,28 @@ const EditParcel = ({
         "delivery_price",
         "discount",
     ];
+    const editRoutes = auth.agent.privileges.includes("AMEND_CARGO_ROUTE");
+    const editPrices = auth.agent.privileges.includes("AMEND_CARGO_PRICING");
+    const editWeight = auth.agent.privileges.includes("AMEND_CARGO_WEIGHT");
 
+    const privileges = {
+        tracking_number: false,
+        weight: editWeight,
+        notes: true,
+        description: true,
+        sender: editRoutes,
+        receiver: editRoutes,
+        source_country_code: editRoutes,
+        destination_country_code: editRoutes,
+        collection_option: editRoutes,
+        customer_type: editRoutes,
+        parcel_type: editRoutes,
+        currency_code: editPrices,
+        extra_charges: editPrices,
+        freight_price: editPrices,
+        delivery_price: editPrices,
+        discount: editPrices,
+    };
     const parcelType = [
         {label: "Freight", value: "FREIGHT"},
         {label: "Parcel", value: "PARCEL"},
@@ -135,6 +157,7 @@ const EditParcel = ({
                             onChangeText={onChange}
                             key={key}
                             isNumber={isNumber}
+                            disabled={!privileges[key]}
                         />
                     );
                 })}
@@ -145,32 +168,38 @@ const EditParcel = ({
                         onSelect={onChange}
                         selectedValue={parcel.parcel_type}
                         placeholder="Parcel Type"
+                        disabled={!privileges.parcel_type}
                     />
                 </ScrollView>
                 <RadioButtonGroup
                     label="Customer Type"
                     onValueChange={onChange}
                     val={parcel.customer_type}
+                    disabled={!privileges.customer_type}
                     values={["INDIVIDUAL", "CORPORATE"]}
                     name="customer_type"
                     checkLabels={["Individual", "Corporate"]}
-                />
+                    />
                 <RadioButtonGroup
                     label="Collection Option"
                     onValueChange={onChange}
                     val={parcel.collection_option}
+                    disabled={!privileges.collection_option}
                     values={["HOME", "OFFICE"]}
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
             </View>
             <View style={[s.formGroup]}>
-                <Button onPress={() => edit(true)} disabled={requesting}>
+                <Button
+                    onPress={() => edit(true)}
+                    disabled={requesting || !privileges.sender}
+                >
                     Edit Sender
                 </Button>
                 <Button
                     onPress={() => edit(false)}
-                    disabled={requesting}
+                    disabled={requesting || !privileges.receiver}
                     style={{marginVertical: 5}}
                 >
                     Edit Receiver
