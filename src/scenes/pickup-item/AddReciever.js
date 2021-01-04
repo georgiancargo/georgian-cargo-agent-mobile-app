@@ -6,6 +6,7 @@ import {RadioButtonGroup} from "_molecules";
 import {Divider} from "react-native-elements";
 import {countries} from "_utils";
 import {SelectDropdown} from "_atoms";
+import {InputAutoComplete} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -26,7 +27,7 @@ const AddReciever = ({navigation, route}) => {
     }, [newParcel]);
 
     const receiveLabels = [
-        "Receiver name",
+        // "Receiver name",
         "Receiver phone",
         "Receiver Email",
         // "Receiver address country code",
@@ -35,7 +36,7 @@ const AddReciever = ({navigation, route}) => {
         "Receiver address postal code",
     ];
     const receiverKeys = [
-        "name",
+        // "name",
         "phone",
         "email",
         // "country_code",
@@ -85,6 +86,17 @@ const AddReciever = ({navigation, route}) => {
         <>
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
+                    <InputAutoComplete
+                        name="name"
+                        value={receiver.name}
+                        // error={errors.name}
+                        // label={label}
+                        placeholder="Receiver name"
+                        // onChangeText={onChange}
+                        onChangeText={onChangeReceiver}
+                        setUser={setReceiver}
+                        // isCustomer
+                    />
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}

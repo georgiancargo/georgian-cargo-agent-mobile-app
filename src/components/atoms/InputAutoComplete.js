@@ -7,6 +7,7 @@ import {useRequest} from "_hooks";
 
 const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     const [data, setData] = useState([]);
+    const [selectedValue, setSelected] = useState();
     const {colors, roundness} = useTheme();
     const [request, requesting] = useRequest(getUserRequest);
 
@@ -23,6 +24,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     };
     const onPress = (user) => {
         setData([]);
+        setSelected(user.name);
         setUser({
             name: user.name,
             phone: user.email,
@@ -51,7 +53,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     };
 
     useEffect(() => {
-        if (value.length >= 3)
+        if (value && selectedValue != value && value.length >= 1)
             request({name: value})
                 .then((r) =>
                     setData(isCustomer ? r.data.customers : r.data.receivers)
@@ -62,7 +64,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     return (
         <>
             <InputWithError value={value} {...props} />
-            {data && value && value != "" && data.length > 0 ? (
+            {(data && value && value != "" && data.length > 0) || requesting ? (
                 <SafeAreaView style={styles.dropdown}>
                     {requesting ? (
                         <ActivityIndicator animating={requesting} />
