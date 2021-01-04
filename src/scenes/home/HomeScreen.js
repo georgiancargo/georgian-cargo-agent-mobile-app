@@ -1,12 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useContext} from "react";
 import {View, StyleSheet, Text} from "react-native";
 import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
 import SyncButton from "./SyncButton";
 import {useRequest} from "_hooks";
 import {getGargosRequest} from "_requests";
+import {AuthContext} from "_context";
 
 const Home = ({navigation}) => {
+    const {auth} = useContext(AuthContext);
+    const cantEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
+    const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
+    const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
+
     const goto = (route) => {
         navigation.navigate(route);
     };
@@ -29,8 +35,8 @@ const Home = ({navigation}) => {
                     phone: "+123456",
                     address: {
                         countryCode: "US",
-                        addressLine1: "",
-                        addressLine2: "",
+                        addressLine1: " ",
+                        addressLine2: " ",
                         postalCode: "XX",
                     },
                 },
@@ -40,8 +46,8 @@ const Home = ({navigation}) => {
                     phone: "+123456",
                     address: {
                         countryCode: "US",
-                        addressLine1: "",
-                        addressLine2: "",
+                        addressLine1: " ",
+                        addressLine2: " ",
                         postalCode: "XX",
                     },
                 },
@@ -91,17 +97,29 @@ const Home = ({navigation}) => {
                     <SyncButton />
                 </View>
                 <View style={s.verticalButtons}>
-                    <Button style={s.mb} onPress={() => goto("Add Sender")}>
+                    <Button
+                        style={s.mb}
+                        onPress={() => goto("Add Sender")}
+                        disabled={!canPickup}
+                    >
                         Pickup items
                     </Button>
-                    <Button style={s.mb} onPress={() => goto("Modes")}>
+                    <Button
+                        style={s.mb}
+                        onPress={() => goto("Modes")}
+                        disabled={!canProccess}
+                    >
                         Item processing
                     </Button>
                     <Button onPress={() => goto("Search")}>Search</Button>
                 </View>
             </View>
             <View style={s.listContainer}>
-                <ParcelList parcels={parcels} navigation={navigation} />
+                <ParcelList
+                    parcels={parcels}
+                    navigation={navigation}
+                    cantEdit={cantEdit}
+                />
             </View>
         </View>
     );

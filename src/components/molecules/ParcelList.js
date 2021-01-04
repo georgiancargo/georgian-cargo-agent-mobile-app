@@ -1,20 +1,122 @@
-import React from "react";
-import {SafeAreaView, FlatList, StyleSheet} from "react-native";
-import {ListItem} from "_atoms";
+import React, {useState} from "react";
+import {SafeAreaView, FlatList, StyleSheet, View, Text} from "react-native";
+import {ListItem, ModalContainer, Button} from "_atoms";
+import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {Divider} from "react-native-paper";
 
-const ParcelList = ({parcels = [], navigation}) => {
-    const edit = (parcel) => {
+const bootstrapStyleSheet = new BootstrapStyleSheet();
+const {s, c} = bootstrapStyleSheet;
+
+const ParcelList = ({parcels = [], navigation, canEdit}) => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const [parcel, setParcel] = useState({});
+    const labels = ["Tracking number: ", "Weight: ", "Status: ", "From: ", "To: ", "Collection option: ", "Customer type: ", "Parcel type: ", "Notes: ", "Description: ", "Customer id: ", "Created at: ", "Release code: "];
+    const keys = ["trackingNumber", "weight", "status", "sourceCountryCode", "destinationCountryCode", "collectionOption", "customerType", "parcelType", "notes", "description", "customerId", "createdAt", "releaseCode"];
+    const userLabels = ["Name: ", "Email: ", "Phone: ", "Address line 1: ", "Address line 2: ", "Postal code: "];
+    const userKeys = ["name", "email", "phone", "addressLine1", "addressLine2", "postalCode"];
+   
+    const showModal = (parcel) => {
+        const {shippingSpecs, item, ...p} = parcel;
+        const {
+            route,
+            senderInformation,
+            receiverInformation,
+            ...rest
+        } = shippingSpecs;
+        const sender = senderInformation;
+        const sender_address = senderInformation.address;
+        const receiver = receiverInformation;
+        const receiver_address = receiverInformation.address;
+        setParcel({
+            ...p,
+            ...item,
+            ...route,
+            sender: {...sender, ...sender_address, address: {}},
+            receiver: {...receiver, ...receiver_address, address: {}},
+            ...rest,
+        });
+        setModalVisible(true);
+    };
+    const hideModal = () => setModalVisible(false);
+
+    const edit = () => {
+        hideModal();
         navigation.navigate("Edit Parcel", {parcel: parcel});
     };
-    const renderItem = ({item}) => <ListItem parcel={item} edit={edit} />;
+    const renderItem = ({item}) => <ListItem parcel={item} edit={showModal} />;
+
+    const ParcelInfoModal = () =>{ 
+        const receiver = parcel.receiver;
+        const sender = parcel.sender;
+        const style = {
+            dd: {flex: 5, fontSize:13},
+            dt: {flex: 5, fontSize:13},
+            row: {flexDirection: "row", marginBottom: 3},
+            buttonRow: {flexDirection: "row", marginTop: 3},
+        };
+        const Parcel = () =>
+            keys.map((key, i) => (
+                <View style={style.row} key={key}>
+                    <Text style={style.dd}>{labels[i]}</Text>
+                    <Text style={style.dt}>{parcel[key] ? parcel[key] : "N/A"}</Text>
+                </View>
+            ));
+        const Sender = () =>
+            sender &&
+            userKeys.map((key, i) => (
+                <View style={style.row} key={key}>
+                    <Text style={style.dd}>{"Sender " + userLabels[i]}</Text>
+                    <Text style={style.dt}>{sender[key] ? sender[key] : "N/A"}</Text>
+                </View>
+            ));
+        const Receiver = () =>
+            receiver &&
+            userKeys.map((key, i) => (
+                <View style={style.row} key={key}>
+                    <Text style={style.dd}>{"Receiver " + userLabels[i]}</Text>
+                    <Text style={style.dt}>{receiver[key] ? receiver[key] : "N/A"}</Text>
+                </View>
+            ));
+        return (
+            <ModalContainer
+                modalVisible={modalVisible}
+                setModalVisible={setModalVisible}
+            >
+                <View style={[s.container]}>
+                    <Parcel />
+                    <Divider />
+                    <Sender />
+                    <Divider />
+                    <Receiver />
+                    <View style={style.buttonRow}>
+                        <Button
+                            style={{flex: 8, marginHorizontal: 2}}
+                            onPress={edit}
+                            disabled={!canEdit}
+                        >
+                            Edit
+                        </Button>
+                        <Button
+                            style={{flex: 1, marginHorizontal: 2}}
+                            onPress={hideModal}
+                        >
+                            Ok
+                        </Button>
+                    </View>
+                </View>
+            </ModalContainer>
+        );}
     return (
-        <SafeAreaView style={styles.container}>
-            <FlatList
-                data={parcels}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.id}
-            />
-        </SafeAreaView>
+        <>
+            <SafeAreaView style={styles.container}>
+                <ParcelInfoModal />
+                <FlatList
+                    data={parcels}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                />
+            </SafeAreaView>
+        </>
     );
 };
 export default ParcelList;
