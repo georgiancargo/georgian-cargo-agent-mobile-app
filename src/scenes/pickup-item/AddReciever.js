@@ -7,6 +7,7 @@ import {Divider} from "react-native-elements";
 import {countries} from "_utils";
 import {SelectDropdown} from "_atoms";
 import {InputAutoComplete} from "_atoms";
+import { DestinationRoutesDropdown } from "_molecules";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -105,8 +106,7 @@ const AddReciever = ({navigation, route}) => {
                             onChange={onChangeReceiver}
                         />
                         <View style={[s.formGroup]}>
-                            <SelectDropdown
-                                list={countries}
+                            <DestinationRoutesDropdown
                                 name="country_code"
                                 onSelect={onChangeReceiver}
                                 selectedValue={receiver.country_code}

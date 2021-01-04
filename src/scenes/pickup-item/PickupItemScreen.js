@@ -11,6 +11,7 @@ import {PickupList, RadioButtonGroup} from "_molecules";
 import {countries} from "_utils";
 import {useValidation} from "_hooks";
 import senderDataValidations from "./PickupItemValidations";
+import { SourceRoutesDropdown } from "_molecules";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -237,8 +238,7 @@ const PickupItemScreen = ({navigation}) => {
                         // </View>
                     ))}
                     {/* <View style={[s.formGroup, s.mt2]}> */}
-                    <SelectDropdown
-                        list={countries}
+                    <SourceRoutesDropdown
                         name="country_code"
                         onSelect={onChange}
                         selectedValue={sender.country_code}
