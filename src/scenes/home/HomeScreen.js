@@ -9,7 +9,6 @@ import {AuthContext} from "_context";
 
 const Home = ({navigation}) => {
     const {auth} = useContext(AuthContext);
-    const cantEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
     const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
 
@@ -76,7 +75,7 @@ const Home = ({navigation}) => {
             paging_specification: {
                 page_offset: 0,
                 page_size: 30,
-            }
+            },
         })
             .then((r) => {
                 setParcels(r.data.cargos);
@@ -115,11 +114,7 @@ const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={s.listContainer}>
-                <ParcelList
-                    parcels={parcels}
-                    navigation={navigation}
-                    cantEdit={cantEdit}
-                />
+                <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>
     );

@@ -1,18 +1,23 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {SafeAreaView, FlatList, StyleSheet, View, Text} from "react-native";
 import {ListItem, ModalContainer, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {Divider} from "react-native-paper";
+import {Divider, useTheme} from "react-native-paper";
+import {AuthContext} from "_context";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const ParcelList = ({parcels = [], navigation, canEdit}) => {
+const ParcelList = ({parcels = [], navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [parcel, setParcel] = useState({});
-    const labels = ["Tracking number: ", "Weight: ", "Status: ", "From: ", "To: ", "Collection option: ", "Customer type: ", "Parcel type: ", "Notes: ", "Description: ", "Customer id: ", "Created at: ", "Release code: "];
+    const {auth} = useContext(AuthContext);
+    const {colors} = useTheme();
+    const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
+
+    const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Created at", "Release code"];
     const keys = ["trackingNumber", "weight", "status", "sourceCountryCode", "destinationCountryCode", "collectionOption", "customerType", "parcelType", "notes", "description", "customerId", "createdAt", "releaseCode"];
-    const userLabels = ["Name: ", "Email: ", "Phone: ", "Address line 1: ", "Address line 2: ", "Postal code: "];
+    const userLabels = ["Name", "Email", "Phone", "Address line 1", "Address line 2", "Postal code"];
     const userKeys = ["name", "email", "phone", "addressLine1", "addressLine2", "postalCode"];
    
     const showModal = (parcel) => {
@@ -49,8 +54,15 @@ const ParcelList = ({parcels = [], navigation, canEdit}) => {
         const receiver = parcel.receiver;
         const sender = parcel.sender;
         const style = {
-            dd: {flex: 5, fontSize:13},
-            dt: {flex: 5, fontSize:13},
+            dd: {
+                flex: 4.5,
+                fontSize: 13,
+                borderRightWidth: 1,
+                borderBottomWidth: 1,
+                marginRight: 5,
+                borderColor: colors.disabled,
+            },
+            dt: {flex: 5, fontSize: 13},
             row: {flexDirection: "row", marginBottom: 3},
             buttonRow: {flexDirection: "row", marginTop: 3},
         };
@@ -84,9 +96,9 @@ const ParcelList = ({parcels = [], navigation, canEdit}) => {
             >
                 <View style={[s.container]}>
                     <Parcel />
-                    <Divider />
+                    <Divider style={{marginVertical:3}} />
                     <Sender />
-                    <Divider />
+                    <Divider style={{marginVertical:3}} />
                     <Receiver />
                     <View style={style.buttonRow}>
                         <Button

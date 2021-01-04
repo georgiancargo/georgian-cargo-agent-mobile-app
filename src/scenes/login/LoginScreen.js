@@ -56,10 +56,11 @@ const LoginScreen = ({navigation}) => {
                                     },
                                 ],
                             },
-                        }).catch(() => {
-                            setUser({...user, username: "help"});
-                        });
-                        navigation.navigate("Home");
+                        })
+                            .catch(() => {
+                                setUser({...user, username: "help"});
+                            })
+                            .finally(() => navigation.navigate("Home"));
                     });
             })
             .catch((e) => {});
