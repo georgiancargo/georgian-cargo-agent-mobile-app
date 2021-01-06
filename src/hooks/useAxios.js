@@ -6,7 +6,7 @@ export default function useAxios() {
     const {auth} = useContext(AuthContext);
     const {access_token} = {...auth};
 
-    const baseURL = "http://02ff1967ca3d.ngrok.io/";
+    const baseURL = "http://api.georgiancargo.co.uk/";
 
     const defaultAxios = Axios.create({
         baseURL,

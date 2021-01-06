@@ -2,31 +2,52 @@ import React, {useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {ParcelList} from "_molecules";
-
+import {useRequest} from "_hooks";
+import {getGargosRequest} from "_requests";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const SearchScreen = ({navigation}) => {
-    const [query, setQuery] = useState({});
-    const onChangeText = (name, value) => {
-        setQuery({[name]: value});
+    const [trackingNumber, setTrackingNumber] = useState("");
+    const [request, requesting] = useRequest(getGargosRequest);
+    const onChangeText = (_, value) => {
+        setTrackingNumber(value);
+    };
+    const search = () => {
+        request({
+            paging_specification: {
+                page_offset: 0,
+                page_size: 30,
+            },
+            filter_specification: {
+                filter_by: "TRACKING_NUMBER",
+                filter_value: trackingNumber,
+            },
+        })
+            .then((r) => {
+                setParcels(r.data.cargos);
+            })
+            .catch((e) => {});
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             <InputWithError
-                name="q"
-                value={query.q}
+                name="trackingNumber"
+                value={trackingNumber}
                 onChangeText={onChangeText}
-                placeholder="Enter barcode"
+                placeholder="Enter tracking number"
             />
-            <Button style={{marginVertical: 8}}>Search</Button>
+            <Button
+                style={{marginVertical: 8}}
+                loading={requesting}
+                onPress={search}
+            >
+                Search
+            </Button>
             <View style={{flex: 1}}>
-                <ParcelList
-                    parcels={[10, 20, 30, 40, 50, 60, 70, 80, 90]}
-                    navigation={navigation}
-                />
+                <ParcelList parcels={[]} navigation={navigation} />
             </View>
         </View>
     );
