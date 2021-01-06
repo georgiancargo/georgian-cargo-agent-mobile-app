@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useState, useEffect} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
@@ -13,6 +13,7 @@ import {editParcel} from "_requests";
 import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
+import { ScrollView } from "react-native-gesture-handler";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -67,7 +68,9 @@ const EditParcel = ({
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
     const {auth} = useContext(AuthContext);
     const [parcel, setParcel] = useState(p);
-
+    const [editRoutes, setEditRoutes] = useState(false);
+    const [editPrices, setEditPrices] = useState(false);
+    const [editWeight, setEditWeight] = useState(false);
     const labels = [
         "Tracking number",
         "Weight",
@@ -93,10 +96,16 @@ const EditParcel = ({
         "delivery_price",
         "discount",
     ];
-    const editRoutes = auth.agent.privileges.includes("AMEND_CARGO_ROUTE");
-    const editPrices = auth.agent.privileges.includes("AMEND_CARGO_PRICING");
-    const editWeight = auth.agent.privileges.includes("AMEND_CARGO_WEIGHT");
-
+    // const editRoutes = auth.agent.privileges.includes("AMEND_CARGO_ROUTE");
+    // const editPrices = auth.agent.privileges.includes("AMEND_CARGO_PRICING");
+    // const editWeight = auth.agent.privileges.includes("AMEND_CARGO_WEIGHT");
+    useEffect(() => {
+        if (auth && auth.agent) {
+            setEditRoutes(auth.agent.privileges.includes("AMEND_CARGO_ROUTE"));
+            setEditPrices(auth.agent.privileges.includes("AMEND_CARGO_PRICING"));
+            setEditWeight(auth.agent.privileges.includes("AMEND_CARGO_WEIGHT"));
+        }
+    }, [auth])
     const privileges = {
         tracking_number: false,
         weight: editWeight,
@@ -145,7 +154,7 @@ const EditParcel = ({
             .finally(() => setValidating(false));
     };
     return (
-        <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+        <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             <View style={[s.formGroup]}>
                 {keys.map((key, i) => {
                     const val = parcel[key];
@@ -225,7 +234,7 @@ const EditParcel = ({
                     Save
                 </Button>
             </View>
-        </View>
+        </ScrollView>
     );
 };
 
