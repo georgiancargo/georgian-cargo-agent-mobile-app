@@ -8,12 +8,12 @@ const SourceRoutesDropdown = (props) => {
     const {
         auth: {agent},
     } = useContext(AuthContext);
-    const routes = agent ? agent.enabled_routes : [];
+    const routes = agent ? agent.routes : [];
     const sourceRoutes = [];
-    routes.forEach(({source_country_code}) => {
+    routes.forEach(({sourceCountryCode}) => {
         sourceRoutes.push({
-            value: source_country_code,
-            label: codes[source_country_code],
+            value: sourceCountryCode,
+            label: codes[sourceCountryCode],
         });
     });
     // return <Text>{JSON.stringify(sourceRoutes)}</Text>;

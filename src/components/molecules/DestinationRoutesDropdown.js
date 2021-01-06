@@ -7,12 +7,12 @@ const DestinationRoutesDropdown = (props) => {
     const {
         auth: {agent},
     } = useContext(AuthContext);
-    const routes = agent ? agent.enabled_routes : [];
+    const routes = agent ? agent.routes : [];
     const destinationRoutes = [];
-    routes.forEach(({destination_country_code}) => {
+    routes.forEach(({destinationCountryCode}) => {
         destinationRoutes.push({
-            value: destination_country_code,
-            label: codes[destination_country_code],
+            value: destinationCountryCode,
+            label: codes[destinationCountryCode],
         });
     });
     return <SelectDropdown list={destinationRoutes} {...props} />;
