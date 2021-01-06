@@ -28,14 +28,14 @@ export default function useOfflineRequest(r, load = false) {
         if (isConnected)
             return parseRequest(axios, config)
                 .catch((e) => {
-                    switch (e.response.status) {
-                        case 401:
-                            // Invalidate access tokens etc...
-                            setAuth({isLoggedIn: false, accessToken: null});
-                            break;
-                        default:
-                            break;
-                    }
+                    // switch (e.response.status) {
+                    //     case 401:
+                    //         // Invalidate access tokens etc...
+                    //         setAuth({isLoggedIn: false, accessToken: null});
+                    //         break;
+                    //     default:
+                    //         break;
+                    // }
                     throw e;
                 })
                 .finally(() => {
