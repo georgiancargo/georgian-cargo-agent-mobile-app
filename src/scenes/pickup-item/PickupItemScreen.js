@@ -20,110 +20,12 @@ const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const {errors, validate, hasErrors} = useValidation(senderDataValidations);
 
-    const [parcels, setParcels] = useState([
-        {
-            tracking_number: "G123654", // Must be >= 4 characters && Unique
-            weight: 10, // > 0
-            // source_country_code: "US", // Two uppercase chars
-            // destination_country_code: "UK", // Two uppercase chars
-            collection_option: "HOME", // HOME or OFFICE
-            receiver: {
-                name: "Ahmed",
-                email: "ah@gm.co", // Valid Email
-                phone: "+22123",
-                country_code: "JP", // Two uppercase chars
-                address_line_1: "line 1",
-                address_line_2: "line 2",
-                postal_code: "VUE 123",
-            },
-            notes: "notes",
-            description: "Clothes",
-        },    {
-            tracking_number: "G123654", // Must be >= 4 characters && Unique
-            weight: 10, // > 0
-            // source_country_code: "US", // Two uppercase chars
-            // destination_country_code: "UK", // Two uppercase chars
-            collection_option: "HOME", // HOME or OFFICE
-            receiver: {
-                name: "sue",
-                email: "ah@gm.co", // Valid Email
-                phone: "+22123",
-                country_code: "JP", // Two uppercase chars
-                address_line_1: "line 1",
-                address_line_2: "line 2",
-                postal_code: "VUE 123",
-            },
-            notes: "notes",
-            description: "Clothes",
-        },    {
-            tracking_number: "G123654", // Must be >= 4 characters && Unique
-            weight: 10, // > 0
-            // source_country_code: "US", // Two uppercase chars
-            // destination_country_code: "UK", // Two uppercase chars
-            collection_option: "HOME", // HOME or OFFICE
-            receiver: {
-                name: "Sara",
-                email: "ah@gm.co", // Valid Email
-                phone: "+22123",
-                country_code: "JP", // Two uppercase chars
-                address_line_1: "line 1",
-                address_line_2: "line 2",
-                postal_code: "VUE 123",
-            },
-            notes: "notes",
-            description: "Clothes",
-        },    {
-            tracking_number: "G123654", // Must be >= 4 characters && Unique
-            weight: 10, // > 0
-            // source_country_code: "US", // Two uppercase chars
-            // destination_country_code: "UK", // Two uppercase chars
-            collection_option: "HOME", // HOME or OFFICE
-            receiver: {
-                name: "Ahmed",
-                email: "ah@gm.co", // Valid Email
-                phone: "+22123",
-                country_code: "JP", // Two uppercase chars
-                address_line_1: "line 1",
-                address_line_2: "line 2",
-                postal_code: "VUE 123",
-            },
-            notes: "notes",
-            description: "Clothes",
-        },    {
-            tracking_number: "G123654", // Must be >= 4 characters && Unique
-            weight: 10, // > 0
-            // source_country_code: "US", // Two uppercase chars
-            // destination_country_code: "UK", // Two uppercase chars
-            collection_option: "HOME", // HOME or OFFICE
-            receiver: {
-                name: "Ahmed",
-                email: "ah@gm.co", // Valid Email
-                phone: "+22123",
-                country_code: "JP", // Two uppercase chars
-                address_line_1: "line 1",
-                address_line_2: "line 2",
-                postal_code: "VUE 123",
-            },
-            notes: "notes",
-            description: "Clothes",
-        },
-    ]);
+    const [parcels, setParcels] = useState([]);
     // const [parcelsArray, setParcelsArray] = useState([]);
-    const [sender, setSender] = useState({
-        name: "Ahmed",
-        email: "ah@gm.co", // Valid Email
-        phone: "+22123",
-        country_code: "US", // Two uppercase chars
-        address_line_1: "line 1",
-        address_line_2: "line 2",
-        postal_code: "VUE 123",
-    });
+    const [sender, setSender] = useState({});
     const [notSaved, setNotSaved] = useState(true);
     const [saving, setSaving] = useState(false);
-    const [globalSettings, setGlobal] = useState({
-        customer_type: "INDIVIDUAL", // INDIVIDUAL or CORPORATE
-        parcel_type: "PARCEL", // FREIGHT or PARCEL (will add more later)
-    });
+    const [globalSettings, setGlobal] = useState({});
 
     useEffect(() => {
         setNotSaved(true);
