@@ -15,7 +15,7 @@ const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "admin", password: "12341234"});
     const {setAuth, auth} = useContext(AuthContext);
     const [request, requesting] = useRequest(loginRequest);
-    const {errors, validate} = useValidation(loginScreenValidations);
+    const {errors, validate, addErrors} = useValidation(loginScreenValidations);
     useEffect(() => {
         if (auth.is_logged_in) navigation.navigate("Home");
     }, []);
@@ -40,27 +40,30 @@ const LoginScreen = ({navigation}) => {
                             })
                             .catch(() => {});
                     })
-                    .catch(() => {
-                        setAuth({
-                            access_token: "Some random JWT",
-                            remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
-                            is_logged_in: true,
-                            agent: {
-                                id: "ABC123",
-                                username: "foo",
-                                privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
-                                enabled_routes: [
-                                    {
-                                        source_country_code: "US",
-                                        destination_country_code: "UK",
-                                    },
-                                ],
-                            },
-                        })
-                            .catch(() => {
-                                setUser({...user, username: "help"});
-                            })
-                            .finally(() => navigation.navigate("Home"));
+                    .catch((e) => {
+                        // setAuth({
+                        //     access_token: "Some random JWT",
+                        //     remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
+                        //     is_logged_in: true,
+                        //     agent: {
+                        //         id: "ABC123",
+                        //         username: "foo",
+                        //         privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
+                        //         enabled_routes: [
+                        //             {
+                        //                 source_country_code: "US",
+                        //                 destination_country_code: "UK",
+                        //             },
+                        //         ],
+                        //     },
+                        // }).catch(() => {
+                        //     setUser({...user, username: "help"});
+                        // })
+                        // .finally(() => navigation.navigate("Home"));
+                        addErrors({
+                            username: "Wrong username/password",
+                            password: "Wrong username/password",
+                        });
                     });
             })
             .catch((e) => {});
@@ -86,7 +89,7 @@ const LoginScreen = ({navigation}) => {
                     secureTextEntry={true}
                 />
             </View>
-            {/* <Text>{JSON.stringify(auth)}</Text> */}
+            {/* <Text>{JSON.stringify(error)}</Text> */}
             <View style={styles.formButton}>
                 <Button onPress={login} loading={requesting}>
                     Login
