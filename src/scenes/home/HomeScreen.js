@@ -9,12 +9,11 @@ import {AuthContext} from "_context";
 
 const Home = ({navigation}) => {
     const {auth} = useContext(AuthContext);
+    // const {accessToken, rememberToken, ...rest} = auth;
+    // const [canPickup, setCanPickup] = useState(false);
+    // const [canProccess, setCanProccess] = useState(false);
     const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
-
-    const goto = (route) => {
-        navigation.navigate(route);
-    };
     const [parcels, setParcels] = useState([
         {
             trackingNumber: "G123456",
@@ -70,6 +69,16 @@ const Home = ({navigation}) => {
         },
     ]);
     const [request] = useRequest(getGargosRequest);
+
+    const goto = (route) => {
+        navigation.navigate(route);
+    };
+    // useEffect(() => {
+    //     if (auth && auth.agent) {
+    //         setCanPickup(auth.agent.privileges.includes("PICKUP_CARGO"));
+    //         setCanProccess(auth.agent.privileges.includes("HANDLE_CARGO"));
+    //     }
+    // }, [auth]);
     useEffect(() => {
         request({
             paging_specification: {
@@ -86,7 +95,7 @@ const Home = ({navigation}) => {
         <View style={s.container}>
             <View style={s.logo}>
                 <Text>Logo</Text>
-                {/* <Text>{JSON.stringify(auth)}</Text> */}
+                <Text>{JSON.stringify(auth.agent)}</Text>
             </View>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>
