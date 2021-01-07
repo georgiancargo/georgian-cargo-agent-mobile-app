@@ -4,6 +4,7 @@ import {ListItem, ModalContainer, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Divider, useTheme} from "react-native-paper";
 import {AuthContext} from "_context";
+import { ScrollView } from "react-native";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -94,7 +95,7 @@ const ParcelList = ({parcels = [], navigation}) => {
                 modalVisible={modalVisible}
                 setModalVisible={setModalVisible}
             >
-                <View style={[s.container]}>
+                <ScrollView style={[s.container]}>
                     <Parcel />
                     <Divider style={{marginVertical:3}} />
                     <Sender />
@@ -115,7 +116,7 @@ const ParcelList = ({parcels = [], navigation}) => {
                             Ok
                         </Button>
                     </View>
-                </View>
+                </ScrollView>
             </ModalContainer>
         );}
     return (

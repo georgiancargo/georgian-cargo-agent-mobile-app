@@ -8,77 +8,22 @@ import {getGargosRequest} from "_requests";
 import {AuthContext} from "_context";
 
 const Home = ({navigation}) => {
-    const {auth} = useContext(AuthContext);
+    const {auth, setAuth} = useContext(AuthContext);
     // const {accessToken, rememberToken, ...rest} = auth;
     // const [canPickup, setCanPickup] = useState(false);
     // const [canProccess, setCanProccess] = useState(false);
     const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
-    const [parcels, setParcels] = useState([
-        {
-            trackingNumber: "G123456",
-            item: {
-                itemId: "123",
-                weight: 10,
-                description: "Blah",
-            },
-            shippingSpecs: {
-                route: {
-                    sourceCountryCode: "US",
-                    destinationCountryCode: "UK",
-                },
-                senderInformation: {
-                    name: "Name",
-                    email: "email@example.com",
-                    phone: "+123456",
-                    address: {
-                        countryCode: "US",
-                        addressLine1: " ",
-                        addressLine2: " ",
-                        postalCode: "XX",
-                    },
-                },
-                receiverInformation: {
-                    name: "Name",
-                    email: "email@example.com",
-                    phone: "+123456",
-                    address: {
-                        countryCode: "US",
-                        addressLine1: " ",
-                        addressLine2: " ",
-                        postalCode: "XX",
-                    },
-                },
-                collectionOption: "HOME",
-                customerType: "INDIVIDUAL",
-                parcelType: "PARCEL",
-                comments: [
-                    {
-                        id: "123",
-                        content: "Send nudes ASAP",
-                        authorType: "CUSTOMER", // or STAFF,
-                        authorId: "123",
-                    },
-                ],
-                notes: "note1",
-                status: "ARRIVED",
-                customerId: null, // Or an ID
-                createdAt: "2020-12-31 00:00:00",
-                releaseCode: null, // Or Release code
-            },
-        },
-    ]);
+    const [parcels, setParcels] = useState([]);
     const [request] = useRequest(getGargosRequest);
 
     const goto = (route) => {
         navigation.navigate(route);
     };
-    // useEffect(() => {
-    //     if (auth && auth.agent) {
-    //         setCanPickup(auth.agent.privileges.includes("PICKUP_CARGO"));
-    //         setCanProccess(auth.agent.privileges.includes("HANDLE_CARGO"));
-    //     }
-    // }, [auth]);
+    const logout = () => {
+        setAuth({isLoggedIn: false, accessToken: null, agent: {}});
+        navigation.goBack();
+    };
     useEffect(() => {
         request({
             paging_specification: {
@@ -99,7 +44,7 @@ const Home = ({navigation}) => {
             </View>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>
-                    <Button style={s.mr} onPress={() => goto("Login")}>
+                    <Button style={s.mr} onPress={logout}>
                         Logout
                     </Button>
                     <SyncButton />

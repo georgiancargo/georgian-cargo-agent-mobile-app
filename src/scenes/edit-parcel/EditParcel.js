@@ -13,7 +13,7 @@ import {editParcel} from "_requests";
 import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
-import { ScrollView } from "react-native-gesture-handler";
+import {ScrollView} from "react-native-gesture-handler";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -24,50 +24,11 @@ const EditParcel = ({
         params: {parcel: oldParcel},
     },
 }) => {
-    const p = {
-        tracking_number: "G123654", // Must be >= 4 characters && Unique
-        weight: 10, // > 0
-        source_country_code: "US", // Two uppercase chars
-        destination_country_code: "UK", // Two uppercase chars
-        collection_option: "HOME", // HOME or OFFICE
-        customer_type: "INDIVIDUAL", // INDIVIDUAL or CORPORATE
-        parcel_type: "FREIGHT", // FREIGHT or PARCEL (will add more later)
-        notes: "",
-        description: "Clothes",
-        currency_code: "USD",
-        freight_price: 12,
-        delivery_price: 20,
-        discount: 5,
-        extra_charges: [
-            {
-                note: "VAT",
-                amount: 123,
-            },
-        ],
-        sender: {
-            name: "Ahmed",
-            email: "ah@gm.co", // Valid Email
-            phone: "+22123",
-            country_code: "US", // Two uppercase chars
-            address_line_1: "line 1",
-            address_line_2: "line 2",
-            postal_code: "VUE 123",
-        },
-        receiver: {
-            name: "Ahmed",
-            email: "ah@gm.co", // Valid Email
-            phone: "+22123",
-            country_code: "UK", // Two uppercase chars
-            address_line_1: "line 1",
-            address_line_2: "line 2",
-            postal_code: "VUE 123",
-        },
-    };
     const [request, requesting] = useRequest(editParcel);
     const [isValidating, setValidating] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
     const {auth} = useContext(AuthContext);
-    const [parcel, setParcel] = useState(p);
+    const [parcel, setParcel] = useState(oldParcel);
     const [editRoutes, setEditRoutes] = useState(false);
     const [editPrices, setEditPrices] = useState(false);
     const [editWeight, setEditWeight] = useState(false);
@@ -102,10 +63,12 @@ const EditParcel = ({
     useEffect(() => {
         if (auth && auth.agent) {
             setEditRoutes(auth.agent.privileges.includes("AMEND_CARGO_ROUTE"));
-            setEditPrices(auth.agent.privileges.includes("AMEND_CARGO_PRICING"));
+            setEditPrices(
+                auth.agent.privileges.includes("AMEND_CARGO_PRICING")
+            );
             setEditWeight(auth.agent.privileges.includes("AMEND_CARGO_WEIGHT"));
         }
-    }, [auth])
+    }, [auth]);
     const privileges = {
         tracking_number: false,
         weight: editWeight,
@@ -230,7 +193,11 @@ const EditParcel = ({
                 >
                     Edit Receiver
                 </Button>
-                <Button onPress={save} loading={requesting || isValidating}>
+                <Button
+                    onPress={save}
+                    loading={requesting || isValidating}
+                    disable={hasErrors}
+                >
                     Save
                 </Button>
             </View>

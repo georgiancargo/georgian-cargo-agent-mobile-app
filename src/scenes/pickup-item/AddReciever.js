@@ -41,7 +41,7 @@ const AddReciever = ({navigation, route}) => {
         "phone",
         "email",
         // "country_code",
-        "addrees_line_1",
+        "address_line_1",
         "address_line_2",
         "postal_code",
     ];

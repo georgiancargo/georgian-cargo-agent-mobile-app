@@ -11,6 +11,7 @@ const {s, c} = bootstrapStyleSheet;
 
 const SearchScreen = ({navigation}) => {
     const [trackingNumber, setTrackingNumber] = useState("");
+    const [parcels, setParcels] = useState([]);
     const [request, requesting] = useRequest(getGargosRequest);
     const onChangeText = (_, value) => {
         setTrackingNumber(value);
@@ -47,7 +48,7 @@ const SearchScreen = ({navigation}) => {
                 Search
             </Button>
             <View style={{flex: 1}}>
-                <ParcelList parcels={[]} navigation={navigation} />
+                <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>
     );

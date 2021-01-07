@@ -12,7 +12,7 @@ const {s} = bootstrapStyleSheet;
 
 const ItemProcessing = ({navigation, route: {params}}) => {
     const [request, requesting] = useRequest(processRequest);
-    const [barCodes, setBarCodes] = useState(["G123456"]);
+    const [barCodes, setBarCodes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [barcode, setBarcode] = useState({});
     const [error, setErrors] = useState([]);

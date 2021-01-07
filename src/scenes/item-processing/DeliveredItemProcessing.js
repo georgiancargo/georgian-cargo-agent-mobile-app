@@ -10,21 +10,21 @@ const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DeliveredItemProcessing = ({navigation}) => {
-    const [query, setQuery] = React.useState({barcode: ""});
+    const [releaseCode, setCode] = React.useState({barcode: ""});
     const [error, setError] = React.useState("");
     const [request, requesting] = useRequest(releaseRequest);
 
     const goToScanner = () => {
         navigation.navigate("cameraScanner", {
-            barCodes: query,
-            setBarCodes: setQuery,
+            barCodes: releaseCode,
+            setBarCodes: setCode,
         });
     };
-    const onChangeText = (name, value) => {
-        setQuery({[name]: value});
+    const onChangeText = (_, value) => {
+        setCode(value);
     };
     const release = () => {
-        request({release_code: query.barcode})
+        request({release_code: releaseCode})
             .then((r) => {
                 setError("");
             })
@@ -38,10 +38,10 @@ const DeliveredItemProcessing = ({navigation}) => {
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             <View style={{flexDirection: "row"}}>
                 <InputWithError
-                    placeholder="Barcode"
+                    placeholder="Release code"
                     style={{flex: 6, marginRight: 8}}
-                    name="barcode"
-                    value={query.barcode}
+                    name="releaseCode"
+                    value={releaseCode}
                     onChangeText={onChangeText}
                 />
                 <Button
