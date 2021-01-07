@@ -6,12 +6,17 @@ import {Button, InputWithError} from "_atoms";
 import {processRequest} from "_requests";
 import {useRequest} from "_hooks";
 import {ErrorText} from "_atoms";
+import {useOfflineRequest} from "_hooks";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
 
 const ItemProcessing = ({navigation, route: {params}}) => {
-    const [request, requesting] = useRequest(processRequest);
+    // const [request, requesting] = useRequest(processRequest);
+    const [request, requesting] = useOfflineRequest({
+        url: "/cargo/batch/event",
+        method: "POST",
+    });
     const [barCodes, setBarCodes] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [barcode, setBarcode] = useState({});

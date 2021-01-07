@@ -10,6 +10,7 @@ import {ProcessingList} from "_molecules";
 import {Chip} from "react-native-paper";
 import {Dialog, Paragraph, Portal} from "react-native-paper";
 import {FlatList} from "react-native";
+import {useOfflineRequest} from "_hooks";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -28,8 +29,11 @@ const DeliveredItemProcessing = ({
     const [modalVisible, setModalVisible] = useState(false);
     const [editedCode, setEdited] = useState({});
     const [visible, setVisible] = useState(false);
-
-    const [request, requesting] = useRequest(releaseRequest);
+    const [request, requesting] = useOfflineRequest({
+        url: "/cargo/release",
+        method: "POST",
+    });
+    // const [request, requesting] = useRequest(releaseRequest);
 
     useEffect(() => {
         const l = releaseCodes.length;
@@ -58,16 +62,15 @@ const DeliveredItemProcessing = ({
     };
     const release = () => {
         hideDialog();
-        releaseCodes.forEach((code) => {
-            request({release_code: code.toString()})
-                .then((r) => {
-                    setError("");
-                })
-                .catch((e) => {
-                    try {
-                        setError(e.response.data.message);
-                    } catch (error) {}
-                });
+        releaseCodes.forEach(async (code) => {
+            try {
+                await request({release_code: code});
+                setError("");
+            } catch (e) {
+                try {
+                    setError(e.response.data.message);
+                } catch (error) {}
+            }
         });
     };
     const preReleaseCheck = () => {
