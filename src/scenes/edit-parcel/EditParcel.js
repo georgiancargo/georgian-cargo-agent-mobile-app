@@ -14,6 +14,7 @@ import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
 import {ScrollView} from "react-native-gesture-handler";
+import { ExtraChargesTable } from "_molecules";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -116,6 +117,12 @@ const EditParcel = ({
             .catch((e) => {})
             .finally(() => setValidating(false));
     };
+    const removeExtraCharge = (index) => {
+        const newExtra = parcel.extra_charges.slice();
+        newExtra.splice(index, 1);
+        setParcel({...parcel, extra_charges: newExtra});
+    };
+
     return (
         <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             <View style={[s.formGroup]}>
@@ -178,6 +185,12 @@ const EditParcel = ({
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
+                <View style={{marginTop: 2}}>
+                    <ExtraChargesTable
+                        extra_charges={parcel.extra_charges}
+                        removeExtraCharge={removeExtraCharge}
+                    />
+                </View>
             </View>
             <View style={[s.formGroup]}>
                 <Button
