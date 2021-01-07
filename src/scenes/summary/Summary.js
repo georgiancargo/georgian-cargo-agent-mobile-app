@@ -18,7 +18,7 @@ const Summary = ({navigation, route: {params}}) => {
         method: "POST",
     });
     const [summaryData, setSummary] = useState({
-        coupon_code: "FREE50",
+        coupon_code: "",
         extra_charges: [],
     });
     const [sum, setSum] = useState(0);
@@ -78,15 +78,25 @@ const Summary = ({navigation, route: {params}}) => {
                             value={summaryData.coupon_code}
                         />
                     </View>
-                    <View style={[s.formGroup]}>
-                        {/* <Text style={[s.text]}>Payment method</Text> */}
-                        <SelectDropdown
-                            list={payment_methods}
-                            name="payment_method"
-                            onSelect={onChange}
-                            selectedValue={summaryData.payment_method}
-                            placeholder="Payment method"
-                        />
+                    <View style={{flexDirection: "row", marginBottom: 5}}>
+                        <View style={{flex: 5}}>
+                            <SelectDropdown
+                                list={payment_methods}
+                                name="payment_method"
+                                onSelect={onChange}
+                                selectedValue={summaryData.payment_method}
+                                placeholder="Payment method"
+                            />
+                        </View>
+                        <View
+                            style={{
+                                flex: 1,
+                                justifyContent: "flex-end",
+                                marginHorizontal: 5,
+                            }}
+                        >
+                            <Button>OK</Button>
+                        </View>
                     </View>
                     {/* <Text>{JSON.stringify(errors)}</Text> */}
                     <View style={[s.formGroup]}>
