@@ -34,7 +34,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
         //     address_line_2: user.address.addressLine2,
         //     postal_code: user.address.postalCode,
         // });
-        setUser(user);
+        setUser({...user, ...user.address});
     };
     const renderItem = ({item}) => {
         switch (typeof item) {
