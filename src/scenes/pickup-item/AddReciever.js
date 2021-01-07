@@ -4,21 +4,64 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button} from "_atoms";
 import {RadioButtonGroup} from "_molecules";
 import {Divider} from "react-native-elements";
-import {countries} from "_utils";
-import {SelectDropdown} from "_atoms";
 import {InputAutoComplete} from "_atoms";
-import { DestinationRoutesDropdown } from "_molecules";
+import {DestinationRoutesDropdown} from "_molecules";
+import {useRequest} from "_hooks";
+import {getParcelPrice} from "_requests";
+import {Chip} from "react-native-paper";
+import {ActivityIndicator} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const AddReciever = ({navigation, route}) => {
-    const {index, setParcels, parcels, newReceiver = {}, newParcel} = {
+    const {
+        index,
+        setParcels,
+        parcels,
+        newReceiver = {},
+        newParcel,
+        source_country_code,
+        parcel_type,
+        customer_type,
+    } = {
         ...route.params,
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
+    const [price, setPrice] = useState({});
+    const [request, requesting] = useRequest(getParcelPrice);
 
+    useEffect(() => {
+        request({
+            source_country_code: source_country_code,
+            destination_country_code: receiver.country_code,
+            collection_option: parcel.collection_option,
+            parcel_type: parcel_type,
+            customer_type: customer_type,
+            weight: parcel.weight,
+        })
+            .then(({data}) => {
+                setPrice({
+                    currency_code: data.prices.currency_code,
+                    freight_price: data.prices.freight_price,
+                    delivery_price: data.prices.delivery_price,
+                });
+                setParcel({
+                    ...parcel,
+                    price:
+                        data.prices.freight_price + data.prices.delivery_price,
+                });
+            })
+            .catch((e) => {});
+    }, [
+        source_country_code,
+        receiver.country_code,
+        parcel.collection_option,
+        parcel_type,
+        customer_type,
+        parcel.weight,
+    ]);
     useEffect(() => {
         setReceiver(newReceiver);
     }, [newReceiver]);
@@ -134,11 +177,24 @@ const AddReciever = ({navigation, route}) => {
                             name="collection_option"
                             checkLabels={["Home", "Office"]}
                         />
+                        <View style={{flexDirection: "row"}}>
+                            <ActivityIndicator animating={requesting} />
+                            {price.freight_price ? (
+                                <Chip mode="outlined">
+                                    {`Freight price: ${price.freight_price} ${price.currency_code}`}
+                                </Chip>
+                            ) : null}
+                            {price.delivery_price ? (
+                                <Chip mode="outlined">
+                                    {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
+                                </Chip>
+                            ) : null}
+                        </View>
                     </View>
                     {/* <View style={[s.formGroup]}>
                     <Button onPress={onPress}>Next</Button>
                 </View> */}
-                    {/* <Text>{JSON.stringify(parcel)}</Text> */}
+                    {/* <Text>{JSON.stringify(receiver.country_code)}</Text> */}
                 </View>
             </ScrollView>
             <View style={[s.formGroup]}>

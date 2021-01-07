@@ -72,27 +72,32 @@ const Summary = ({navigation, route: {params}}) => {
                     ...data,
                     source_country_code: data.sender.country_code,
                     destination_country_code: data.receiver.country_code,
-                }).then((r) => {});
-                switch (summaryData.payment_method) {
-                    case "ONLINE":
-                        pay_online({invoice_ids: r.data.invoice_ids})
-                            .then((r) => {})
-                            .catch((e) => {});
-                        break;
-                    case "CASH":
-                        pay_cash({invoice_ids: r.data.invoice_ids})
-                            .then((r) => {})
-                            .catch((e) => {});
-                        break;
-                    case "BANK":
-                        pay_bank({invoice_ids: r.data.invoice_ids})
-                            .then((r) => {})
-                            .catch((e) => {});
-                        break;
+                }).then((r) => {
+                    const payload = {
+                        invoice_ids: r.data.cargo.invoice.invoice_id,
+                    };
 
-                    default:
-                        break;
-                }
+                    switch (summaryData.payment_method) {
+                        case "ONLINE":
+                            pay_online(payload)
+                                .then((r) => {})
+                                .catch((e) => {});
+                            break;
+                        case "CASH":
+                            pay_cash(payload)
+                                .then((r) => {})
+                                .catch((e) => {});
+                            break;
+                        case "BANK":
+                            pay_bank(payload)
+                                .then((r) => {})
+                                .catch((e) => {});
+                            break;
+
+                        default:
+                            break;
+                    }
+                });
                 setErrors("");
             } catch (error) {
                 try {
