@@ -5,6 +5,7 @@ import {Paragraph, Chip} from "react-native-paper";
 const ExtraChargesList = ({
     extra_charges = [],
     removeExtraCharge: rm = () => {},
+    disabled = false,
 }) => {
     const renderItem = ({item, index}) => {
         return (
@@ -12,6 +13,7 @@ const ExtraChargesList = ({
                 onClose={() => rm(index)}
                 mode="outlined"
                 style={{marginRight: 3}}
+                disabled={disabled}
             >
                 {`${item.note}: ${item.amount}`}
             </Chip>

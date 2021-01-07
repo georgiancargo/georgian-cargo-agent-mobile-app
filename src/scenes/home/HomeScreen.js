@@ -49,7 +49,7 @@ const Home = ({navigation}) => {
         <View style={s.container}>
             <View style={s.logo}>
                 <Text>Logo</Text>
-                <Text>{JSON.stringify(auth.agent)}</Text>
+                {/* <Text>{JSON.stringify(auth.agent)}</Text> */}
             </View>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>
