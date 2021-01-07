@@ -65,14 +65,20 @@ const ItemProcessingScanner = ({navigation, route: {params}}) => {
                     setBarcode={setBarcode}
                     save={save}
                 />
-                <ProcessingList
-                    barCodes={barcodes}
-                    remove={remove}
-                    edit={edit}
-                />
-                <Button onPress={() => navigation.navigate("Home")}>
-                    Done
-                </Button>
+                <View style={{flex: 1}}>
+                    <View style={{flex: 8}}>
+                        <ProcessingList
+                            barCodes={barcodes}
+                            remove={remove}
+                            edit={edit}
+                        />
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Button onPress={() => navigation.navigate("Home")}>
+                            Done
+                        </Button>
+                    </View>
+                </View>
             </View>
             {/* </ScrollView> */}
         </>

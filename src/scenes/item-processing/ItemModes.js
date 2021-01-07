@@ -14,7 +14,7 @@ const ItemModes = ({navigation}) => {
     const buttons = ["Proccessed Mode", "In Transit Mode", "Arrived Mode", "Recieved Mode", "Delayed Mode"];
     const modes = ["PROCESS", "TRANSIT", "ARRIVE", "RECEIVE", "DELAY"];
     const [modalVisible, setModalVisible] = useState(false);
-    const showModal = (parcel) => setModalVisible(true);
+    const showModal = () => setModalVisible(true);
     const hideModal = () => setModalVisible(false);
     
     const goToScanner = (index) => {
@@ -38,7 +38,7 @@ const ItemModes = ({navigation}) => {
                     <View style={[s.formGroup]}>
                         <InputWithError
                             name="data"
-                            placeholder="Number of cargos"
+                            placeholder="Number of release codes"
                             onChangeText={onChange}
                             value={num.toString()}
                             isNumber
