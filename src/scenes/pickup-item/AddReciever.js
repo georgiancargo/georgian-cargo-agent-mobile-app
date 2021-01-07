@@ -1,15 +1,15 @@
 import React, {useState, useEffect} from "react";
 import {ScrollView, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {InputWithError, Button} from "_atoms";
-import {RadioButtonGroup} from "_molecules";
-import {Divider} from "react-native-elements";
-import {InputAutoComplete} from "_atoms";
-import {DestinationRoutesDropdown} from "_molecules";
+import {InputWithError, Button, InputAutoComplete} from "_atoms";
+import {
+    DestinationRoutesDropdown,
+    ExtraChargesList,
+    RadioButtonGroup,
+} from "_molecules";
 import {useRequest} from "_hooks";
 import {getParcelPrice} from "_requests";
-import {Chip} from "react-native-paper";
-import {ActivityIndicator} from "react-native-paper";
+import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -30,6 +30,23 @@ const AddReciever = ({navigation, route}) => {
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
     const [price, setPrice] = useState({});
+    const [extra, setExtra] = useState({note: "", amount: ""});
+    const onExtraChange = (name, value)=>{
+        setExtra({...extra, [name]: value});
+    }
+    const onAdd = () => {
+        const newExtra = parcel.extra_charges
+            ? parcel.extra_charges.slice()
+            : [];
+        newExtra.push(extra);
+        setExtra({note: "", amount: ""});
+        setParcel({...parcel, extra_charges: newExtra});
+    };
+    const removeExtraCharge = (index) => {
+        const newExtra = parcel.extra_charges.slice();
+        newExtra.splice(index, 1);
+        setParcel({...parcel, extra_charges: newExtra});
+    };
     const [request, requesting] = useRequest(getParcelPrice);
 
     useEffect(() => {
@@ -157,16 +174,40 @@ const AddReciever = ({navigation, route}) => {
                             />
                         </View>
                     </View>
-                    <Divider style={{backgroundColor: "blue"}} />
-                    <Divider
-                        style={{backgroundColor: "blue", marginBottom: 10}}
-                    />
+                    <Divider />
+                    <Divider style={{marginBottom: 10}} />
                     <View style={[s.formGroup]}>
                         <Form
                             labels={parcelLabels}
                             keys={parcelKeys}
                             receiver={parcel}
                             onChange={onChangeParcel}
+                        />
+                        <View style={{flexDirection: "row"}}>
+                            <View style={{flex: 2}}>
+                                <InputWithError
+                                    name="note"
+                                    placeholder="Note"
+                                    onChangeText={onExtraChange}
+                                    value={extra.note}
+                                />
+                            </View>
+                            <View style={{flex: 1, marginHorizontal: 3}}>
+                                <InputWithError
+                                    name="amount"
+                                    placeholder="Amount"
+                                    onChangeText={onExtraChange}
+                                    value={extra.amount.toString()}
+                                    isNumber
+                                />
+                            </View>
+                            <View style={{flex: 1, justifyContent: "flex-end"}}>
+                                <Button onPress={onAdd}>add</Button>
+                            </View>
+                        </View>
+                        <ExtraChargesList
+                            extra_charges={parcel.extra_charges}
+                            removeExtraCharge={removeExtraCharge}
                         />
                         {/* <View style={[s.formGroup]}> */}
                         <RadioButtonGroup
@@ -177,7 +218,7 @@ const AddReciever = ({navigation, route}) => {
                             name="collection_option"
                             checkLabels={["Home", "Office"]}
                         />
-                        <View style={{flexDirection: "row"}}>
+                        <View style={{flexDirection: "row", marginBottom: 5}}>
                             <ActivityIndicator animating={requesting} />
                             {price.freight_price ? (
                                 <Chip mode="outlined">
@@ -196,10 +237,10 @@ const AddReciever = ({navigation, route}) => {
                 </View> */}
                     {/* <Text>{JSON.stringify(receiver.country_code)}</Text> */}
                 </View>
+                <View style={[s.formGroup, s.pb3]}>
+                    <Button onPress={onSave}>Add</Button>
+                </View>
             </ScrollView>
-            <View style={[s.formGroup]}>
-                <Button onPress={onSave}>Add</Button>
-            </View>
         </>
     );
 };

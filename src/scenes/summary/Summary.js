@@ -9,7 +9,7 @@ import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
-import {bankRequest, onlineRequest, cashRequest} from "_requests";
+import {paymentRequest} from "_requests";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -21,9 +21,7 @@ const Summary = ({navigation, route: {params}}) => {
         method: "POST",
     });
 
-    const [pay_cash] = useRequest(cashRequest);
-    const [pay_online] = useRequest(onlineRequest);
-    const [pay_bank] = useRequest(bankRequest);
+    const [pay] = useRequest(paymentRequest);
 
     const {auth} = useContext(AuthContext);
     const getCash = auth.agent.privileges.includes("COLLECT_CASH_PAYMENTS");
@@ -31,8 +29,21 @@ const Summary = ({navigation, route: {params}}) => {
 
     const [summaryData, setSummary] = useState({
         coupon_code: "",
-        payment_methods: "ONLINE",
-        extra_charges: [],
+        payment_method: "ONLINE",
+        extra_charges: [
+            {
+                note: "VAT",
+                amount: 123,
+            },
+            {
+                note: "VAT",
+                amount: 123,
+            },
+            {
+                note: "VAT",
+                amount: 123,
+            },
+        ],
     });
     const [sum, setSum] = useState(0);
     const [errors, setErrors] = useState([]);
@@ -65,39 +76,18 @@ const Summary = ({navigation, route: {params}}) => {
     };
 
     const onCheckout = () => {
+        const invoice_ids = [];
+
         parcels.forEach(async (data) => {
+            const payload = {
+                ...summaryData,
+                ...data,
+                source_country_code: data.sender.country_code,
+                destination_country_code: data.receiver.country_code,
+            };
             try {
-                pickupRequest({
-                    ...summaryData,
-                    ...data,
-                    source_country_code: data.sender.country_code,
-                    destination_country_code: data.receiver.country_code,
-                }).then((r) => {
-                    const payload = {
-                        invoice_ids: r.data.cargo.invoice.invoice_id,
-                    };
-
-                    switch (summaryData.payment_method) {
-                        case "ONLINE":
-                            pay_online(payload)
-                                .then((r) => {})
-                                .catch((e) => {});
-                            break;
-                        case "CASH":
-                            pay_cash(payload)
-                                .then((r) => {})
-                                .catch((e) => {});
-                            break;
-                        case "BANK":
-                            pay_bank(payload)
-                                .then((r) => {})
-                                .catch((e) => {});
-                            break;
-
-                        default:
-                            break;
-                    }
-                });
+                const res = await pickupRequest(payload);
+                invoice_ids.push(res.data.cargo.invoice.invoice_id);
                 setErrors("");
             } catch (error) {
                 try {
@@ -105,6 +95,12 @@ const Summary = ({navigation, route: {params}}) => {
                 } catch (error) {}
             }
         });
+        pay({
+            invoice_ids: invoice_ids,
+            payment_method: summaryData.payment_method,
+        })
+            .then((e) => {})
+            .catch((e) => {});
     };
     return (
         <>

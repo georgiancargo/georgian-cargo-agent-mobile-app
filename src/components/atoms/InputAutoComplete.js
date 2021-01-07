@@ -20,6 +20,12 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             padding: 5,
             margin: 2,
             marginTop: 5,
+            position: "absolute",
+            backgroundColor:"white", 
+            zIndex:99,
+            width: "100%",
+            alignSelf:"center",
+            top:40
         },
     };
     const onPress = (user) => {
@@ -59,7 +65,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
                 .then((r) =>
                     setData(isCustomer ? r.data.customers : r.data.receivers)
                 )
-                .catch((e) => setData(["No Data"]));
+                .catch((e) => setData([]));
     }, [value]);
 
     return (

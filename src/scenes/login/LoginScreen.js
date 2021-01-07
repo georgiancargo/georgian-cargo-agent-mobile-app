@@ -41,25 +41,25 @@ const LoginScreen = ({navigation}) => {
                             .catch(() => {});
                     })
                     .catch((e) => {
-                        // setAuth({
-                        //     access_token: "Some random JWT",
-                        //     remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
-                        //     is_logged_in: true,
-                        //     agent: {
-                        //         id: "ABC123",
-                        //         username: "foo",
-                        //         privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
-                        //         enabled_routes: [
-                        //             {
-                        //                 source_country_code: "US",
-                        //                 destination_country_code: "UK",
-                        //             },
-                        //         ],
-                        //     },
-                        // }).catch(() => {
-                        //     setUser({...user, username: "help"});
-                        // })
-                        // .finally(() => navigation.navigate("Home"));
+                        setAuth({
+                            access_token: "Some random JWT",
+                            remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
+                            is_logged_in: true,
+                            agent: {
+                                id: "ABC123",
+                                username: "foo",
+                                privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
+                                routes: [
+                                    {
+                                        sourceCountryCode: "US",
+                                        destinationCountryCode: "UK",
+                                    },
+                                ],
+                            },
+                        }).catch(() => {
+                            setUser({...user, username: "help"});
+                        })
+                        .finally(() => navigation.navigate("Home"));
                         addErrors({
                             username: "Wrong username/password",
                             password: "Wrong username/password",
