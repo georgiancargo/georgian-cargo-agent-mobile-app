@@ -114,25 +114,14 @@ const Summary = ({navigation, route: {params}}) => {
                             value={summaryData.coupon_code}
                         />
                     </View>
-                    <View style={{flexDirection: "row", marginBottom: 5}}>
-                        <View style={{flex: 5}}>
-                            <SelectDropdown
-                                list={payment_methods}
-                                name="payment_method"
-                                onSelect={onChange}
-                                selectedValue={summaryData.payment_method}
-                                placeholder="Payment method"
-                            />
-                        </View>
-                        <View
-                            style={{
-                                flex: 1,
-                                justifyContent: "flex-end",
-                                marginHorizontal: 5,
-                            }}
-                        >
-                            <Button>OK</Button>
-                        </View>
+                    <View style={[s.formGroup]}>
+                        <SelectDropdown
+                            list={payment_methods}
+                            name="payment_method"
+                            onSelect={onChange}
+                            selectedValue={summaryData.payment_method}
+                            placeholder="Payment method"
+                        />
                     </View>
                     {/* <Text>{JSON.stringify(errors)}</Text> */}
                     <View style={[s.formGroup]}>
