@@ -8,3 +8,4 @@ export {default as editParcel} from "./editParcel";
 export {default as onlineRequest} from "./onlineRequest";
 export {default as cashRequest} from "./cashRequest";
 export {default as bankRequest} from "./bankRequest";
+export {default as getParcelPrice} from "./getParcelPrice";
