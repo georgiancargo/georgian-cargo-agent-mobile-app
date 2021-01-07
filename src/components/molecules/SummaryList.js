@@ -22,6 +22,7 @@ const SummaryList = ({
         "weight",
         "source",
         "dest.",
+        "price"
         // "description",
         // "notes",
         // "",
@@ -42,6 +43,9 @@ const SummaryList = ({
                     </Cell>
                     <Cell style={{justifyContent: "center"}}>
                         {parcel.receiver.country_code}
+                    </Cell>
+                    <Cell style={{justifyContent: "center"}}>
+                        {parcel.price}
                     </Cell>
                     {/* <Cell
                         style={{justifyContent: "flex-end"}}
