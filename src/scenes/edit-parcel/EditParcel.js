@@ -121,7 +121,7 @@ const EditParcel = ({
             <View style={[s.formGroup]}>
                 {keys.map((key, i) => {
                     const val = parcel[key];
-                    const isNumber = Number.isInteger(val);
+                    const isNumber = typeof val != "string";
                     return (
                         <InputWithError
                             // label={label}
