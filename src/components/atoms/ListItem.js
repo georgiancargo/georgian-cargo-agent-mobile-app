@@ -21,14 +21,14 @@ const ListItem = ({parcel: p, edit}) => {
     );
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
-            <C>{p.trackingNumber}</C>
+            <C>{p.tracking_number}</C>
             <C>{p.item.weight + " Kg"}</C>
-            <C>{p.shippingSpecs.route.sourceCountryCode} </C>
-            <C>{p.shippingSpecs.route.destinationCountryCode} </C>
-            <C>{p.shippingSpecs.senderInformation.name} </C>
-            <C>{p.shippingSpecs.receiverInformation.name} </C>
-            <C>{p.shippingSpecs.collectionOption}</C>
-            <C>{p.shippingSpecs.customerType}</C>
+            <C>{p.shipping_specs.route.source_country_code} </C>
+            <C>{p.shipping_specs.route.destination_country_code} </C>
+            <C>{p.shipping_specs.sender_information.name} </C>
+            <C>{p.shipping_specs.receiver_information.name} </C>
+            <C>{p.shipping_specs.collection_option}</C>
+            <C>{p.shipping_specs.customer_type}</C>
         </TouchableOpacity>
     );
 };

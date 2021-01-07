@@ -25,15 +25,16 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     const onPress = (user) => {
         setData([]);
         setSelected(user.name);
-        setUser({
-            name: user.name,
-            phone: user.email,
-            email: user.phone,
-            country_code: user.address.countryCode,
-            addrees_line_1: user.address.addressLine1,
-            address_line_2: user.address.addressLine2,
-            postal_code: user.address.postalCode,
-        });
+        // setUser({
+        //     name: user.name,
+        //     phone: user.email,
+        //     email: user.phone,
+        //     country_code: user.address.countryCode,
+        //     addrees_line_1: user.address.addressLine1,
+        //     address_line_2: user.address.addressLine2,
+        //     postal_code: user.address.postalCode,
+        // });
+        setUser(user);
     };
     const renderItem = ({item}) => {
         switch (typeof item) {

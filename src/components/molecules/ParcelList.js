@@ -16,23 +16,23 @@ const ParcelList = ({parcels = [], navigation}) => {
     const {colors} = useTheme();
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
 
-    const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Created at", "Release code"];
-    const keys = ["trackingNumber", "weight", "status", "sourceCountryCode", "destinationCountryCode", "collectionOption", "customerType", "parcelType", "notes", "description", "customerId", "createdAt", "releaseCode"];
+    const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Created at", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
+    const keys = ["tracking_number", "weight", "status", "source_country_code", "destination_country_code", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code",  "currency_code", "freight_price", "delivery_price", "discount"];
     const userLabels = ["Name", "Email", "Phone", "Address line 1", "Address line 2", "Postal code"];
-    const userKeys = ["name", "email", "phone", "addressLine1", "addressLine2", "postalCode"];
+    const userKeys = ["name", "email", "phone", "address_line_1", "address_line_2", "postal_code"];
    
     const showModal = (parcel) => {
-        const {shippingSpecs, item, ...p} = parcel;
+        const {shipping_specs, item, invoice, ...p} = parcel;
         const {
             route,
-            senderInformation,
-            receiverInformation,
+            sender_information,
+            receiver_information,
             ...rest
-        } = shippingSpecs;
-        const sender = senderInformation;
-        const sender_address = senderInformation.address;
-        const receiver = receiverInformation;
-        const receiver_address = receiverInformation.address;
+        } = shipping_specs;
+        const sender = sender_information;
+        const sender_address = sender_information.address;
+        const receiver = receiver_information;
+        const receiver_address = receiver_information.address;
         setParcel({
             ...p,
             ...item,
@@ -40,6 +40,7 @@ const ParcelList = ({parcels = [], navigation}) => {
             sender: {...sender, ...sender_address, address: {}},
             receiver: {...receiver, ...receiver_address, address: {}},
             ...rest,
+            ...invoice
         });
         setModalVisible(true);
     };
