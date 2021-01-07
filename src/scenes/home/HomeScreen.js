@@ -4,7 +4,7 @@ import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
 import SyncButton from "./SyncButton";
 import {useRequest} from "_hooks";
-import {getGargosRequest} from "_requests";
+import {getGargosRequest, logout as logoutRequest} from "_requests";
 import {AuthContext} from "_context";
 
 const Home = ({navigation}) => {
@@ -16,13 +16,22 @@ const Home = ({navigation}) => {
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
     const [parcels, setParcels] = useState([]);
     const [request] = useRequest(getGargosRequest);
+    const [_logout] = useRequest(logoutRequest);
 
     const goto = (route) => {
         navigation.navigate(route);
     };
     const logout = () => {
-        setAuth({isLoggedIn: false, accessToken: null, agent: {}});
-        navigation.goBack();
+        _logout()
+            .then((r) => {
+                setAuth({
+                    isLoggedIn: false,
+                    accessToken: null,
+                    agent: {privileges: []},
+                });
+                navigation.goBack();
+            })
+            .catch((e) => {});
     };
     useEffect(() => {
         request({
