@@ -8,7 +8,6 @@ import {
 } from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {PickupList, RadioButtonGroup} from "_molecules";
-import {countries} from "_utils";
 import {useValidation} from "_hooks";
 import senderDataValidations from "./PickupItemValidations";
 import { SourceRoutesDropdown } from "_molecules";
@@ -55,6 +54,9 @@ const PickupItemScreen = ({navigation}) => {
             parcels: parcels,
             newParcel: {},
             newReceiver: {},
+            source_country_code: sender.country_code,
+            parcel_type: globalSettings.parcel_type,
+            customer_type: globalSettings.customer_type,
         });
     };
 
@@ -65,6 +67,9 @@ const PickupItemScreen = ({navigation}) => {
             parcels: parcels,
             newParcel: parcel,
             newReceiver: receiver,
+            source_country_code: sender.country_code,
+            parcel_type: globalSettings.parcel_type,
+            customer_type: globalSettings.customer_type,
         });
     };
     const onChange = (name, value) => {
