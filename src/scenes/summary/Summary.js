@@ -30,20 +30,7 @@ const Summary = ({navigation, route: {params}}) => {
     const [summaryData, setSummary] = useState({
         coupon_code: "",
         payment_method: "ONLINE",
-        extra_charges: [
-            {
-                note: "VAT",
-                amount: 123,
-            },
-            {
-                note: "VAT",
-                amount: 123,
-            },
-            {
-                note: "VAT",
-                amount: 123,
-            },
-        ],
+        // extra_charges: [],
     });
     const [sum, setSum] = useState(0);
     const [errors, setErrors] = useState([]);
@@ -69,11 +56,12 @@ const Summary = ({navigation, route: {params}}) => {
         if (getBank) newMethods.push({label: "Bank", value: "BANK"});
         setPaymentMethods(newMethods);
     }, [auth]);
-    const removeExtraCharge = (index) => {
-        const newExtra = summaryData.extra_charges.slice();
-        newExtra.splice(index, 1);
-        setSummary({...summaryData, extra_charges: newExtra});
-    };
+    
+    // const removeExtraCharge = (index) => {
+    //     const newExtra = summaryData.extra_charges.slice();
+    //     newExtra.splice(index, 1);
+    //     setSummary({...summaryData, extra_charges: newExtra});
+    // };
 
     const onCheckout = () => {
         const invoice_ids = [];
@@ -125,12 +113,12 @@ const Summary = ({navigation, route: {params}}) => {
                         />
                     </View>
                     {/* <Text>{JSON.stringify(errors)}</Text> */}
-                    <View style={[s.formGroup]}>
+                    {/* <View style={[s.formGroup]}>
                         <ExtraChargesTable
                             extra_charges={summaryData.extra_charges}
                             removeExtraCharge={removeExtraCharge}
                         />
-                    </View>
+                    </View> */}
                     <ErrorText error={errors} />
                     <View style={[s.formGroup]}>
                         {/* <Text>{JSON.stringify(summaryData)}</Text> */}
