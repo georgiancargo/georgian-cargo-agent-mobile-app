@@ -21,7 +21,9 @@ const PickupItemScreen = ({navigation}) => {
 
     const [parcels, setParcels] = useState([]);
     const [sender, setSender] = useState({});
-    const [globalSettings, setGlobal] = useState({});
+    const [globalSettings, setGlobal] = useState({
+        parcel_type: "PARCEL",
+    });
 
 
 
