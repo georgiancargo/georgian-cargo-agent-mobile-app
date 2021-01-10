@@ -14,20 +14,24 @@ const ItemModes = ({navigation}) => {
     const buttons = ["Proccessed Mode", "In Transit Mode", "Arrived Mode", "Recieved Mode", "Delayed Mode"];
     const modes = ["PROCESS", "TRANSIT", "ARRIVE", "RECEIVE", "DELAY"];
     const [modalVisible, setModalVisible] = useState(false);
-    const showModal = () => setModalVisible(true);
-    const hideModal = () => setModalVisible(false);
-    
-    const goToScanner = (index) => {
-        navigation.navigate("Item Processing", {event: modes[index]});
+    const [mode, setMode] = useState(0);
+    const showModal = (i) => {
+        setModalVisible(true);
+        setMode(i);
     };
+    const hideModal = () => setModalVisible(false);
+
     const Delivered = () => {
         const [num, setNum] = useState(1);
         const onChange = (_, value) => {
             setNum(value);
         };
-        const delivered = () => {
+        const done = () => {
             hideModal();
-            navigation.navigate("Delivered Item Processing", {size: num});
+            if (mode === -1)
+                navigation.navigate("Delivered Item Processing", {size: num});
+            else
+                navigation.navigate("Item Processing", {event: modes[mode], size: num});
         };
         return (
             <ModalContainer
@@ -38,13 +42,13 @@ const ItemModes = ({navigation}) => {
                     <View style={[s.formGroup]}>
                         <InputWithError
                             name="data"
-                            placeholder="Number of release codes"
+                            placeholder="Number of codes"
                             onChangeText={onChange}
                             value={num.toString()}
                             isNumber
                         />
                     </View>
-                    <Button onPress={delivered}>Done</Button>
+                    <Button onPress={done}>Done</Button>
                 </ScrollView>
             </ModalContainer>
         );
@@ -61,11 +65,11 @@ const ItemModes = ({navigation}) => {
                 </View>
                 {buttons.map((label, i) => (
                     <View style={[s.formGroup]} key={label}>
-                        <Button onPress={() => goToScanner(i)}>{label}</Button>
+                        <Button onPress={() => showModal(i)}>{label}</Button>
                     </View>
                 ))}
                 <View style={[s.formGroup]}>
-                    <Button onPress={showModal}>Delivered Mode</Button>
+                    <Button onPress={() => showModal(-1)}>Delivered Mode</Button>
                 </View>
             </View>
         </View>

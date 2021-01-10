@@ -1,9 +1,9 @@
 import {useContext, useState} from "react";
 import useAxios from "./useAxios";
 import {AuthContext} from "_context";
-// import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
+import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
 import {parseRequest} from "_requests";
-import {setItem as set, getItem as get} from '@react-native-async-storage/async-storage';
+// import {setItem as set, getItem as get} from '@react-native-async-storage/async-storage';
 
 export default function useOfflineRequest(r, load = false) {
     const axios = useAxios();

@@ -18,7 +18,7 @@ const {s, c} = bootstrapStyleSheet;
 const DeliveredItemProcessing = ({
     navigation,
     route: {
-        params: {size: n },
+        params: {size: n},
     },
 }) => {
     const [releaseCode, setCode] = useState("");
@@ -37,8 +37,8 @@ const DeliveredItemProcessing = ({
 
     useEffect(() => {
         const l = releaseCodes.length;
-        setSize(l < n ? n - l : l - n);
-    }, releaseCodes);
+        if (l < n) setSize(n - l);
+    }, [releaseCodes]);
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
@@ -82,7 +82,7 @@ const DeliveredItemProcessing = ({
                 } catch (error) {}
             });
             showDialog();
-            checkOn = checkOn.sort();
+            checkOn = checkOn.sort((a, b) => a - b);
             const missing = [];
             for (let i = 0; i < checkOn.length - 1; i++) {
                 const a = checkOn[i];
@@ -124,55 +124,29 @@ const DeliveredItemProcessing = ({
             setCode("");
         }
     };
-    const renderItem = ({item}) => (
-        <Chip mode="outlined" style={{marginRight: 2}}>
-            {item}
-        </Chip>
-    );
     // const renderItem = ({item}) => <Text>{item}</Text>;
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
-            <Portal>
-                <Dialog visible={visible} onDismiss={hideDialog}>
-                    <Dialog.Title>Alert</Dialog.Title>
-                    <Dialog.Content>
-                        <Paragraph>
-                            {`You have entered only ${releaseCodes.length} out of ${size} Codes`}
-                        </Paragraph>
-                        <Paragraph>Missing codes are:</Paragraph>
-                        <FlatList
-                            data={missingCodes}
-                            renderItem={renderItem}
-                            keyExtractor={(item) => item.id}
-                            horizontal
-                        />
-                    </Dialog.Content>
-                    <Dialog.Actions>
-                        <Button
-                            style={{flex: 1, margin: 5}}
-                            onPress={hideDialog}
-                            mode="outlined"
-                        >
-                            Go back
-                        </Button>
-                        <Button style={{flex: 1, margin: 5}} onPress={release}>
-                            OK
-                        </Button>
-                    </Dialog.Actions>
-                </Dialog>
-            </Portal>
+            <CustomDialog
+                visible={visible}
+                hideDialog={hideDialog}
+                entered={releaseCodes.length}
+                size={n}
+                list={missingCodes}
+                onOK={release}
+            />
             <View style={[s.flex1]}>
-                <View style={{flexDirection: "row"}}>
+                <View>
                     <InputWithError
                         placeholder="Release code"
-                        style={{flex: 6, marginRight: 8}}
+                        // style={{flex: 6, marginRight: 8}}
                         name="releaseCode"
                         value={releaseCode}
                         onChangeText={onChangeText}
                         isNumber
                     />
                     <Button
-                        style={{flex: 1, height: 35, alignSelf: "flex-end"}}
+                        // style={{flex: 1, height: 35, alignSelf: "flex-end"}}
                         mode="outlined"
                         onPress={goToScanner}
                     >
@@ -213,3 +187,43 @@ const DeliveredItemProcessing = ({
 };
 
 export default DeliveredItemProcessing;
+
+const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
+    const renderItem = ({item}) => (
+        <Chip mode="outlined" style={{marginRight: 2}}>
+            {item}
+        </Chip>
+    );
+    return (
+        <Portal>
+            <Dialog visible={visible} onDismiss={hideDialog}>
+                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Content>
+                    <Paragraph>
+                        {`You have entered only ${entered} out of ${size} Codes`}
+                    </Paragraph>
+                    <Paragraph>Missing codes are:</Paragraph>
+                    <FlatList
+                        data={list}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                        horizontal
+                    />
+                </Dialog.Content>
+                <Dialog.Actions>
+                    <Button
+                        style={{flex: 1, margin: 5}}
+                        onPress={hideDialog}
+                        mode="outlined"
+                    >
+                        Go back
+                    </Button>
+                    <Button style={{flex: 1, margin: 5}} onPress={onOK}>
+                        OK
+                    </Button>
+                </Dialog.Actions>
+            </Dialog>
+        </Portal>
+    );
+};
+export {CustomDialog};
