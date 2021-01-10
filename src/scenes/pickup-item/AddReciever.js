@@ -29,7 +29,11 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
-    const [price, setPrice] = useState({});
+    const [price, setPrice] = useState({
+        currency_code: "",
+        freight_price: 0,
+        delivery_price: 0,
+    });
     const [extra, setExtra] = useState({note: "", amount: ""});
     const onExtraChange = (name, value)=>{
         setExtra({...extra, [name]: value});
@@ -223,18 +227,21 @@ const AddReciever = ({navigation, route}) => {
                             name="collection_option"
                             checkLabels={["Home", "Office"]}
                         />
-                        <View style={{flexDirection: "row", marginBottom: 5}}>
-                            <ActivityIndicator animating={requesting} />
-                            {price.freight_price ? (
-                                <Chip mode="outlined">
-                                    {`Freight price: ${price.freight_price} ${price.currency_code}`}
-                                </Chip>
-                            ) : null}
-                            {price.delivery_price ? (
-                                <Chip mode="outlined">
-                                    {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
-                                </Chip>
-                            ) : null}
+                        <View style={{marginBottom: 5}}>
+                            {requesting ? (
+                                <ActivityIndicator
+                                    animating={requesting}
+                                ></ActivityIndicator>
+                            ) : (
+                                <>
+                                    <Chip>
+                                        {`Freight price: ${price.freight_price} ${price.currency_code}`}
+                                    </Chip>
+                                    <Chip>
+                                        {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
+                                    </Chip>
+                                </>
+                            )}
                         </View>
                     </View>
                     {/* <View style={[s.formGroup]}>
