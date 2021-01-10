@@ -21,7 +21,7 @@ const ItemModes = ({navigation}) => {
         navigation.navigate("Item Processing", {event: modes[index]});
     };
     const Delivered = () => {
-        const [num, setNum] = useState("");
+        const [num, setNum] = useState(1);
         const onChange = (_, value) => {
             setNum(value);
         };
