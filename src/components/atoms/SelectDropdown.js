@@ -34,8 +34,8 @@ const SelectDropdown = ({
                 setViewStyle({...viewStyle, borderColor: colors.disabled});
                 setPickerStyle({...pickerStyle, color: colors.disabled});
             } else {
-                setPickerStyle({...pickerStyle, color: colors.accent});
-                setViewStyle({...viewStyle, borderColor: colors.primary});
+                setPickerStyle({...pickerStyle, color: colors.primary});
+                // setViewStyle({...viewStyle, borderColor: colors.primary});
             }
         } else {
             setPickerStyle({...pickerStyle, color: colors.placeholder});
