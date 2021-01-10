@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {DataTable, useTheme, Subheading} from "react-native-paper";
+import {DataTable, Subheading} from "react-native-paper";
 
 const Table = ({
     totalNumOfRows = 1,
@@ -9,7 +9,9 @@ const Table = ({
     RenderItems,
     justifyContent = "center",
 }) => {
-    const {colors, roundness} = useTheme();
+    // const {colors, roundness} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const [numberOfPages, setNumberOfPages] = useState();
     const [page, setPage] = useState(0);
     const style = {

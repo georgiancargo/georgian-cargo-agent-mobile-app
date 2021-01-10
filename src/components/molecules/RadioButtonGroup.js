@@ -1,7 +1,7 @@
 import React from "react";
 import {Text, View} from "react-native";
 import {RadioButton} from "_atoms";
-import {useTheme} from "react-native-paper";
+// import {useTheme} from "react-native-paper";
 
 const RadioButtonGroup = ({
     label,
@@ -12,7 +12,9 @@ const RadioButtonGroup = ({
     val,
     disabled,
 }) => {
-    const {colors} = useTheme();
+    // const {colors} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const style = disabled ? {color: colors.disabled} : {};
     return (
         <View

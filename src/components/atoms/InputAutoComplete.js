@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {SafeAreaView, FlatList, Text, TouchableOpacity} from "react-native";
-import {useTheme, ActivityIndicator} from "react-native-paper";
+import {ActivityIndicator} from "react-native-paper";
 import InputWithError from "./InputWithError";
 import {getUserRequest} from "_requests";
 import {useRequest} from "_hooks";
@@ -8,7 +8,9 @@ import {useRequest} from "_hooks";
 const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     const [data, setData] = useState([]);
     const [selectedValue, setSelected] = useState();
-    const {colors, roundness} = useTheme();
+    // const {colors, roundness} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const [request, requesting] = useRequest(getUserRequest);
 
     const styles = {

@@ -2,7 +2,7 @@ import React, {useState, useContext} from "react";
 import {SafeAreaView, FlatList, StyleSheet, View, Text} from "react-native";
 import {ListItem, ModalContainer, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {Divider, useTheme} from "react-native-paper";
+import {Divider} from "react-native-paper";
 import {AuthContext} from "_context";
 import { ScrollView } from "react-native";
 
@@ -13,7 +13,9 @@ const ParcelList = ({parcels = [], navigation}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [parcel, setParcel] = useState({});
     const {auth} = useContext(AuthContext);
-    const {colors} = useTheme();
+    // const {colors} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
 
     const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Created at", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];

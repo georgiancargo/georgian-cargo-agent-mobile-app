@@ -14,9 +14,9 @@ const theme = {
 
 const App = () => (
     <AuthContextProvider>
-        <PaperProvider theme={theme}>
-            <Navigator />
-        </PaperProvider>
+        {/* <PaperProvider theme={theme}> */}
+        <Navigator />
+        {/* </PaperProvider> */}
     </AuthContextProvider>
 );
 

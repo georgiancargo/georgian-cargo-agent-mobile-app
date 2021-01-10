@@ -2,10 +2,12 @@ import React from "react";
 import {StyleSheet, Text} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
-import {Chip, useTheme} from "react-native-paper";
+import {Chip} from "react-native-paper";
 
 const ListItem = ({parcel: p, edit}) => {
-    const {colors, roundness} = useTheme();
+    // const {colors, roundness} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const container = {
         flexDirection: "row",
         borderWidth: 1,

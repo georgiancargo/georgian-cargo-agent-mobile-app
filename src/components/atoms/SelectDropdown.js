@@ -3,7 +3,7 @@ import {Picker} from "@react-native-picker/picker";
 import {View, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Text} from "react-native";
-import {useTheme} from "react-native-paper";
+// import {useTheme} from "react-native-paper";
 import { ScrollView } from "react-native";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -18,7 +18,9 @@ const SelectDropdown = ({
     label,
     placeholder,
 }) => {
-    const {colors, roundness} = useTheme();
+    // const {colors, roundness} = useTheme();
+    const colors = {};
+    const roundness = 1;
     const [pickerStyle, setPickerStyle] = useState({});
     const [viewStyle, setViewStyle] = useState({
         borderWidth: 1,
