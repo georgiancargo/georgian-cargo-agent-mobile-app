@@ -116,7 +116,7 @@ const DeliveredItemProcessing = ({
         setCodes(newRelease);
     };
     const add = () => {
-        if (releaseCode !== "" && releaseCodes.indexOf(releaseCode) == -1) {
+        if (releaseCode !== "" && releaseCodes.indexOf(releaseCode) === -1) {
             const newRelease = releaseCodes.slice();
             // setSize(size - 1);
             newRelease.push(releaseCode);
