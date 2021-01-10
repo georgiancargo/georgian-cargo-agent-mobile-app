@@ -24,8 +24,8 @@ function App() {
     return (
         <NavigationContainer>
             <Navigator
-                initialRouteName={auth.is_logged_in ? "Home" : "Login"}
-                screenOptions={{header: Header}}
+                initialRouteName="Login"
+                // screenOptions={{header: Header}}
             >
                 <Screen name="Login" component={LoginScreen} />
                 <Screen name="Home" component={HomeScreen} />
