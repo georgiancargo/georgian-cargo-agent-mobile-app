@@ -48,6 +48,13 @@ const ItemModes = ({navigation}) => {
                             isNumber
                         />
                     </View>
+                    <Button
+                        onPress={hideModal}
+                        mode="outlined"
+                        style={{marginBottom: 3}}
+                    >
+                        Cancel
+                    </Button>
                     <Button onPress={done}>Done</Button>
                 </ScrollView>
             </ModalContainer>
@@ -69,7 +76,7 @@ const ItemModes = ({navigation}) => {
                     </View>
                 ))}
                 <View style={[s.formGroup]}>
-                    <Button onPress={() => showModal(-1)}>Delivered Mode</Button>
+                    <Button onPress={() => navigation.navigate("Delivered Item Processing")}>Delivered Mode</Button>
                 </View>
             </View>
         </View>
