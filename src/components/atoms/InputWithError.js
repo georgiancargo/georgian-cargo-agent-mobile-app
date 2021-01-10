@@ -1,11 +1,21 @@
 import React from "react";
-import {Text} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {TextInput, HelperText} from "react-native-paper";
+import {HelperText} from "react-native-paper";
+import {StyleSheet, TextInput, Text} from "react-native";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-
+const styles = StyleSheet.create({
+    input: {
+        minHeight: 56,
+        borderWidth: 1,
+        borderColor: "grey",
+        paddingHorizontal: 12,
+        fontSize: 16,
+    },
+    errorText: {
+        fontSize: 12,
+        color: "red",
+        marginLeft: 9,
+    },
+});
 const InputWithError = ({
     name,
     label,
@@ -26,7 +36,7 @@ const InputWithError = ({
     return (
         <>
             <TextInput
-                style={{...style}}
+                style={{...styles.input, ...style}}
                 onChangeText={onChangeWrapper}
                 label={label ? label : rest.placeholder}
                 keyboardType={isNumber ? "numeric" : "default"}
@@ -35,9 +45,9 @@ const InputWithError = ({
                 {...rest}
             />
             {info || error ? (
-                <HelperText type={error ? "error" : "info"} visible={true}>
+                <Text type={error ? "error" : "info"} style={styles.errorText}>
                     {error ? error : info}
-                </HelperText>
+                </Text>
             ) : null}
         </>
     );
