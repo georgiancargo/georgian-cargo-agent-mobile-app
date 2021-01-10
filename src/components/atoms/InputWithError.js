@@ -1,6 +1,7 @@
 import React from "react";
-import {HelperText} from "react-native-paper";
-import {StyleSheet, TextInput, Text} from "react-native";
+import {HelperText, TextInput as TI, Colors} from "react-native-paper";
+import {StyleSheet, Text} from "react-native";
+import {TextInput} from "react-native";
 
 const styles = StyleSheet.create({
     input: {
@@ -9,6 +10,15 @@ const styles = StyleSheet.create({
         borderColor: "grey",
         paddingHorizontal: 12,
         fontSize: 16,
+        borderRadius: 10,
+        // fontWeight:"bold"
+        color: "black",
+        // fontVariant:
+        // flexGrow: 1,
+        zIndex: 1,
+        color: "#000000",
+        backgroundColor: Colors.grey100,
+        marginBottom: 3,
     },
     errorText: {
         fontSize: 12,
@@ -35,6 +45,15 @@ const InputWithError = ({
     };
     return (
         <>
+            {/* <TI
+                style={style}
+                onChangeText={onChangeWrapper}
+                label={label ? label : rest.placeholder}
+                keyboardType={isNumber ? "numeric" : "default"}
+                mode={"outlined"}
+                error={error}
+                {...rest}
+            /> */}
             <TextInput
                 style={{...styles.input, ...style}}
                 onChangeText={onChangeWrapper}

@@ -8,8 +8,8 @@ import {
 } from "react-native";
 // import BootstrapStyleSheet from "react-native-bootstrap-styles";
 
-import {Button} from "react-native";
-// import {Button} from "react-native-paper";
+// import {Button} from "react-native";
+import {Button} from "react-native-paper";
 // import {ActivityIndicator, Colors} from "react-native-paper";
 
 // // const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -62,34 +62,34 @@ const ButtonWrapper = ({
         //         <Text style={[s.btnText, s.btnPrimaryText]}>{children}</Text>
         //     </View>
         // </TouchableOpacity>
-        // <Button
-        //     mode="contained"
-        //     style={style}
-        //     disabled={disabled || loading}
-        //     loading={loading}
-        //     uppercase={false}
-        //     {...rest}
-        // >
-        //     {children}
-        // </Button>
-        <TouchableOpacity
+        <Button
             mode="contained"
-            style={{
-                ...styles.button,
-                ...style,
-                backgroundColor: disabled ? "grey" : "#f5a11c",
-            }}
+            style={style}
             disabled={disabled || loading}
             loading={loading}
             uppercase={false}
             {...rest}
         >
-            {loading ? (
-                <ActivityIndicator animating={loading} color="white" />
-            ) : null}
-            {/* <ActivityIndicator animating={false} color="white" /> */}
-            <Text style={styles.text}>{children}</Text>
-        </TouchableOpacity>
+            {children}
+        </Button>
+        // <TouchableOpacity
+        //     mode="contained"
+        //     style={{
+        //         ...styles.button,
+        //         ...style,
+        //         backgroundColor: disabled ? "grey" : "#f5a11c",
+        //     }}
+        //     disabled={disabled || loading}
+        //     loading={loading}
+        //     uppercase={false}
+        //     {...rest}
+        // >
+        //     {loading ? (
+        //         <ActivityIndicator animating={loading} color="white" />
+        //     ) : null}
+        //     {/* <ActivityIndicator animating={false} color="white" /> */}
+        //     <Text style={styles.text}>{children}</Text>
+        // </TouchableOpacity>
     );
 };
 
