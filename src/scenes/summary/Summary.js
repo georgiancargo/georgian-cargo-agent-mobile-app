@@ -4,7 +4,7 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
 import {SummaryList, ExtraChargesTable} from "_molecules";
-import {Divider} from "react-native-elements";
+import {Divider} from "react-native-paper";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {AuthContext} from "_context";
@@ -56,7 +56,7 @@ const Summary = ({navigation, route: {params}}) => {
         if (getBank) newMethods.push({label: "Bank", value: "BANK"});
         setPaymentMethods(newMethods);
     }, [auth]);
-    
+
     // const removeExtraCharge = (index) => {
     //     const newExtra = summaryData.extra_charges.slice();
     //     newExtra.splice(index, 1);
@@ -92,48 +92,30 @@ const Summary = ({navigation, route: {params}}) => {
     };
     return (
         <>
-            <ScrollView style={[s.container, s.bgWhite]}>
-                <View style={[s.container, s.p3]}>
-                    <View style={[s.formGroup]}>
-                        <InputWithError
-                            // label="Coupon"
-                            name="coupon_code"
-                            placeholder="Coupon"
-                            onChangeText={onChange}
-                            value={summaryData.coupon_code}
-                        />
-                    </View>
-                    <View style={[s.formGroup]}>
-                        <SelectDropdown
-                            list={payment_methods}
-                            name="payment_method"
-                            onSelect={onChange}
-                            selectedValue={summaryData.payment_method}
-                            placeholder="Payment method"
-                        />
-                    </View>
-                    {/* <Text>{JSON.stringify(errors)}</Text> */}
-                    {/* <View style={[s.formGroup]}>
-                        <ExtraChargesTable
-                            extra_charges={summaryData.extra_charges}
-                            removeExtraCharge={removeExtraCharge}
-                        />
-                    </View> */}
-                    <ErrorText error={errors} />
-                    <View style={[s.formGroup]}>
-                        {/* <Text>{JSON.stringify(summaryData)}</Text> */}
-                        <SummaryList parcels={parcels} />
-                    </View>
-                    <Divider
-                        style={{backgroundColor: "blue", marginBottom: 10}}
+            <View style={{flex: 1, backgroundColor: "white", padding: 15}}>
+                <View>
+                    <InputWithError
+                        name="coupon_code"
+                        placeholder="Coupon"
+                        onChangeText={onChange}
+                        value={summaryData.coupon_code}
                     />
+                    <SelectDropdown
+                        list={payment_methods}
+                        name="payment_method"
+                        onSelect={onChange}
+                        selectedValue={summaryData.payment_method}
+                        placeholder="Payment method"
+                    />
+                    <ErrorText error={errors} />
+                    <Divider style={{marginBottom: 10}} />
                     <View style={[s.formGroup]}>
                         <Text>Sum is: {sum}</Text>
-                        {/* <SummaryList parcels={parcels} /> */}
                     </View>
                 </View>
-            </ScrollView>
-            <View style={[s.formGroup]}>
+                <SummaryList parcels={parcels} />
+            </View>
+            <View style={{marginBottom: 10}}>
                 {/* <Text>{JSON.stringify(loading)}</Text> */}
                 <Button onPress={onCheckout} loading={requesting}>
                     Checkout

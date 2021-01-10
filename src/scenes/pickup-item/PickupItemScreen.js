@@ -38,6 +38,87 @@ const PickupItemScreen = ({navigation}) => {
             collection_option: "OFFICE",
             customer_type: "CORPORATE",
             parcel_type: "FREIGHT",
+            extra_charges: [
+                {
+                    note: "Dishwasher",
+                    amount: 10,
+                },
+            ],
+        },
+        {
+            tracking_number: "12342134",
+            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
+            weight: 4.604,
+            description: "Laudantium",
+            receiver: {
+                name: "Fae Willms",
+                email: "albertha68@gmail.com",
+                phone: "(578) 682-8373",
+                country_code: "SM",
+                address_line_1:
+                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
+                address_line_2: "Suite 471",
+                postal_code: "76317-3071",
+            },
+            collection_option: "OFFICE",
+            customer_type: "CORPORATE",
+            parcel_type: "FREIGHT",
+            extra_charges: [
+                {
+                    note: "Dishwasher",
+                    amount: 10,
+                },
+            ],
+        },
+        {
+            tracking_number: "12342134",
+            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
+            weight: 4.604,
+            description: "Laudantium",
+            receiver: {
+                name: "Fae Willms",
+                email: "albertha68@gmail.com",
+                phone: "(578) 682-8373",
+                country_code: "SM",
+                address_line_1:
+                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
+                address_line_2: "Suite 471",
+                postal_code: "76317-3071",
+            },
+            collection_option: "OFFICE",
+            customer_type: "CORPORATE",
+            parcel_type: "FREIGHT",
+            extra_charges: [
+                {
+                    note: "Dishwasher",
+                    amount: 10,
+                },
+            ],
+        },
+        {
+            tracking_number: "12342134",
+            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
+            weight: 4.604,
+            description: "Laudantium",
+            receiver: {
+                name: "Fae Willms",
+                email: "albertha68@gmail.com",
+                phone: "(578) 682-8373",
+                country_code: "SM",
+                address_line_1:
+                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
+                address_line_2: "Suite 471",
+                postal_code: "76317-3071",
+            },
+            collection_option: "OFFICE",
+            customer_type: "CORPORATE",
+            parcel_type: "FREIGHT",
+            extra_charges: [
+                {
+                    note: "Dishwasher",
+                    amount: 10,
+                },
+            ],
         },
     ]);
     const [sender, setSender] = useState({
@@ -131,20 +212,20 @@ const PickupItemScreen = ({navigation}) => {
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
-                {/* <View style={[s.formGroup]}> */}
-                <InputAutoComplete
-                    name="name"
-                    value={sender.name}
-                    error={errors.name}
-                    // label={label}
-                    placeholder="Sender name"
-                    onChangeText={onChange}
-                    setUser={setSender}
-                    isCustomer
-                />
-                {/* </View> */}
-                <ScrollView>
-            <View style={{borderWidth: 0, flex: 5.1}}>
+            {/* <View style={[s.formGroup]}> */}
+            <InputAutoComplete
+                name="name"
+                value={sender.name}
+                error={errors.name}
+                // label={label}
+                placeholder="Sender name"
+                onChangeText={onChange}
+                setUser={setSender}
+                isCustomer
+            />
+            {/* </View> */}
+            <ScrollView>
+                <View style={{borderWidth: 0, flex: 5.1}}>
                     {keys.map((key, i) => (
                         // <View style={[s.formGroup]} key={label}>
                         <InputWithError
@@ -182,35 +263,39 @@ const PickupItemScreen = ({navigation}) => {
                         name="customer_type"
                         checkLabels={["Individual", "Corporate"]}
                     />
-                <View style={{borderWidth: 0,  flex: 0.5, flexDirection:"row"}}>
-                {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
-                    <Button style={[btnGroup]} onPress={addReceiver}>
-                        Add Parcel
-                    </Button>
-                    <Button
-                        style={[btnGroup]}
-                        onPress={gotoSummary}
-                        disabled={hasErrors}
+                    <View
+                        style={{
+                            borderWidth: 0,
+                            flex: 0.5,
+                            flexDirection: "row",
+                        }}
                     >
-                        Summary
-                    </Button>
-                </View>
+                        {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
+                        <Button style={[btnGroup]} onPress={addReceiver}>
+                            Add Parcel
+                        </Button>
+                        <Button
+                            style={[btnGroup]}
+                            onPress={gotoSummary}
+                            disabled={hasErrors}
+                        >
+                            Summary
+                        </Button>
+                    </View>
 
-                <View style={{borderWidth: 0, flex: 3}}>
-                    {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
-                    {/* <Text>{JSON.stringify(sender)}</Text> */}
-                    {/* <Text>{JSON.stringify(parcels)}</Text> */}
-                    {/* <Text>{JSON.stringify(notSaved)}</Text> */}
-                    <PickupList
-                        parcels={parcels}
-                        editParcel={editParcel}
-                        removeParcel={removeParcel}
-                    />
+                    <View style={{borderWidth: 0, flex: 3}}>
+                        {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
+                        {/* <Text>{JSON.stringify(sender)}</Text> */}
+                        {/* <Text>{JSON.stringify(parcels)}</Text> */}
+                        {/* <Text>{JSON.stringify(notSaved)}</Text> */}
+                        <PickupList
+                            parcels={parcels}
+                            editParcel={editParcel}
+                            removeParcel={removeParcel}
+                        />
+                    </View>
                 </View>
-        
-            </View>
-                </ScrollView>
-
+            </ScrollView>
         </View>
     );
 };

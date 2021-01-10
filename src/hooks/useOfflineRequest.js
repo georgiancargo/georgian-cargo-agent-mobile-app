@@ -1,8 +1,9 @@
 import {useContext, useState} from "react";
 import useAxios from "./useAxios";
 import {AuthContext} from "_context";
-import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
+// import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
 import {parseRequest} from "_requests";
+import {setItem as set, getItem as get} from '@react-native-async-storage/async-storage';
 
 export default function useOfflineRequest(r, load = false) {
     const axios = useAxios();
@@ -26,7 +27,7 @@ export default function useOfflineRequest(r, load = false) {
             data: data,
         };
 
-        if (isConnected)
+        if (await isConnected())
             return parseRequest(axios, config)
                 .catch((e) => {
                     // switch (e.response.status) {
@@ -52,7 +53,10 @@ export default function useOfflineRequest(r, load = false) {
                     return set(store, JSON.stringify(requests));
                 })
                 .then(() => {})
-                .catch((e) => {});
+                .catch((e) => {})
+                .finally(() => {
+                    setIsProcessing(false);
+                });
         }
     };
     return [send, isProcessing];
