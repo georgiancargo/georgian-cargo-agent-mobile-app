@@ -30,14 +30,31 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
         <>
             <View style={[s.flexRow, s.flexWrap]}>
                 {isParcel ? (
-                    <Print
-                        obj={parcel}
-                        arr={parcelKeys}
-                        labels={parcelLabels}
-                    />
+                    <View style={styles.side}>
+                        <Text style={[s.text]}>
+                            Tracking number: {parcel.tracking_number}
+                        </Text>
+                        <Text style={[s.text]}>weight: {parcel.weight}</Text>
+                        <Text style={[s.text]}>
+                            source country: {parcel.sender.country_code}
+                        </Text>
+                        <Text style={[s.text]}>
+                            dest. country: {parcel.receiver.country_code}
+                        </Text>
+                        <Text style={[s.text]}>
+                            description: {parcel.description}
+                        </Text>
+                        <Text style={[s.text]}>notes: {parcel.notes}</Text>
+                        <Text style={[s.text]}>extra charges: </Text>
+                        {parcel.extra_charges.map((c, i) => (
+                            <Text
+                                key={i + " " + parcel.tracking_number}
+                            >{`    ${c.note}: ${c.amount}`}</Text>
+                        ))}
+                    </View>
                 ) : (
                     <View>
-                        <Text>{price}</Text>
+                        <Text>{price ? price : 0}</Text>
                     </View>
                 )}
             </View>
@@ -45,31 +62,9 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
     );
 };
 
-const Print = ({arr, obj = {}, labels}) => {
-    return (
-        <View style={styles.side}>
-            {arr.map((key, i) => (
-                // <TouchableOpacity style={[s.btnTouchable, s.m1]} key={key}>
-                // <View style={[s.btn, s.btnOutlineInfo]}>
-                <Text style={[s.text]} key={key}>
-                    {labels[i] + ": " + obj[key]}
-                </Text>
-                // </View>
-                // </TouchableOpacity>
-            ))}
-        </View>
-    );
-};
-
 const styles = StyleSheet.create({
     side: {
         flex: 1,
-        // flexDirection: "row",
-        // flexWrap: "wrap",
-        // borderWidth: 1,
-        // borderRadius: 20,
-        // borderColor: GRAY_MEDIUM,
-        // padding: 5,
     },
     text: {
         alignContent: "flex-end",
