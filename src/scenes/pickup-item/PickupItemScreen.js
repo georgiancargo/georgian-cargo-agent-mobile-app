@@ -19,8 +19,36 @@ const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const {errors, validate, hasErrors} = useValidation(senderDataValidations);
 
-    const [parcels, setParcels] = useState([]);
-    const [sender, setSender] = useState({});
+    const [parcels, setParcels] = useState([
+        {
+            tracking_number: "12342134",
+            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
+            weight: 4.604,
+            description: "Laudantium",
+            receiver: {
+                name: "Fae Willms",
+                email: "albertha68@gmail.com",
+                phone: "(578) 682-8373",
+                country_code: "SM",
+                address_line_1:
+                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
+                address_line_2: "Suite 471",
+                postal_code: "76317-3071",
+            },
+            collection_option: "OFFICE",
+            customer_type: "CORPORATE",
+            parcel_type: "FREIGHT",
+        },
+    ]);
+    const [sender, setSender] = useState({
+        name: "Zelma Johnston",
+        email: "angela94@bergnaum.info",
+        phone: "+1-570-726-3894",
+        country_code: "TV",
+        address_line_1: "54330 Terrence Rest Suite 675 South Charity, NJ 84125",
+        address_line_2: "Apt. 165",
+        postal_code: "46892",
+    });
     const [globalSettings, setGlobal] = useState({
         parcel_type: "PARCEL",
     });

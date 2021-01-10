@@ -24,10 +24,14 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
-                    <PickupListItem reciever={receiver} edit={edit} />
-                </View>
-                <View style={[s.tableHeadCol, s.flex6]}>
-                    <PickupListItem isParcel parcel={parcel} edit={edit} />
+                    <TouchableOpacity onPress={edit}>
+                        <Text>name: {receiver.name}</Text>
+                        <Text>phone: {receiver.phone}</Text>
+                        <Text>email: {receiver.email}</Text>
+                        <Text>tracking number: {parcel.tracking_number}</Text>
+                        <Text>weight: {parcel.weight}</Text>
+                        <Text>description: {parcel.description}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
                     <TouchableOpacity
@@ -66,9 +70,6 @@ const Header = () => {
         <View style={[s.tableHead]}>
             <View style={[s.tableHeadCol]}>
                 <Text style={[s.text, s.flex1]}>#</Text>
-            </View>
-            <View style={[s.tableHeadCol, s.flex6]}>
-                <Text style={[s.text, s.textCenter]}>Reciever</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex6]}>
                 <Text style={[s.text, s.textCenter]}>Parcel</Text>
