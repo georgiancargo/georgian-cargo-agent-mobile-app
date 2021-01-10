@@ -19,7 +19,7 @@ const SelectDropdown = ({
     placeholder,
 }) => {
     const {colors, roundness} = useTheme();
-    const [pickerStyle, setPickerStyle] = useState({height: 35});
+    const [pickerStyle, setPickerStyle] = useState({});
     const [viewStyle, setViewStyle] = useState({
         borderWidth: 1,
         borderColor: colors.backdrop,

@@ -21,11 +21,11 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             margin: 2,
             marginTop: 5,
             position: "absolute",
-            backgroundColor:"white", 
-            zIndex:99,
+            backgroundColor: "white",
+            zIndex: 99,
             width: "100%",
-            alignSelf:"center",
-            top:40
+            alignSelf: "center",
+            top: 75,
         },
     };
     const onPress = (user) => {
@@ -50,18 +50,22 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             default:
                 return (
                     <TouchableOpacity
-                        style={{borderBottomWidth: 1, height: 30}}
+                        style={{borderBottomWidth: 1, borderBottomColor: '#ddd', padding: 15}}
                         onPress={() => onPress(item)}
                     >
-                        <Text>{item.name}</Text>
+                        <Text style={{fontSize: 15}}>{item.name}</Text>
                     </TouchableOpacity>
                 );
         }
     };
 
     useEffect(() => {
-        if (value && selectedValue != value && value.length >= 1)
-            request({name: value})
+        if (value && selectedValue !== value && value.length >= 1)
+            request(
+                {
+                    name: value
+                }
+            )
                 .then((r) =>
                     setData(isCustomer ? r.data.customers : r.data.receivers)
                 )
@@ -71,10 +75,10 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     return (
         <>
             <InputWithError value={value} {...props} />
-            {(data && value && value != "" && data.length > 0) || requesting ? (
+            {(data && value && value !== "" && data.length > 0) || requesting ? (
                 <SafeAreaView style={styles.dropdown}>
                     {requesting ? (
-                        <ActivityIndicator animating={requesting} />
+                        <ActivityIndicator animating={requesting}/>
                     ) : (
                         <FlatList
                             data={data}

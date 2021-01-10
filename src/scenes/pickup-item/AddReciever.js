@@ -183,6 +183,11 @@ const AddReciever = ({navigation, route}) => {
                             receiver={parcel}
                             onChange={onChangeParcel}
                         />
+                        <Divider />
+                        <Divider style={{marginBottom: 10}} />
+                        <Divider />
+                        <Divider style={{marginBottom: 10}} />
+                        <Text>Add new extra charge</Text>
                         <View style={{flexDirection: "row"}}>
                             <View style={{flex: 2}}>
                                 <InputWithError

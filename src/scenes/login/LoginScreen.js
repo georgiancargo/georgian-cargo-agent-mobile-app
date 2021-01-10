@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect} from "react";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet, Text, Image} from "react-native";
 import {useRequest} from "_hooks";
 import {InputWithError, Button} from "_atoms";
 import {loginRequest} from "_requests";
@@ -7,9 +7,8 @@ import {AuthContext} from "_context";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import loginScreenValidations from "./LoginScreenValidations";
 import {useValidation} from "_hooks";
+import logoImage from './logo.png'
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
 
 const LoginScreen = ({navigation}) => {
     const [user, setUser] = useState({username: "admin", password: "12341234"});
@@ -22,7 +21,8 @@ const LoginScreen = ({navigation}) => {
     const onChangeText = (name, text) => {
         const newUser = {...user, [name]: text};
         setUser(newUser);
-        validate(newUser, name).catch((e) => {});
+        validate(newUser, name).catch((e) => {
+        });
     };
     const login = () => {
         validate(user)
@@ -38,63 +38,53 @@ const LoginScreen = ({navigation}) => {
                             .then((r) => {
                                 navigation.navigate("Home");
                             })
-                            .catch(() => {});
+                            .catch(() => {
+                            });
                     })
                     .catch((e) => {
-                        setAuth({
-                            access_token: "Some random JWT",
-                            remember_token: "Some random refresh JWT", // Generated only if {"remember_token": true}
-                            is_logged_in: true,
-                            agent: {
-                                id: "ABC123",
-                                username: "foo",
-                                privileges: ["PICKUP_CARGO", "HANDLE_CARGO"],
-                                routes: [
-                                    {
-                                        sourceCountryCode: "US",
-                                        destinationCountryCode: "UK",
-                                    },
-                                ],
-                            },
-                        }).catch(() => {
-                            setUser({...user, username: "help"});
-                        })
-                        .finally(() => navigation.navigate("Home"));
                         addErrors({
                             username: "Wrong username/password",
                             password: "Wrong username/password",
                         });
                     });
             })
-            .catch((e) => {});
+            .catch((e) => {
+            });
     };
     return (
         <View style={styles.container}>
-            <View style={[s.formGroup]}>
+            <View style={styles.logo}>
+                <Image source={logoImage} style={styles.logoImage} />
+            </View>
+            <View style={styles.formGroup}>
                 <InputWithError
                     name="username"
                     error={errors.username}
                     value={user.username}
-                    label="username"
+                    label="Username"
                     placeholder="Username"
                     onChangeText={onChangeText}
+                    style={styles.field}
                 />
                 <InputWithError
                     name="password"
                     error={errors.password}
                     value={user.password}
-                    label="password"
+                    label="Password"
                     placeholder="Password"
                     onChangeText={onChangeText}
                     secureTextEntry={true}
+                    style={styles.field}
                 />
-            </View>
-            {/* <Text>{JSON.stringify(error)}</Text> */}
-            <View style={styles.formButton}>
-                <Button onPress={login} loading={requesting}>
+                <Button
+                    onPress={login}
+                    loading={requesting}
+                    style={styles.field}
+                >
                     Login
                 </Button>
             </View>
+            <View style={styles.elasticBottom}/>
         </View>
     );
 };
@@ -102,31 +92,27 @@ const LoginScreen = ({navigation}) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         justifyContent: "center",
-        padding: 10,
-        paddingTop: "20%",
-        paddingBottom: "20%",
     },
-    formInput: {
+    logo: {
         flex: 2,
-        // margin: 10,
-        // borderWidth: 10,
-        // borderColor: "#fff",
-        // alignContent:"stretch",
-        // alignItems:"stretch",
+        justifyContent: "center",
+        alignItems: "center"
     },
-    formButton: {
-        flex: 5,
-        // margin: 30,
-        // borderWidth: 10,
-        // justifyContent: "flex-end",
-        // margin: 20,
-        // alignItems: "stretch",
+    formGroup: {
+        flex: 4,
+        justifyContent: "center",
     },
-    button: {
+    field: {
+        margin: 5,
+    },
+    elasticBottom: {
         flex: 1,
     },
+    logoImage:{
+        width: 300,
+        resizeMode: 'contain'
+    }
 });
 
 export default LoginScreen;

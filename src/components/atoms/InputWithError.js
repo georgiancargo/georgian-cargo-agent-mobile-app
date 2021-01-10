@@ -26,11 +26,11 @@ const InputWithError = ({
     return (
         <>
             <TextInput
-                style={{height: 35, ...style}}
-                mode="outlined"
+                style={{...style}}
                 onChangeText={onChangeWrapper}
                 label={label ? label : rest.placeholder}
                 keyboardType={isNumber ? "numeric" : "default"}
+                mode={"outlined"}
                 error={error}
                 {...rest}
             />

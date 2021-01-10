@@ -58,15 +58,13 @@ const ParcelList = ({parcels = [], navigation}) => {
         const style = {
             dd: {
                 flex: 4.5,
-                fontSize: 13,
-                borderRightWidth: 1,
-                borderBottomWidth: 1,
                 marginRight: 5,
+                fontWeight: 'bold',
                 borderColor: colors.disabled,
             },
-            dt: {flex: 5, fontSize: 13},
-            row: {flexDirection: "row", marginBottom: 3},
-            buttonRow: {flexDirection: "row", marginTop: 3},
+            dt: {flex: 5},
+            row: {flexDirection: "row", marginBottom: 5},
+            buttonRow: {flexDirection: "row", marginTop: 12},
         };
         const Parcel = () =>
             keys.map((key, i) => (

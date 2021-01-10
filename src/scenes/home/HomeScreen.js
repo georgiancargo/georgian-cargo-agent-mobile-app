@@ -1,11 +1,12 @@
 import React, {useEffect, useState, useContext} from "react";
-import {View, StyleSheet, Text} from "react-native";
+import {View, StyleSheet, Text, Image} from "react-native";
 import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
 import SyncButton from "./SyncButton";
 import {useRequest} from "_hooks";
 import {getGargosRequest, logout as logoutRequest} from "_requests";
 import {AuthContext} from "_context";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 const Home = ({navigation}) => {
     const {auth, setAuth} = useContext(AuthContext);
@@ -31,7 +32,8 @@ const Home = ({navigation}) => {
                 });
                 navigation.goBack();
             })
-            .catch((e) => {});
+            .catch((e) => {
+            });
     };
     useEffect(() => {
         request({
@@ -43,20 +45,17 @@ const Home = ({navigation}) => {
             .then((r) => {
                 setParcels(r.data.cargos);
             })
-            .catch((e) => {});
+            .catch((e) => {
+            });
     }, []);
     return (
         <View style={s.container}>
-            <View style={s.logo}>
-                <Text>Logo</Text>
-                {/* <Text>{JSON.stringify(auth.agent)}</Text> */}
-            </View>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>
                     <Button style={s.mr} onPress={logout}>
                         Logout
                     </Button>
-                    <SyncButton />
+                    <SyncButton/>
                 </View>
                 <View style={s.verticalButtons}>
                     <Button
@@ -77,7 +76,7 @@ const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={s.listContainer}>
-                <ParcelList parcels={parcels} navigation={navigation} />
+                <ParcelList parcels={parcels} navigation={navigation}/>
             </View>
         </View>
     );
@@ -93,11 +92,6 @@ const s = StyleSheet.create({
     listContainer: {
         flex: 5,
         margin: 5,
-    },
-    logo: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
     },
     buttons: {
         flex: 2,
