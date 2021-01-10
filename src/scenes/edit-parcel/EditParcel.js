@@ -200,8 +200,8 @@ const EditParcel = ({
                             disabled={!editPrices}
                         />
                     </View>
-                    <View style={{flex: 1, justifyContent: "flex-end"}}>
-                        <Button onPress={onAdd} disabled={!editPrices}>
+                    <View style={{flex: 1, paddingTop: 15, paddingBottom: 5}}>
+                        <Button onPress={onAdd} disabled={!editPrices} style={{flexGrow: 1}}>
                             add
                         </Button>
                     </View>

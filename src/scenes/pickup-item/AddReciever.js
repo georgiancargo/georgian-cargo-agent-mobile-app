@@ -210,8 +210,10 @@ const AddReciever = ({navigation, route}) => {
                                     isNumber
                                 />
                             </View>
-                            <View style={{flex: 1, justifyContent: "flex-end"}}>
-                                <Button onPress={onAdd}>add</Button>
+                            <View style={{flex: 1, paddingTop: 15, paddingBottom: 5}}>
+                                <Button onPress={onAdd} style={{flexGrow: 1}}>
+                                    add
+                                </Button>
                             </View>
                         </View>
                         <ExtraChargesList
