@@ -40,6 +40,7 @@ const PickupItemScreen = ({navigation}) => {
     const parcelType = [
         {label: "Freight", value: "FREIGHT"},
         {label: "Parcel", value: "PARCEL"},
+        {label: "Palette", value: "PALETTE"},
     ];
     
     const addReceiver = () => {
