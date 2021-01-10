@@ -74,7 +74,8 @@ const AddReciever = ({navigation, route}) => {
                         data.prices.freight_price + data.prices.delivery_price,
                 });
             })
-            .catch((e) => {});
+            .catch((e) => {
+            });
     }, [
         source_country_code,
         receiver.country_code,

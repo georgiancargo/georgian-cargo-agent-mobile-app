@@ -18,11 +18,11 @@ const {s, c} = bootstrapStyleSheet;
 const DeliveredItemProcessing = ({
     navigation,
     route: {
-        params: {size: n},
+        params: {size: n },
     },
 }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState([123, 124, 139]);
+    const [releaseCodes, setCodes] = useState([]);
     const [missingCodes, setMissing] = useState([]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
@@ -116,7 +116,7 @@ const DeliveredItemProcessing = ({
         setCodes(newRelease);
     };
     const add = () => {
-        if (releaseCode !== "" && releaseCodes.indexOf(releaseCode) == -1) {
+        if (releaseCode !== "" && releaseCodes.indexOf(releaseCode) === -1) {
             const newRelease = releaseCodes.slice();
             // setSize(size - 1);
             newRelease.push(releaseCode);

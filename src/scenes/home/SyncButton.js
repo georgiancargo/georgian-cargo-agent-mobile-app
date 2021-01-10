@@ -20,7 +20,7 @@ const SyncButton = () => {
                     setLabel("No sync");
                     setSync(false);
                 } else {
-                    setLabel("Sync Items");
+                    setLabel(`Sync ${requests.length} Items`);
                     setSync(true);
                 }
             })

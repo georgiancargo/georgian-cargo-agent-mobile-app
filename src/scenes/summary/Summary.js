@@ -79,7 +79,11 @@ const Summary = ({navigation, route: {params}}) => {
                 setErrors("");
             } catch (error) {
                 try {
-                    setErrors(error.response.data.message);
+                    if(error.response.data.data.errors.length > 0){
+                        setErrors(error.response.data.data.errors[0]);
+                    }else{
+                        setErrors(error.response.data.message);
+                    }
                 } catch (error) {}
             }
         });
