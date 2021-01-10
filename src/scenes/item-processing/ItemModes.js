@@ -76,7 +76,7 @@ const ItemModes = ({navigation}) => {
                     </View>
                 ))}
                 <View style={[s.formGroup]}>
-                    <Button onPress={() => navigation.navigate("Delivered Item Processing")}>Delivered Mode</Button>
+                    <Button onPress={() => showModal(-1)}>Delivered Mode</Button>
                 </View>
             </View>
         </View>
