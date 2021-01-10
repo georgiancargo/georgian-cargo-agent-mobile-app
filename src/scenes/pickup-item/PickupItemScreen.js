@@ -20,15 +20,10 @@ const PickupItemScreen = ({navigation}) => {
     const {errors, validate, hasErrors} = useValidation(senderDataValidations);
 
     const [parcels, setParcels] = useState([]);
-    // const [parcelsArray, setParcelsArray] = useState([]);
     const [sender, setSender] = useState({});
-    const [notSaved, setNotSaved] = useState(true);
-    const [saving, setSaving] = useState(false);
     const [globalSettings, setGlobal] = useState({});
 
-    useEffect(() => {
-        setNotSaved(true);
-    }, [parcels.length]);
+
 
     const labels = ["Sender phone", "Sender Email", "Sender addrees line 1", "Sender address line 2", "Sender address postal code"];
     const keys = ["phone", "email", "address_line_1", "address_line_2", "postal_code"];
@@ -76,11 +71,9 @@ const PickupItemScreen = ({navigation}) => {
     const onChange = (name, value) => {
         const newSender = {...sender, [name]: value};
         setSender(newSender);
-        setNotSaved(true);
         validate(newSender, name).catch((e) => {});
     };
-    const onSave = () => {
-        setSaving(true);
+    const gotoSummary = () => {
         validate(sender)
             .then((r) => {
                 if (parcels.length > 0) {
@@ -94,21 +87,10 @@ const PickupItemScreen = ({navigation}) => {
                         const r = parcelsTemp[key].receiver;
                         parcelsTemp[key].receiver = r ? r : {};
                     }
-                    setParcels(parcelsTemp);
-                    setNotSaved(false);
+                    navigation.navigate("Summary", {
+                        parcels: parcelsTemp,
+                    });
                 }
-            })
-            .catch((e) => {})
-            .finally(() => {
-                setSaving(false);
-            });
-    };
-    const gotoSummary = () => {
-        validate(sender)
-            .then((r) => {
-                navigation.navigate("Summary", {
-                    parcels: parcels,
-                });
             })
             .catch((e) => {});
     };
@@ -172,16 +154,13 @@ const PickupItemScreen = ({navigation}) => {
                     />
                 <View style={{borderWidth: 0,  flex: 0.5, flexDirection:"row"}}>
                 {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
-                    <Button style={[btnGroup]} onPress={onSave} loading={saving}>
-                        Save
-                    </Button>
                     <Button style={[btnGroup]} onPress={addReceiver}>
                         Add Parcel
                     </Button>
                     <Button
                         style={[btnGroup]}
                         onPress={gotoSummary}
-                        disabled={hasErrors || notSaved}
+                        disabled={hasErrors}
                     >
                         Summary
                     </Button>
