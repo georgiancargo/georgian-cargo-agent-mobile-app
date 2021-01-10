@@ -47,13 +47,15 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
     return (
         <>
             <SafeAreaView>
-                <FlatList
-                    data={parcels}
-                    style={[s.table]}
-                    ListHeaderComponent={Header}
-                    renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
-                />
+                {parcels.length ? (
+                    <FlatList
+                        data={parcels}
+                        style={[s.table]}
+                        ListHeaderComponent={Header}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                    />
+                ) : null}
             </SafeAreaView>
         </>
     );
