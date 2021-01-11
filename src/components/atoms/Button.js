@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         },
         shadowColor: "#000000",
         borderWidth: 0,
-        minHeight: 35,
         justifyContent: "center",
         alignItems: "center",
         flexDirection: "row",

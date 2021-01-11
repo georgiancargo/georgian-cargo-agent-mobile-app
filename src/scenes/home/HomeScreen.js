@@ -107,7 +107,7 @@ const s = StyleSheet.create({
     },
     verticalButtons: {
         margin: 3,
-        flex: 4,
+        flex: 3,
         // borderWidth: 1,
         // flexWrap: "wrap",
     },
