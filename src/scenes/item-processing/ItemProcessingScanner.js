@@ -74,7 +74,7 @@ const ItemProcessingScanner = ({navigation, route: {params}}) => {
                         />
                     </View>
                     <View style={{flex: 1}}>
-                        <Button onPress={() => navigation.navigate("Home")}>
+                        <Button onPress={() => navigation.goBack()}>
                             Done
                         </Button>
                     </View>
