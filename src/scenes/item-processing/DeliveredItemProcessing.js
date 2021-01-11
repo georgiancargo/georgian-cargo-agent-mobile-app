@@ -199,9 +199,11 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
             <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>Alert</Dialog.Title>
                 <Dialog.Content>
-                    <Paragraph>
-                        {`You have entered only ${entered} out of ${size} Codes`}
-                    </Paragraph>
+                    {size === entered || entered > size ? (
+                        <Paragraph>{`The codes you have entered are not sequential`}</Paragraph>
+                    ) : (
+                        <Paragraph>{`You have entered only ${entered} out of ${size} Codes`}</Paragraph>
+                    )}
                     <Paragraph>Missing codes are:</Paragraph>
                     <FlatList
                         data={list}

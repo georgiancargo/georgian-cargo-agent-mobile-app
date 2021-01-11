@@ -24,37 +24,51 @@ const ItemProcessing = ({navigation, route: {params}}) => {
     const [error, setErrors] = useState("");
     const [missingCodes, setMissing] = useState([]);
     const [visible, setVisible] = useState(false);
+    const [shouldAlert, setAlert] = useState(true);
 
     const showDialog = () => setVisible(true);
     const hideDialog = () => setVisible(false);
 
     useEffect(() => {
         const l = barCodes.length;
-        if (l < params.size) setSize(params.size - l);
+        if (l <= params.size) setSize(params.size - l);
     }, [barCodes]);
 
     const preReleaseCheck = () => {
-        if (size !== 0) {
-            let checkOn = [];
-            barCodes.forEach((item) => {
-                try {
-                    checkOn.push(parseInt(item));
-                } catch (error) {}
-            });
-            showDialog();
-            checkOn = checkOn.sort((a, b) => a - b);
-            const missing = [];
-            for (let i = 0; i < checkOn.length - 1; i++) {
-                const a = checkOn[i];
-                const b = checkOn[i + 1];
-                if (b - a >= 2) {
-                    for (let j = a + 1; j < b; j++) {
-                        missing.push(j);
-                    }
+        let checkOn = [];
+        barCodes.forEach((item) => {
+            try {
+                checkOn.push(parseInt(item));
+            } catch (error) {}
+        });
+        checkOn = checkOn.sort((a, b) => a - b);
+        let remaining = size;
+        const missing = [];
+        for (let i = 0; i < checkOn.length - 1; i++) {
+            const a = checkOn[i];
+            const b = checkOn[i + 1];
+            const range = b - a > 20 ? a + 10 : b;
+            if (b - a >= 2) {
+                for (let j = a + 1; j < range; j++) {
+                    missing.push(j);
+                    remaining--;
                 }
             }
+        }
+        if (remaining > 0) {
+            const last = checkOn.pop();
+            for (let i = 1; i <= remaining; i++) {
+                missing.push(last + i);
+            }
+        }
+        if (missing.length) {
             setMissing(missing);
+            showDialog();
+        } else if (size !== 0) {
+            setMissing(missing);
+            showDialog();
         } else {
+            hideDialog();
             send();
         }
     };
@@ -95,8 +109,12 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         }
     };
     const send = () => {
+        setAlert(false);
+        hideDialog();
         request({tracking_numbers: barCodes, event: params.event})
-            .then((r) => {})
+            .then((r) => {
+                // navigation.navigate("Home");
+            })
             .catch((e) => {
                 try {
                     setErrors(e.response.data.message);
@@ -114,6 +132,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     size={params.size}
                     list={missingCodes}
                     onOK={send}
+                    shouldAlert={shouldAlert}
                 />
                 <View style={[s.formGroup]}>
                     <InputWithError
