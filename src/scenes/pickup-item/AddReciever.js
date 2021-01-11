@@ -15,7 +15,7 @@ import receiverValidations from "./receiverValidations";
 import parcelValidations from "./receiverValidations";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const {s} = bootstrapStyleSheet;
 
 const AddReciever = ({navigation, route}) => {
     const {
@@ -34,14 +34,14 @@ const AddReciever = ({navigation, route}) => {
     const [parcel, setParcel] = useState({});
     const {errors: receiverErrors, validate: validateReceiver, hasErrors: receiverHasErrors} = useValidation(receiverValidations);
     const {errors: parcelErrors, validate: validateParcel, hasErrors: parcelHasErrors} = useValidation(parcelValidations);
-
+    const [policyError, setPolicyError] = useState(false);
     const [price, setPrice] = useState({
         currency_code: "",
         freight_price: 0,
         delivery_price: 0,
     });
     const [extra, setExtra] = useState({note: "", amount: ""});
-    const onExtraChange = (name, value)=>{
+    const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
     }
     const onAdd = () => {
@@ -80,7 +80,8 @@ const AddReciever = ({navigation, route}) => {
                         data.prices.freight_price + data.prices.delivery_price,
                 });
             })
-            .catch((e) => {
+            .catch(() => {
+                setPolicyError(true);
             });
     }, [
         source_country_code,
@@ -156,17 +157,17 @@ const AddReciever = ({navigation, route}) => {
     };
     const onSave = () => {
         validateReceiver(receiver)
-            .then((r) => {
+            .then(() => {
                 return validateParcel(parcel);
             })
-            .then((r) => {
+            .then(() => {
                 if (index <= parcels.length) {
                     const newParcels = parcels.slice();
                     newParcels[index] = {...parcel, receiver: receiver};
                     setParcels(newParcels);
                 }
             })
-            .catch((e) => {});
+            .catch(() => {});
         navigation.goBack();
     };
     const goToScanner = () => {
@@ -209,8 +210,8 @@ const AddReciever = ({navigation, route}) => {
                             />
                         </View>
                     </View>
-                    <Divider />
-                    <Divider style={{marginBottom: 10}} />
+                    <Divider/>
+                    <Divider style={{marginBottom: 10}}/>
                     <View style={[s.formGroup]}>
                         <View style={{flexDirection: "row"}}>
                             <View style={{flexDirection: "column", flex: 3}}>
@@ -245,10 +246,10 @@ const AddReciever = ({navigation, route}) => {
                             errors={parcelErrors}
                             onChange={onChangeParcel}
                         />
-                        <Divider />
-                        <Divider style={{marginBottom: 10}} />
-                        <Divider />
-                        <Divider style={{marginBottom: 10}} />
+                        <Divider/>
+                        <Divider style={{marginBottom: 10}}/>
+                        <Divider/>
+                        <Divider style={{marginBottom: 10}}/>
                         <Text>Add new extra charge</Text>
                         <View style={{flexDirection: "row"}}>
                             <View style={{flex: 2}}>
@@ -296,11 +297,15 @@ const AddReciever = ({navigation, route}) => {
                         <View style={{marginBottom: 5}}>
                             {requesting ? (
                                 <ActivityIndicator
-                                    animating={requesting}
-                                ></ActivityIndicator>
+    animating={requesting}
+    />
                             ) : (
                                 <>
-                                    <Chip>
+                                    {policyError && <Text>
+                                        No route policy found for current setting, please adjust inputs or contact
+                                        administrator
+                                    </Text>}
+                                    <Chip style={{marginBottom: 5, marginTop: 10}}>
                                         {`Freight price: ${price.freight_price} ${price.currency_code}`}
                                     </Chip>
                                     <Chip>

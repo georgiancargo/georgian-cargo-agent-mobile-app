@@ -15,12 +15,13 @@ const Home = ({navigation}) => {
     const [request] = useRequest(getGargosRequest);
     const [_logout, logging_out] = useRequest(logoutRequest);
 
+
     const goto = (route) => {
         navigation.navigate(route);
     };
     const logout = () => {
         _logout()
-            .then((r) => {
+            .then(() => {
                 setAuth({
                     isLoggedIn: false,
                     accessToken: null,
@@ -28,7 +29,7 @@ const Home = ({navigation}) => {
                 });
                 navigation.goBack();
             })
-            .catch((e) => {});
+            .catch(() => {});
     };
     useEffect(() => {
         request({
@@ -40,7 +41,7 @@ const Home = ({navigation}) => {
             .then((r) => {
                 setParcels(r.data.cargos);
             })
-            .catch((e) => {});
+            .catch(() => {});
     }, []);
     return (
         <View style={s.container}>
@@ -98,7 +99,7 @@ const s = StyleSheet.create({
     },
     verticalButtons: {
         margin: 3,
-        flex: 4,
+        flex: 3,
         // borderWidth: 1,
         // flexWrap: "wrap",
     },

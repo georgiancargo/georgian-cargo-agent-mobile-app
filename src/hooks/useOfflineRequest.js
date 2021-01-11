@@ -1,14 +1,11 @@
-import {useContext, useState} from "react";
+import {useState} from "react";
 import useAxios from "./useAxios";
-import {AuthContext} from "_context";
-import {setItemAsync as set, getItemAsync as get} from "expo-secure-store";
 import {parseRequest} from "_requests";
-// import {setItem as set, getItem as get} from '@react-native-async-storage/async-storage';
+import * as fs from "expo-file-system"
 
-export default function useOfflineRequest(r, load = false) {
+export default function useOfflineRequest(r) {
     const axios = useAxios();
     const [isProcessing, setIsProcessing] = useState(false);
-    const {setAuth} = useContext(AuthContext);
 
     const isConnected = async () => {
         try {
@@ -45,18 +42,36 @@ export default function useOfflineRequest(r, load = false) {
                 });
         else {
             let requests = [];
-            const store = "requests";
+            const path = fs.cacheDirectory + '/offline_requests.json';
+            try {
+                const raw = await fs.readAsStringAsync(path);
+                requests = JSON.parse(raw);
+            } catch (e) {
+                // Nothing to do
+            }
+            requests.push(config);
+            fs.writeAsStringAsync(path, JSON.stringify(requests))
+                .catch((e) => {
+                    alert("Problem "  + e);
+                })
+                .finally(() => {
+                    setIsProcessing(false)
+                })
+            /* const store = "requests";
             get(store)
                 .then((res) => {
+                    alert("Done");
                     if (res !== null) requests = JSON.parse(res);
                     requests.push(config);
                     return set(store, JSON.stringify(requests));
                 })
-                .then(() => {})
-                .catch((e) => {})
+                .catch((e) => {
+                    alert("Error" + e);
+                })
                 .finally(() => {
                     setIsProcessing(false);
                 });
+             */
         }
     };
     return [send, isProcessing];
