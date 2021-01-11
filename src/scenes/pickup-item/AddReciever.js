@@ -10,6 +10,7 @@ import {
 import {useRequest} from "_hooks";
 import {getParcelPrice} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
+import { PreventGoingBack } from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -156,6 +157,7 @@ const AddReciever = ({navigation, route}) => {
     };
     return (
         <>
+            <PreventGoingBack navigation={navigation} />
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
                     <InputAutoComplete

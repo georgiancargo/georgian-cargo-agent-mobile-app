@@ -1,10 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {ScrollView, View, Text} from "react-native";
 import {
     InputWithError,
     Button,
     SelectDropdown,
     InputAutoComplete,
+    PreventGoingBack
 } from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {PickupList, RadioButtonGroup} from "_molecules";
@@ -213,6 +214,7 @@ const PickupItemScreen = ({navigation}) => {
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
             {/* <View style={[s.formGroup]}> */}
+            <PreventGoingBack navigation={navigation} />
             <InputAutoComplete
                 name="name"
                 value={sender.name}

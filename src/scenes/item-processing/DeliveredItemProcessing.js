@@ -11,6 +11,7 @@ import {Chip} from "react-native-paper";
 import {Dialog, Paragraph, Portal} from "react-native-paper";
 import {FlatList} from "react-native";
 import {useOfflineRequest} from "_hooks";
+import { PreventGoingBack } from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -127,6 +128,7 @@ const DeliveredItemProcessing = ({
     // const renderItem = ({item}) => <Text>{item}</Text>;
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+            <PreventGoingBack navigation={navigation} />
             <CustomDialog
                 visible={visible}
                 hideDialog={hideDialog}

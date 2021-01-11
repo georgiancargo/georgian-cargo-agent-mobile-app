@@ -6,6 +6,7 @@ import {Button, InputWithError} from "_atoms";
 import {ErrorText} from "_atoms";
 import {useOfflineRequest} from "_hooks";
 import { CustomDialog } from "./DeliveredItemProcessing";
+import { PreventGoingBack } from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -104,6 +105,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
     };
     return (
         <>
+            <PreventGoingBack navigation={navigation} />
             <View style={[s.container, s.bgWhite, s.flex1, s.p2]}>
                 <CustomDialog
                     visible={visible}
