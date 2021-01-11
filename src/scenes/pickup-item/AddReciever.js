@@ -239,11 +239,11 @@ const AddReciever = ({navigation, route}) => {
     />
                             ) : (
                                 <>
-                                    {policyError && <Chip>
+                                    {policyError && <Text>
                                         No route policy found for current setting, please adjust inputs or contact
                                         administrator
-                                    </Chip>}
-                                    <Chip>
+                                    </Text>}
+                                    <Chip style={{marginBottom: 5, marginTop: 10}}>
                                         {`Freight price: ${price.freight_price} ${price.currency_code}`}
                                     </Chip>
                                     <Chip>
