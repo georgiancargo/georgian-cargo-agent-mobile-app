@@ -27,7 +27,6 @@ const Home = ({navigation}) => {
                     accessToken: null,
                     agent: {privileges: []},
                 });
-                navigation.goBack();
             })
             .catch(() => {});
     };
