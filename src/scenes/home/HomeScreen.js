@@ -13,7 +13,7 @@ const Home = ({navigation}) => {
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
     const [parcels, setParcels] = useState([]);
     const [request] = useRequest(getGargosRequest);
-    const [_logout] = useRequest(logoutRequest);
+    const [_logout, logging_out] = useRequest(logoutRequest);
 
     const goto = (route) => {
         navigation.navigate(route);
@@ -46,7 +46,7 @@ const Home = ({navigation}) => {
         <View style={s.container}>
             <View style={s.buttons}>
                 <View style={s.horizontalButtons}>
-                    <Button style={s.mr} onPress={logout}>
+                    <Button style={s.mr} onPress={logout} loading={logging_out}>
                         Logout
                     </Button>
                     <SyncButton />

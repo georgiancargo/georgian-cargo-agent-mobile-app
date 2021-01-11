@@ -1,16 +1,12 @@
 import React, {useEffect, useState} from "react";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {getItemAsync, setItemAsync as set} from "expo-secure-store";
 import {useStoredRequest} from "_hooks";
 import {Button} from "_atoms";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-
 const SyncButton = () => {
     const [label, setLabel] = useState("Sync Items");
     const [sync, setSync] = useState(true);
-    const [request] = useStoredRequest();
+    const [request, requesting] = useStoredRequest();
 
     useEffect(() => {
         getItemAsync("requests")
@@ -52,7 +48,12 @@ const SyncButton = () => {
             .catch((e) => {});
     };
     return (
-        <Button style={{flex: 1}} disabled={!sync} onPress={synItems}>
+        <Button
+            style={{flex: 1}}
+            disabled={!sync}
+            onPress={synItems}
+            loading={requesting}
+        >
             {label}
         </Button>
     );

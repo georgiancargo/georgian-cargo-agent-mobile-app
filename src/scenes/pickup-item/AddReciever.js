@@ -7,10 +7,12 @@ import {
     ExtraChargesList,
     RadioButtonGroup,
 } from "_molecules";
-import {useRequest} from "_hooks";
+import {useRequest, useValidation} from "_hooks";
 import {getParcelPrice} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 import { PreventGoingBack } from "_atoms";
+import receiverValidations from "./receiverValidations";
+import parcelValidations from "./receiverValidations";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -30,6 +32,9 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
+    const {errors: receiverErrors, validate: validateReceiver, hasErrors: receiverHasErrors} = useValidation(receiverValidations);
+    const {errors: parcelErrors, validate: validateParcel, hasErrors: parcelHasErrors} = useValidation(parcelValidations);
+
     const [price, setPrice] = useState({
         currency_code: "",
         freight_price: 0,
@@ -132,18 +137,36 @@ const AddReciever = ({navigation, route}) => {
         // "price",
     ];
     const onChangeReceiver = (name, value) => {
-        setReceiver({...receiver, [name]: value});
+        const newReceiver = {...receiver, [name]: value};
+        setReceiver(newReceiver);
+        try {
+            async () => (await validateReceiver(newReceiver, name))();
+        } catch (error) {
+            
+        }
     };
     const onChangeParcel = (name, value) => {
-        console.log(name, value);
-        setParcel({...parcel, [name]: value});
+        const next = {...parcel, [name]: value};
+        setParcel(next);
+        try {
+            async () => (await validateParcel(next, name))();
+        } catch (error) {
+            
+        }
     };
     const onSave = () => {
-        if (index <= parcels.length) {
-            const newParcels = parcels.slice();
-            newParcels[index] = {...parcel, receiver: receiver};
-            setParcels(newParcels);
-        }
+        validateReceiver(receiver)
+            .then((r) => {
+                return validateParcel(parcel);
+            })
+            .then((r) => {
+                if (index <= parcels.length) {
+                    const newParcels = parcels.slice();
+                    newParcels[index] = {...parcel, receiver: receiver};
+                    setParcels(newParcels);
+                }
+            })
+            .catch((e) => {});
         navigation.goBack();
     };
     const goToScanner = () => {
@@ -161,18 +184,20 @@ const AddReciever = ({navigation, route}) => {
                     <InputAutoComplete
                         name="name"
                         value={receiver.name}
-                        // error={errors.name}
+                        error={receiverErrors.name}
                         // label={label}
                         placeholder="Receiver name"
                         // onChangeText={onChange}
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
                     />
+                    <Text>{JSON.stringify(parcelErrors)}</Text>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}
                             keys={receiverKeys}
                             receiver={receiver}
+                            errors={receiverErrors}
                             onChange={onChangeReceiver}
                         />
                         <View style={[s.formGroup]}>
@@ -190,6 +215,7 @@ const AddReciever = ({navigation, route}) => {
                         <View style={{flexDirection: "row"}}>
                             <View style={{flexDirection: "column", flex: 3}}>
                                 <InputWithError
+                                    error={parcelErrors.tracking_number}
                                     name="tracking_number"
                                     placeholder="Tracking number"
                                     onChangeText={onChangeParcel}
@@ -216,6 +242,7 @@ const AddReciever = ({navigation, route}) => {
                             labels={parcelLabels}
                             keys={parcelKeys}
                             receiver={parcel}
+                            errors={parcelErrors}
                             onChange={onChangeParcel}
                         />
                         <Divider />
@@ -285,14 +312,19 @@ const AddReciever = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={[s.formGroup, s.pb3]}>
-                    <Button onPress={onSave}>Add</Button>
+                    <Button
+                        onPress={onSave}
+                        disabled={receiverHasErrors || parcelHasErrors}
+                    >
+                        Add
+                    </Button>
                 </View>
             </ScrollView>
         </>
     );
 };
 
-const Form = ({labels, keys, receiver, onChange}) => {
+const Form = ({labels, keys, receiver, onChange, errors = {}}) => {
     return (
         <>
             {keys.map((key, i) => (
@@ -301,6 +333,7 @@ const Form = ({labels, keys, receiver, onChange}) => {
                     key={"receiver_" + key}
                     placeholder={labels[i]}
                     onChangeText={onChange}
+                    error={errors[key]}
                     value={receiver[key] ? receiver[key].toString() : ""}
                     // label={label}
                     isNumber={key === "price" || key === "weight"}
