@@ -17,9 +17,9 @@ const SelectDropdown = ({
     selectedValue,
     label,
     placeholder,
+    error
 }) => {
-    const {colors, roundness} = useTheme();
-    const [pickerStyle, setPickerStyle] = useState({});
+    const {colors, roundness} = useTheme();const [pickerStyle, setPickerStyle] = useState({});
     const [viewStyle, setViewStyle] = useState({
         borderWidth: 1,
         borderColor: colors.backdrop,
@@ -70,6 +70,7 @@ const SelectDropdown = ({
                             />
                         ))}
                     </Picker>
+                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
                 </View>
             {/* </ScrollView> */}
         </>
