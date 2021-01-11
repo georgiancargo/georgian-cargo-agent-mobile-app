@@ -23,7 +23,28 @@ const Scanner = (props) => {
             if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
             else {
             }
-        else {
+        else if (props.route.params.scanOnce) {
+            setScanned(true);
+            Alert.alert(
+                "Alert",
+                `Barcode ${data} has been scanned!`,
+                [
+                    {
+                        text: "Retry",
+                        onPress: () => setScanned(false),
+                        // style: "cancel",
+                    },
+                    {
+                        text: "OK",
+                        onPress: () => {
+                            props.route.params.callback(data);
+                            props.navigation.goBack();
+                        },
+                    },
+                ],
+                {cancelable: false}
+            );
+        } else {
             setBarCodes({...barCodes, barcode: data});
             alert(`Barcode ${data} has been scanned!`);
             props.navigation.goBack();
@@ -41,7 +62,8 @@ const Scanner = (props) => {
     return (
         <View style={styles.container}>
             <BarCodeScanner
-                onBarCodeScanned={handleBarCodeScanned}
+                // onBarCodeScanned={handleBarCodeScanned}
+                onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
                 style={StyleSheet.absoluteFillObject}
             />
             {/* {scanned && (

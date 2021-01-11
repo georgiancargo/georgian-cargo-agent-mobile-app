@@ -111,7 +111,7 @@ const AddReciever = ({navigation, route}) => {
         "postal_code",
     ];
     const parcelLabels = [
-        "Tracking number",
+        // "Tracking number",
         "weight",
         // "source country code",
         // "destination country code",
@@ -121,7 +121,7 @@ const AddReciever = ({navigation, route}) => {
         "price",
     ];
     const parcelKeys = [
-        "tracking_number",
+        // "tracking_number",
         "weight",
         // "source_country_code",
         // "destination_country_code",
@@ -147,7 +147,13 @@ const AddReciever = ({navigation, route}) => {
         // setParcels({...parcels, [index]: {...parcel, receiver: receiver}});
         navigation.goBack();
     };
-
+    const goToScanner = () => {
+        navigation.navigate("cameraScanner", {
+            scanOnce: true,
+            callback: (number) =>
+                setParcel({...parcel, tracking_number: number}),
+        });
+    };
     return (
         <>
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
@@ -182,6 +188,31 @@ const AddReciever = ({navigation, route}) => {
                     <Divider />
                     <Divider style={{marginBottom: 10}} />
                     <View style={[s.formGroup]}>
+                        <View style={{flexDirection: "row"}}>
+                            <View style={{flexDirection: "column", flex: 3}}>
+                                <InputWithError
+                                    name="tracking_number"
+                                    placeholder="Tracking number"
+                                    onChangeText={onChangeParcel}
+                                    value={parcel.tracking_number}
+                                />
+                            </View>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    paddingTop: 15,
+                                    paddingBottom: 5,
+                                }}
+                            >
+                                <Button
+                                    mode="outlined"
+                                    onPress={goToScanner}
+                                    style={{flexGrow: 1}}
+                                >
+                                    Scan
+                                </Button>
+                            </View>
+                        </View>
                         <Form
                             labels={parcelLabels}
                             keys={parcelKeys}
@@ -211,7 +242,13 @@ const AddReciever = ({navigation, route}) => {
                                     isNumber
                                 />
                             </View>
-                            <View style={{flex: 1, paddingTop: 15, paddingBottom: 5}}>
+                            <View
+                                style={{
+                                    flex: 1,
+                                    paddingTop: 15,
+                                    paddingBottom: 5,
+                                }}
+                            >
                                 <Button onPress={onAdd} style={{flexGrow: 1}}>
                                     add
                                 </Button>
