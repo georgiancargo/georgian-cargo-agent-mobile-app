@@ -12,7 +12,7 @@ import {getParcelPrice} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const {s} = bootstrapStyleSheet;
 
 const AddReciever = ({navigation, route}) => {
     const {
@@ -29,13 +29,14 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
+    const [policyError, setPolicyError] = useState(false);
     const [price, setPrice] = useState({
         currency_code: "",
         freight_price: 0,
         delivery_price: 0,
     });
     const [extra, setExtra] = useState({note: "", amount: ""});
-    const onExtraChange = (name, value)=>{
+    const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
     }
     const onAdd = () => {
@@ -74,7 +75,8 @@ const AddReciever = ({navigation, route}) => {
                         data.prices.freight_price + data.prices.delivery_price,
                 });
             })
-            .catch((e) => {
+            .catch(() => {
+                setPolicyError(true);
             });
     }, [
         source_country_code,
@@ -179,8 +181,8 @@ const AddReciever = ({navigation, route}) => {
                             />
                         </View>
                     </View>
-                    <Divider />
-                    <Divider style={{marginBottom: 10}} />
+                    <Divider/>
+                    <Divider style={{marginBottom: 10}}/>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={parcelLabels}
@@ -188,10 +190,10 @@ const AddReciever = ({navigation, route}) => {
                             receiver={parcel}
                             onChange={onChangeParcel}
                         />
-                        <Divider />
-                        <Divider style={{marginBottom: 10}} />
-                        <Divider />
-                        <Divider style={{marginBottom: 10}} />
+                        <Divider/>
+                        <Divider style={{marginBottom: 10}}/>
+                        <Divider/>
+                        <Divider style={{marginBottom: 10}}/>
                         <Text>Add new extra charge</Text>
                         <View style={{flexDirection: "row"}}>
                             <View style={{flex: 2}}>
@@ -233,10 +235,14 @@ const AddReciever = ({navigation, route}) => {
                         <View style={{marginBottom: 5}}>
                             {requesting ? (
                                 <ActivityIndicator
-                                    animating={requesting}
-                                ></ActivityIndicator>
+    animating={requesting}
+    />
                             ) : (
                                 <>
+                                    {policyError && <Chip>
+                                        No route policy found for current setting, please adjust inputs or contact
+                                        administrator
+                                    </Chip>}
                                     <Chip>
                                         {`Freight price: ${price.freight_price} ${price.currency_code}`}
                                     </Chip>
@@ -247,10 +253,6 @@ const AddReciever = ({navigation, route}) => {
                             )}
                         </View>
                     </View>
-                    {/* <View style={[s.formGroup]}>
-                    <Button onPress={onPress}>Next</Button>
-                </View> */}
-                    {/* <Text>{JSON.stringify(receiver.country_code)}</Text> */}
                 </View>
                 <View style={[s.formGroup, s.pb3]}>
                     <Button onPress={onSave}>Add</Button>

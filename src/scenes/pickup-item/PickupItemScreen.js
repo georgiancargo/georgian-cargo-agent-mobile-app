@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {ScrollView, View, Text} from "react-native";
+import React, {useState} from "react";
+import {ScrollView, View} from "react-native";
 import {
     InputWithError,
     Button,
@@ -13,7 +13,7 @@ import senderDataValidations from "./PickupItemValidations";
 import { SourceRoutesDropdown } from "_molecules";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const {s} = bootstrapStyleSheet;
 
 const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
@@ -182,11 +182,11 @@ const PickupItemScreen = ({navigation}) => {
     const onChange = (name, value) => {
         const newSender = {...sender, [name]: value};
         setSender(newSender);
-        validate(newSender, name).catch((e) => {});
+        validate(newSender, name).catch(() => {});
     };
     const gotoSummary = () => {
         validate(sender)
-            .then((r) => {
+            .then(() => {
                 if (parcels.length > 0) {
                     const parcelsTemp = parcels.slice();
                     for (let key = 0; key < parcelsTemp.length; key++) {
@@ -203,7 +203,7 @@ const PickupItemScreen = ({navigation}) => {
                     });
                 }
             })
-            .catch((e) => {});
+            .catch(() => {});
     };
     const removeParcel = (index) => {
         const newParcels = parcels.slice();

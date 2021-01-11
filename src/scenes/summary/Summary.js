@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useContext} from "react";
-import {ScrollView, Text, View} from "react-native";
+import {Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
-import {SummaryList, ExtraChargesTable} from "_molecules";
+import {SummaryList} from "_molecules";
 import {Divider} from "react-native-paper";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
@@ -12,9 +12,9 @@ import {useRequest} from "_hooks";
 import {paymentRequest} from "_requests";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const {s} = bootstrapStyleSheet;
 
-const Summary = ({navigation, route: {params}}) => {
+const Summary = ({route: {params}}) => {
     const {parcels = []} = params;
     const [pickupRequest, requesting] = useOfflineRequest({
         url: "/cargo/pickup",
@@ -91,8 +91,8 @@ const Summary = ({navigation, route: {params}}) => {
             invoice_ids: invoice_ids,
             payment_method: summaryData.payment_method,
         })
-            .then((e) => {})
-            .catch((e) => {});
+            .then(() => {})
+            .catch(() => {});
     };
     return (
         <>
@@ -114,13 +114,12 @@ const Summary = ({navigation, route: {params}}) => {
                     <ErrorText error={errors} />
                     <Divider style={{marginBottom: 10}} />
                     <View style={[s.formGroup]}>
-                        <Text>Sum is: {sum}</Text>
+                        <Text>Sum is: {isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text>
                     </View>
                 </View>
                 <SummaryList parcels={parcels} />
             </View>
             <View style={{marginBottom: 10}}>
-                {/* <Text>{JSON.stringify(loading)}</Text> */}
                 <Button onPress={onCheckout} loading={requesting}>
                     Checkout
                 </Button>
