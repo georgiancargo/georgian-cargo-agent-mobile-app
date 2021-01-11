@@ -113,7 +113,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         hideDialog();
         request({tracking_numbers: barCodes, event: params.event})
             .then((r) => {
-                // navigation.navigate("Home");
+                navigation.navigate("Home");
             })
             .catch((e) => {
                 try {
@@ -123,7 +123,10 @@ const ItemProcessing = ({navigation, route: {params}}) => {
     };
     return (
         <>
-            <PreventGoingBack navigation={navigation} />
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+            />
             <View style={[s.container, s.bgWhite, s.flex1, s.p2]}>
                 <CustomDialog
                     visible={visible}
@@ -132,7 +135,6 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     size={params.size}
                     list={missingCodes}
                     onOK={send}
-                    shouldAlert={shouldAlert}
                 />
                 <View style={[s.formGroup]}>
                     <InputWithError
