@@ -149,7 +149,7 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         try {
-            validateReceiver(newReceiver, name).then((res) => {});
+            validateReceiver(newReceiver, name).then(() => {});
         } catch (error) {
 
         }
