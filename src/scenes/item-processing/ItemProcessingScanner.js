@@ -8,17 +8,6 @@ import {Button} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-function arraysEqual(a, b) {
-    if (a === b) return true;
-    if (a == null || b == null) return false;
-    if (a.length !== b.length) return false;
-
-    for (var i = 0; i < a.length; ++i) {
-        if (a[i] !== b[i]) return false;
-    }
-    return true;
-}
-
 const ItemProcessingScanner = ({navigation, route: {params}}) => {
     const {barCodes, setBarCodes} = params;
     const [barcodes, setBarcodes] = useState([]);
@@ -26,12 +15,9 @@ const ItemProcessingScanner = ({navigation, route: {params}}) => {
     const [barcode, setBarcode] = useState({});
 
     useEffect(() => {
-        if (!arraysEqual(barCodes, barcodes)) setBarcodes(barCodes);
+        setBarcodes(barCodes);
     }, [barCodes]);
 
-    useEffect(() => {
-        setBarCodes(barcodes);
-    }, [barcodes]);
     const remove = (i) => {
         const newBars = [];
         for (let index = 0; index < barcodes.length; index++) {
@@ -50,14 +36,16 @@ const ItemProcessingScanner = ({navigation, route: {params}}) => {
         newBarcodes[barcode.index] = barcode.barcode;
         setBarcodes(newBarcodes);
     };
-
+    const done = () => {
+        setBarCodes(barcodes);
+        navigation.goBack();
+    };
     return (
         <>
             <React.Fragment>
                 <Scanner barCodes={barcodes} setBarCodes={setBarcodes} />
             </React.Fragment>
             <View style={[s.container, styles.camera, s.m2]}>
-                {/* <Text>{JSON.stringify(barcodes)}</Text> */}
                 <EditBarCode
                     modalVisible={modalVisible}
                     setModalVisible={setModalVisible}
@@ -74,9 +62,7 @@ const ItemProcessingScanner = ({navigation, route: {params}}) => {
                         />
                     </View>
                     <View style={{flex: 1}}>
-                        <Button onPress={() => navigation.goBack()}>
-                            Done
-                        </Button>
+                        <Button onPress={done}>Done</Button>
                     </View>
                 </View>
             </View>
