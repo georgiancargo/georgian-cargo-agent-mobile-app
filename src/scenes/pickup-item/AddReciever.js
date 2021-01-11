@@ -160,7 +160,7 @@ const AddReciever = ({navigation, route}) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
         try {
-            validateParcel(next, name);
+            validateParcel(next, name).then(()=>{});
         } catch (error) {
 
         }
@@ -176,16 +176,17 @@ const AddReciever = ({navigation, route}) => {
                     newParcels[index] = {...parcel, receiver: receiver};
                     setParcels(newParcels);
                 }
+                navigation.goBack();
             })
             .catch((e) => {
             });
-        navigation.goBack();
     };
     const goToScanner = () => {
         navigation.navigate("cameraScanner", {
             scanOnce: true,
             callback: (number) =>{
-                setParcel({...parcel, tracking_number: number})
+                const next = {...parcel, tracking_number: number};
+                validateParcel(next).then(()=>setParcel(next));
             }
         });
     };
@@ -331,7 +332,7 @@ const AddReciever = ({navigation, route}) => {
                 <View style={[s.formGroup, s.pb3]}>
                     <Button
                         onPress={onSave}
-                        disabled={receiverHasErrors || parcelHasErrors || policyError}
+                        disabled={policyError}
                     >
                         Add
                     </Button>

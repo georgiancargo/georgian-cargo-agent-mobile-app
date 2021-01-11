@@ -26,11 +26,7 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                 <View style={[s.tableHeadCol, s.flex6]}>
                     <TouchableOpacity onPress={edit}>
                         <Text>name: {receiver.name}</Text>
-                        <Text>phone: {receiver.phone}</Text>
-                        <Text>email: {receiver.email}</Text>
                         <Text>tracking number: {parcel.tracking_number}</Text>
-                        <Text>weight: {parcel.weight}</Text>
-                        <Text>description: {parcel.description}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
