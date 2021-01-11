@@ -224,7 +224,7 @@ const AddReciever = ({navigation, route}) => {
                     <Divider style={{marginBottom: 10}}/>
                     <View style={[s.formGroup]}>
                         <View style={{flexDirection: "row"}}>
-                            <View style={{flexDirection: "column", flex: 3}}>
+                            <View style={{flex: 3}}>
                                 <InputWithError
                                     error={parcelErrors.tracking_number}
                                     name="tracking_number"
@@ -236,14 +236,13 @@ const AddReciever = ({navigation, route}) => {
                             <View
                                 style={{
                                     flex: 1,
-                                    paddingTop: 15,
-                                    paddingBottom: 5,
+                                    justifyContent: 'center',
+                                    padding: 3
                                 }}
                             >
                                 <Button
-                                    mode="outlined"
                                     onPress={goToScanner}
-                                    style={{flexGrow: 1}}
+                                    style={{}}
                                 >
                                     Scan
                                 </Button>
