@@ -17,7 +17,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         url: "/cargo/batch/event",
         method: "POST",
     });
-    const [barCodes, setBarCodes] = useState([]);
+    const [barCodes, setBarCodes] = useState([params.first]);
     const [size, setSize] = useState(params.size);
     const [modalVisible, setModalVisible] = useState(false);
     const [barcode, setBarcode] = useState({barcode: ""});

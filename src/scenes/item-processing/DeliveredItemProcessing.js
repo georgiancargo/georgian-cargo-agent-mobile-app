@@ -17,11 +17,11 @@ const {s, c} = bootstrapStyleSheet;
 const DeliveredItemProcessing = ({
     navigation,
     route: {
-        params: {size: n},
+        params: {size: n, first},
     },
 }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState([]);
+    const [releaseCodes, setCodes] = useState([first]);
     const [missingCodes, setMissing] = useState([]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
