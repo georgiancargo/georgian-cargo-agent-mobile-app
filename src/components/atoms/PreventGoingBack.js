@@ -1,5 +1,5 @@
-import React, {useEffect} from "react";
-import {Alert, Text} from "react-native";
+import {useEffect} from "react";
+import {Alert} from "react-native";
 
 const PreventGoingBack = ({navigation, shouldAlert = true}) => {
     useEffect(
@@ -23,6 +23,6 @@ const PreventGoingBack = ({navigation, shouldAlert = true}) => {
             }),
         [navigation, shouldAlert]
     );
-    return <Text>{JSON.stringify(shouldAlert)}</Text>;
+    return null;
 };
 export default PreventGoingBack;
