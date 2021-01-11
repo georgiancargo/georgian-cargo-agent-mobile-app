@@ -2,34 +2,43 @@ import React from "react";
 import {StyleSheet, Text} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
-import {Chip, useTheme} from "react-native-paper";
+import {useTheme} from "react-native-paper";
+import { codes } from "_utils";
 
-const ListItem = ({parcel: p, edit}) => {
+const ListItem = ({parcel: p, edit, i}) => {
     const {colors, roundness} = useTheme();
     const container = {
-        flexDirection: "row",
+        // flexDirection: "row",
         borderWidth: 1,
         padding: 8,
         flexWrap: "wrap",
+        // height: 120,
         borderRadius: roundness,
         borderColor: colors.placeholder,
+        backgroundColor: i % 2 === 1 ? "#f5f5f5" : "white",
+        justifyContent: "space-between",
+        alignContent: "space-between",
+        marginBottom: 5
     };
     const C = ({children, style}) => (
-        <Chip mode="outlined" style={{margin: 3, ...style}}>
+        <Text mode="outlined" style={{margin: 3, ...style}}>
             {children}
-        </Chip>
+        </Text>
     );
+    const src = codes[p.shipping_specs.route.source_country_code];
+    const dst = codes[p.shipping_specs.route.destination_country_code];
+    const sender_name = p.shipping_specs.sender_information.name;
+    const receiver_name = p.shipping_specs.receiver_information.name;
+    const collection_option = p.shipping_specs.collection_option;
+    const customer_type = p.shipping_specs.customer_type;
+    const parcel_type = p.shipping_specs.parcel_type;
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
-            <C><Text style={{fontWeight: 'bold'}}>{p.tracking_number}</Text></C>
-            <C>{p.status}</C>
-            <C>{p.shipping_specs.route.source_country_code}-{p.shipping_specs.route.destination_country_code}</C>
-            <C>{p.item.weight + " Kg"}</C>
-            <C>{p.shipping_specs.sender_information.name} </C>
-            <C>{p.shipping_specs.receiver_information.name} </C>
-            <C>{p.shipping_specs.collection_option}</C>
-            <C>{p.shipping_specs.customer_type}</C>
-            <C>{p.shipping_specs.parcel_type}</C>
+            <C>Tracking number: <Text style={{fontWeight: 'bold'}}>{p.tracking_number}</Text></C>
+            <C>Parcel status: {p.status}</C>
+            <C>From: {src} To: {dst}</C>
+            <C>Weight: {p.item.weight + " Kg"}</C>
+            <C>{sender_name} to {receiver_name} </C>
         </TouchableOpacity>
     );
 };
@@ -43,6 +52,6 @@ const styles = StyleSheet.create({
         padding: 3,
         borderRadius: 10,
         width: "45%",
-    },
+    }
 });
 export default ListItem;
