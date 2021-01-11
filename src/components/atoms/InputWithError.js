@@ -9,7 +9,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         fontSize: 16,
         borderRadius: 10,
-        color: "black",
         zIndex: 1,
         color: "#000000",
         backgroundColor: "#f5f5f5",
