@@ -28,6 +28,8 @@ const LoginScreen = ({}) => {
                             remember_token: data.remember_token,
                             is_logged_in: true,
                             agent: data.staff,
+                            username: user.username,
+                            password: user.password,
                         })
                             .then(() => {})
                             .catch(() => {});
