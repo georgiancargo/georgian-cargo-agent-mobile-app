@@ -87,6 +87,7 @@ const AddReciever = ({navigation, route}) => {
                     price:
                         data.prices.freight_price + data.prices.delivery_price,
                 });
+                setPolicyError(false);
             })
             .catch(() => {
                 setPolicyError(true);
@@ -149,7 +150,8 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         try {
-            validateReceiver(newReceiver, name).then(() => {});
+            validateReceiver(newReceiver, name).then(() => {
+            });
         } catch (error) {
 
         }
@@ -175,7 +177,7 @@ const AddReciever = ({navigation, route}) => {
                     setParcels(newParcels);
                 }
             })
-            .catch(() => {
+            .catch((e) => {
             });
         navigation.goBack();
     };
@@ -314,12 +316,13 @@ const AddReciever = ({navigation, route}) => {
                                         No route policy found for current setting, please adjust inputs or contact
                                         administrator
                                     </Text>}
-                                    <Chip style={{marginBottom: 5, marginTop: 10}}>
-                                        {`Freight price: ${price.freight_price} ${price.currency_code}`}
-                                    </Chip>
-                                    <Chip>
-                                        {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
-                                    </Chip>
+                                    {!policyError && <>
+                                        <Chip style={{marginBottom: 5, marginTop: 10}}>
+                                            {`Freight price: ${price.freight_price} ${price.currency_code}`}
+                                        </Chip>
+                                        <Chip>
+                                            {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
+                                        </Chip></>}
                                 </>
                             )}
                         </View>
@@ -328,7 +331,7 @@ const AddReciever = ({navigation, route}) => {
                 <View style={[s.formGroup, s.pb3]}>
                     <Button
                         onPress={onSave}
-                        disabled={receiverHasErrors || parcelHasErrors}
+                        disabled={receiverHasErrors || parcelHasErrors || policyError}
                     >
                         Add
                     </Button>

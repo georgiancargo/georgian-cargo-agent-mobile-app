@@ -4,7 +4,6 @@ import {truncate} from "_utils";
 const receiverValidations = (data, field) => {
     return validate("AddReciever", () => {
         vest.only(field);
-
         [
             "name",
             "email",
@@ -15,10 +14,16 @@ const receiverValidations = (data, field) => {
             "postal_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {
+                if(typeof data[elem] === "undefined"){
+                    return false;
+                }
                 enforce(data[elem].toString()).isNotEmpty();
             });
         });
 
+        if(typeof data.email === "undefined"){
+            data.email = '';
+        }
         const trimmedEmail = truncate(data.email.toString(), 15);
         test("email", trimmedEmail + "is not valid email address", () => {
             enforce(data.email.toString())
