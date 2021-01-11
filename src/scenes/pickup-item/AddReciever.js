@@ -10,9 +10,9 @@ import {
 import {useRequest, useValidation} from "_hooks";
 import {getParcelPrice} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
-import { PreventGoingBack } from "_atoms";
+import {PreventGoingBack} from "_atoms";
 import receiverValidations from "./receiverValidations";
-import parcelValidations from "./receiverValidations";
+import parcelValidations from "./parcelValidations";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -32,8 +32,16 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
-    const {errors: receiverErrors, validate: validateReceiver, hasErrors: receiverHasErrors} = useValidation(receiverValidations);
-    const {errors: parcelErrors, validate: validateParcel, hasErrors: parcelHasErrors} = useValidation(parcelValidations);
+    const {
+        errors: receiverErrors,
+        validate: validateReceiver,
+        hasErrors: receiverHasErrors
+    } = useValidation(receiverValidations);
+    const {
+        errors: parcelErrors,
+        validate: validateParcel,
+        hasErrors: parcelHasErrors
+    } = useValidation(parcelValidations);
     const [policyError, setPolicyError] = useState(false);
     const [price, setPrice] = useState({
         currency_code: "",
@@ -141,18 +149,18 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         try {
-            async () => (await validateReceiver(newReceiver, name))();
+            validateReceiver(newReceiver, name).then((res) => {});
         } catch (error) {
-            
+
         }
     };
     const onChangeParcel = (name, value) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
         try {
-            async () => (await validateParcel(next, name))();
+            validateParcel(next, name);
         } catch (error) {
-            
+
         }
     };
     const onSave = () => {
@@ -167,7 +175,8 @@ const AddReciever = ({navigation, route}) => {
                     setParcels(newParcels);
                 }
             })
-            .catch(() => {});
+            .catch(() => {
+            });
         navigation.goBack();
     };
     const goToScanner = () => {
@@ -179,7 +188,7 @@ const AddReciever = ({navigation, route}) => {
     };
     return (
         <>
-            <PreventGoingBack navigation={navigation} />
+            <PreventGoingBack navigation={navigation}/>
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
                     <InputAutoComplete
@@ -192,7 +201,6 @@ const AddReciever = ({navigation, route}) => {
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
                     />
-                    <Text>{JSON.stringify(parcelErrors)}</Text>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}
@@ -274,10 +282,11 @@ const AddReciever = ({navigation, route}) => {
                                     flex: 1,
                                     paddingTop: 15,
                                     paddingBottom: 5,
+                                    justifyContent: 'center'
                                 }}
                             >
-                                <Button onPress={onAdd} style={{flexGrow: 1}}>
-                                    add
+                                <Button onPress={onAdd} style={{}}>
+                                    Add
                                 </Button>
                             </View>
                         </View>
@@ -297,8 +306,8 @@ const AddReciever = ({navigation, route}) => {
                         <View style={{marginBottom: 5}}>
                             {requesting ? (
                                 <ActivityIndicator
-    animating={requesting}
-    />
+                                    animating={requesting}
+                                />
                             ) : (
                                 <>
                                     {policyError && <Text>
