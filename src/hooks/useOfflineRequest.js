@@ -56,6 +56,7 @@ export default function useOfflineRequest(r, load = false) {
             requests.push(config);
             fs.writeAsStringAsync(path, JSON.stringify(requests))
                 .catch((e) => {
+                    alert("Problem "  + e);
                 })
                 .finally(() => {
                     setIsProcessing(false)

@@ -7,6 +7,7 @@ import {useRequest} from "_hooks";
 import {getGargosRequest, logout as logoutRequest} from "_requests";
 import {AuthContext} from "_context";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
+import {useIsFocused} from "@react-navigation/core";
 
 const Home = ({navigation}) => {
     const {auth, setAuth} = useContext(AuthContext);
@@ -16,8 +17,10 @@ const Home = ({navigation}) => {
     const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
     const [parcels, setParcels] = useState([]);
+    const [dummy, setDummy] = useState(false);
     const [request] = useRequest(getGargosRequest);
     const [_logout] = useRequest(logoutRequest);
+
 
     const goto = (route) => {
         navigation.navigate(route);
