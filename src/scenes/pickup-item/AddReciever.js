@@ -139,13 +139,11 @@ const AddReciever = ({navigation, route}) => {
         setParcel({...parcel, [name]: value});
     };
     const onSave = () => {
-        // const parcel = parcels[index] ? parcels[index] : {};
         if (index <= parcels.length) {
             const newParcels = parcels.slice();
             newParcels[index] = {...parcel, receiver: receiver};
             setParcels(newParcels);
         }
-        // setParcels({...parcels, [index]: {...parcel, receiver: receiver}});
         navigation.goBack();
     };
     const goToScanner = () => {
@@ -169,7 +167,6 @@ const AddReciever = ({navigation, route}) => {
                         // onChangeText={onChange}
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
-                        // isCustomer
                     />
                     <View style={[s.formGroup]}>
                         <Form
@@ -286,10 +283,6 @@ const AddReciever = ({navigation, route}) => {
                             )}
                         </View>
                     </View>
-                    {/* <View style={[s.formGroup]}>
-                    <Button onPress={onPress}>Next</Button>
-                </View> */}
-                    {/* <Text>{JSON.stringify(receiver.country_code)}</Text> */}
                 </View>
                 <View style={[s.formGroup, s.pb3]}>
                     <Button onPress={onSave}>Add</Button>
@@ -303,8 +296,6 @@ const Form = ({labels, keys, receiver, onChange}) => {
     return (
         <>
             {keys.map((key, i) => (
-                // <View style={[s.formGroup]} key={key}>
-                // {/* <Text style={[s.text]}>{JSON.stringify(receiver)}</Text> */}
                 <InputWithError
                     name={key}
                     key={"receiver_" + key}
@@ -314,13 +305,7 @@ const Form = ({labels, keys, receiver, onChange}) => {
                     // label={label}
                     isNumber={key === "price" || key === "weight"}
                 />
-                // </View>
             ))}
-            {/* {keys.map((name, i) => (
-                        <Text>{name + ": " + receiver[name]}</Text>
-                    ))} */}
-            {/* <Text>{index}</Text> */}
-            {/* <Text>{JSON.stringify(parcels[index].receiver)}</Text> */}
         </>
     );
 };

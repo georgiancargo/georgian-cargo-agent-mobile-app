@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {ScrollView, View, Text} from "react-native";
+import {ScrollView, View} from "react-native";
 import {
     InputWithError,
     Button,
@@ -20,122 +20,12 @@ const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
     const {errors, validate, hasErrors} = useValidation(senderDataValidations);
 
-    const [parcels, setParcels] = useState([
-        {
-            tracking_number: "12342134",
-            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
-            weight: 4.604,
-            description: "Laudantium",
-            receiver: {
-                name: "Fae Willms",
-                email: "albertha68@gmail.com",
-                phone: "(578) 682-8373",
-                country_code: "SM",
-                address_line_1:
-                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
-                address_line_2: "Suite 471",
-                postal_code: "76317-3071",
-            },
-            collection_option: "OFFICE",
-            customer_type: "CORPORATE",
-            parcel_type: "FREIGHT",
-            extra_charges: [
-                {
-                    note: "Dishwasher",
-                    amount: 10,
-                },
-            ],
-        },
-        {
-            tracking_number: "12342134",
-            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
-            weight: 4.604,
-            description: "Laudantium",
-            receiver: {
-                name: "Fae Willms",
-                email: "albertha68@gmail.com",
-                phone: "(578) 682-8373",
-                country_code: "SM",
-                address_line_1:
-                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
-                address_line_2: "Suite 471",
-                postal_code: "76317-3071",
-            },
-            collection_option: "OFFICE",
-            customer_type: "CORPORATE",
-            parcel_type: "FREIGHT",
-            extra_charges: [
-                {
-                    note: "Dishwasher",
-                    amount: 10,
-                },
-            ],
-        },
-        {
-            tracking_number: "12342134",
-            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
-            weight: 4.604,
-            description: "Laudantium",
-            receiver: {
-                name: "Fae Willms",
-                email: "albertha68@gmail.com",
-                phone: "(578) 682-8373",
-                country_code: "SM",
-                address_line_1:
-                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
-                address_line_2: "Suite 471",
-                postal_code: "76317-3071",
-            },
-            collection_option: "OFFICE",
-            customer_type: "CORPORATE",
-            parcel_type: "FREIGHT",
-            extra_charges: [
-                {
-                    note: "Dishwasher",
-                    amount: 10,
-                },
-            ],
-        },
-        {
-            tracking_number: "12342134",
-            item_id: "bae6adb2-a750-3d83-b09a-a33ba5684733",
-            weight: 4.604,
-            description: "Laudantium",
-            receiver: {
-                name: "Fae Willms",
-                email: "albertha68@gmail.com",
-                phone: "(578) 682-8373",
-                country_code: "SM",
-                address_line_1:
-                    "35751 Nader Throughway Suite 777 Hectorfurt, NV 46769",
-                address_line_2: "Suite 471",
-                postal_code: "76317-3071",
-            },
-            collection_option: "OFFICE",
-            customer_type: "CORPORATE",
-            parcel_type: "FREIGHT",
-            extra_charges: [
-                {
-                    note: "Dishwasher",
-                    amount: 10,
-                },
-            ],
-        },
-    ]);
-    const [sender, setSender] = useState({
-        name: "Zelma Johnston",
-        email: "angela94@bergnaum.info",
-        phone: "+1-570-726-3894",
-        country_code: "TV",
-        address_line_1: "54330 Terrence Rest Suite 675 South Charity, NJ 84125",
-        address_line_2: "Apt. 165",
-        postal_code: "46892",
-    });
+    const [parcels, setParcels] = useState([]);
+    const [sender, setSender] = useState({});
+    
     const [globalSettings, setGlobal] = useState({
         parcel_type: "PARCEL",
     });
-
-
 
     const labels = ["Sender phone", "Sender Email", "Sender addrees line 1", "Sender address line 2", "Sender address postal code"];
     const keys = ["phone", "email", "address_line_1", "address_line_2", "postal_code"];
@@ -213,7 +103,6 @@ const PickupItemScreen = ({navigation}) => {
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
-            {/* <View style={[s.formGroup]}> */}
             <PreventGoingBack navigation={navigation} />
             <InputAutoComplete
                 name="name"
@@ -225,11 +114,9 @@ const PickupItemScreen = ({navigation}) => {
                 setUser={setSender}
                 isCustomer
             />
-            {/* </View> */}
             <ScrollView>
                 <View style={{borderWidth: 0, flex: 5.1}}>
                     {keys.map((key, i) => (
-                        // <View style={[s.formGroup]} key={label}>
                         <InputWithError
                             name={key}
                             value={sender[key]}
@@ -238,17 +125,13 @@ const PickupItemScreen = ({navigation}) => {
                             onChangeText={onChange}
                             key={"sender_" + key}
                         />
-                        // </View>
                     ))}
-                    {/* <View style={[s.formGroup, s.mt2]}> */}
                     <SourceRoutesDropdown
                         name="country_code"
                         onSelect={onChange}
                         selectedValue={sender.country_code}
                         placeholder="Sender address country code"
                     />
-                    {/* </View> */}
-                    {/* <View style={[s.formGroup]}> */}
                     <SelectDropdown
                         list={parcelType}
                         name="parcel_type"
@@ -256,7 +139,6 @@ const PickupItemScreen = ({navigation}) => {
                         selectedValue={globalSettings.parcel_type}
                         placeholder="Parcel Type"
                     />
-                    {/* </View> */}
                     <RadioButtonGroup
                         label="Customer Type"
                         onValueChange={onChangeParcel}
@@ -272,7 +154,6 @@ const PickupItemScreen = ({navigation}) => {
                             flexDirection: "row",
                         }}
                     >
-                        {/* <View style={[s.flexRow, s.flexWrap, s.buttonGroup]}> */}
                         <Button style={[btnGroup]} onPress={addReceiver}>
                             Add Parcel
                         </Button>
@@ -286,10 +167,6 @@ const PickupItemScreen = ({navigation}) => {
                     </View>
 
                     <View style={{borderWidth: 0, flex: 3}}>
-                        {/* <Text>{JSON.stringify(parcelsArray)}</Text> */}
-                        {/* <Text>{JSON.stringify(sender)}</Text> */}
-                        {/* <Text>{JSON.stringify(parcels)}</Text> */}
-                        {/* <Text>{JSON.stringify(notSaved)}</Text> */}
                         <PickupList
                             parcels={parcels}
                             editParcel={editParcel}

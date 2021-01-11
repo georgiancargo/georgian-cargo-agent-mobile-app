@@ -14,7 +14,6 @@ import {
     DeliveredItemProcessing,
     Scanner,
 } from "_scenes/item-processing";
-import Header from "./Header";
 import {AuthContext} from "_context";
 
 const {Navigator, Screen} = createStackNavigator();
@@ -23,10 +22,7 @@ function App() {
 
     return (
         <NavigationContainer>
-            <Navigator
-                initialRouteName="Login"
-                // screenOptions={{header: Header}}
-            >
+            <Navigator initialRouteName={auth.is_logged_in ? "Home" : "Login"}>
                 <Screen name="Login" component={LoginScreen} />
                 <Screen name="Home" component={HomeScreen} />
                 <Screen name="Edit Parcel" component={EditParcel} />

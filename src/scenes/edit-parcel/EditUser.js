@@ -2,10 +2,7 @@ import React, {useEffect, useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {RadioButtonGroup} from "_molecules";
-import {SelectDropdown} from "_atoms";
 import {ScrollView} from "react-native";
-import {Text} from "react-native";
 import {useValidation} from "_hooks";
 import EditUserValidations from "./EditUserValidations";
 

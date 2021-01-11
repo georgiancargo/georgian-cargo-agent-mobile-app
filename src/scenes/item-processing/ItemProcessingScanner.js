@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {StyleSheet, View, Text} from "react-native";
+import {StyleSheet, View} from "react-native";
 import Scanner from "./Scanner";
 import {ProcessingList, EditBarCode} from "_molecules";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";

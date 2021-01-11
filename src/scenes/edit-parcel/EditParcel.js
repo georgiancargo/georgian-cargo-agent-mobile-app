@@ -1,4 +1,4 @@
-import React, {useContext, useState, useEffect} from "react";
+import React, {useContext, useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";

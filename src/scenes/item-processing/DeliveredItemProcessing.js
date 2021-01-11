@@ -1,9 +1,7 @@
 import React, {useState, useEffect} from "react";
-import {View, Text} from "react-native";
+import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
-import {releaseRequest} from "_requests";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {useRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {EditBarCode} from "_molecules";
 import {ProcessingList} from "_molecules";

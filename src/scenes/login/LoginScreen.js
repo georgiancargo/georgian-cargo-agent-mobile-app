@@ -4,7 +4,6 @@ import {useRequest} from "_hooks";
 import {InputWithError, Button} from "_atoms";
 import {loginRequest} from "_requests";
 import {AuthContext} from "_context";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import loginScreenValidations from "./LoginScreenValidations";
 import {useValidation} from "_hooks";
 import logoImage from './logo.png'

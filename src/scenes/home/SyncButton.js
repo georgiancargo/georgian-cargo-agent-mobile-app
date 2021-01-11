@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from "react";
-import {TouchableOpacity, View, Text} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {getItemAsync, setItemAsync as set} from "expo-secure-store";
 import {useStoredRequest} from "_hooks";

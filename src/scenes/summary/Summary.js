@@ -3,7 +3,7 @@ import {ScrollView, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
-import {SummaryList, ExtraChargesTable} from "_molecules";
+import {SummaryList} from "_molecules";
 import {Divider} from "react-native-paper";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
