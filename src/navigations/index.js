@@ -18,28 +18,41 @@ import {AuthContext} from "_context";
 
 const {Navigator, Screen} = createStackNavigator();
 function App() {
-    const {setAuth, auth} = useContext(AuthContext);
-
+    const {auth} = useContext(AuthContext);
     return (
         <NavigationContainer>
-            <Navigator initialRouteName={auth.is_logged_in ? "Home" : "Login"}>
-                <Screen name="Login" component={LoginScreen} />
-                <Screen name="Home" component={HomeScreen} />
-                <Screen name="Edit Parcel" component={EditParcel} />
-                <Screen name="Edit Sender" component={EditUser} />
-                <Screen name="Edit Receiver" component={EditUser} />
-                <Screen name="Add Sender" component={PickupItemScreen} />
-                <Screen name="Summary" component={Summary} />
-                <Screen name="Add Parcel" component={AddReciever} />
-                <Screen name="Item Processing" component={ItemProcessing} />
-                <Screen name="Scanner" component={ItemProcessingScanner} />
-                <Screen name="cameraScanner" component={Scanner} />
-                <Screen name="Modes" component={ItemModes} />
-                <Screen name="Search" component={SearchScreen} />
-                <Screen
-                    name="Delivered Item Processing"
-                    component={DeliveredItemProcessing}
-                />
+            <Navigator>
+                {auth.is_logged_in ? (
+                    <>
+                        <Screen name="Home" component={HomeScreen} />
+                        <Screen name="Edit Parcel" component={EditParcel} />
+                        <Screen name="Edit Sender" component={EditUser} />
+                        <Screen name="Edit Receiver" component={EditUser} />
+                        <Screen
+                            name="Add Sender"
+                            component={PickupItemScreen}
+                        />
+                        <Screen name="Summary" component={Summary} />
+                        <Screen name="Add Parcel" component={AddReciever} />
+                        <Screen
+                            name="Item Processing"
+                            component={ItemProcessing}
+                        />
+                        <Screen
+                            name="Scanner"
+                            component={ItemProcessingScanner}
+                        />
+                        <Screen name="cameraScanner" component={Scanner} />
+                        <Screen name="Modes" component={ItemModes} />
+                        <Screen name="Search" component={SearchScreen} />
+                        <Screen
+                            name="Delivered Item Processing"
+                            component={DeliveredItemProcessing}
+                        />
+                    </>
+                ) : (
+                    <Screen name="Login" component={LoginScreen} />
+                )}
             </Navigator>
         </NavigationContainer>
     );
