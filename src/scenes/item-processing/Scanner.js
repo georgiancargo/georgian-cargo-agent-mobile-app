@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, Vibration} from "react-native";
 import {BarCodeScanner} from "expo-barcode-scanner";
 import {Alert} from "react-native";
 
@@ -20,8 +20,10 @@ const Scanner = (props) => {
     const handleBarCodeScanned = ({type, data}) => {
         // if (barCodes.indexOf(data) == -1) setBarCodes([data].concat(barCodes));
         if (props.barCodes)
-            if (barCodes.indexOf(data) == -1) setBarCodes([...barCodes, data]);
-            else {
+            if (barCodes.indexOf(data) === -1) {
+                setBarCodes([...barCodes, data]);
+                Vibration.vibrate();
+            } else {
             }
         else if (props.route.params.scanOnce) {
             setScanned(true);

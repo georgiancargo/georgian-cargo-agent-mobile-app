@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, Text, View} from "react-native";
+import {ScrollView, Text, View, Vibration} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button, InputAutoComplete} from "_atoms";
 import {
@@ -184,8 +184,9 @@ const AddReciever = ({navigation, route}) => {
     const goToScanner = () => {
         navigation.navigate("cameraScanner", {
             scanOnce: true,
-            callback: (number) =>
-                setParcel({...parcel, tracking_number: number}),
+            callback: (number) =>{
+                setParcel({...parcel, tracking_number: number})
+            }
         });
     };
     return (
