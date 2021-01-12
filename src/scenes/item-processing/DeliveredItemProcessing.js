@@ -79,13 +79,15 @@ const DeliveredItemProcessing = ({
     };
     const preReleaseCheck = () => {
         let checkOn = [];
+        let max = first + n - 1;
         releaseCodes.forEach((item) => {
             try {
-                checkOn.push(parseInt(item));
+                const n = parseInt(item);
+                if (n <= max) checkOn.push(n);
             } catch (error) {}
         });
         checkOn = checkOn.sort((a, b) => a - b);
-        let remaining = size;
+        let remaining = n - checkOn.length;
         const missing = [];
         for (let i = 0; i < checkOn.length - 1; i++) {
             const a = checkOn[i];
