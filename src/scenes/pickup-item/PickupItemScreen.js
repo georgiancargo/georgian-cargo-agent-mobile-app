@@ -103,7 +103,10 @@ const PickupItemScreen = ({navigation}) => {
     };
     return (
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
-            <PreventGoingBack navigation={navigation} />
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={parcels.length}
+            />
             <InputAutoComplete
                 name="name"
                 value={sender.name}
