@@ -46,11 +46,12 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
                         </Text>
                         <Text style={[s.text]}>notes: {parcel.notes}</Text>
                         <Text style={[s.text]}>extra charges: </Text>
-                        {parcel.extra_charges.map((c, i) => (
-                            <Text
-                                key={i + " " + parcel.tracking_number}
-                            >{`    ${c.note}: ${c.amount}`}</Text>
-                        ))}
+                        {parcel.extra_charges &&
+                            parcel.extra_charges.map((c, i) => (
+                                <Text
+                                    key={i + " " + parcel.tracking_number}
+                                >{`    ${c.note}: ${c.amount}`}</Text>
+                            ))}
                     </View>
                 ) : (
                     <View>
