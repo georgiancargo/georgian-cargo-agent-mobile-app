@@ -9,11 +9,15 @@ const DestinationRoutesDropdown = (props) => {
     } = useContext(AuthContext);
     const routes = agent ? agent.routes : [];
     const destinationRoutes = [];
-    routes.forEach(({destinationCountryCode}) => {
-        destinationRoutes.push({
-            value: destinationCountryCode,
-            label: codes[destinationCountryCode],
-        });
+    const destinationCodes = [];
+    routes.forEach(({destinationCountryCode: code}) => {
+        if (destinationCodes.indexOf(code) === -1) {
+            destinationRoutes.push({
+                value: code,
+                label: codes[code],
+            });
+            destinationCodes.push(code);
+        }
     });
     return <SelectDropdown list={destinationRoutes} {...props} />;
 };

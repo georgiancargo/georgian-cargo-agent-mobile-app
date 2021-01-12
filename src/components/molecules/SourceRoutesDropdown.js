@@ -1,5 +1,4 @@
 import React, {useContext} from "react";
-// import {Text} from "react-native";
 import {SelectDropdown} from "_atoms";
 import {AuthContext} from "_context";
 import {codes} from "_utils";
@@ -10,13 +9,16 @@ const SourceRoutesDropdown = (props) => {
     } = useContext(AuthContext);
     const routes = agent ? agent.routes : [];
     const sourceRoutes = [];
-    routes.forEach(({sourceCountryCode}) => {
-        sourceRoutes.push({
-            value: sourceCountryCode,
-            label: codes[sourceCountryCode],
-        });
+    const sourceCodes = [];
+    routes.forEach(({sourceCountryCode: code}) => {
+        if (sourceCodes.indexOf(code) === -1) {
+            sourceRoutes.push({
+                value: code,
+                label: codes[code],
+            });
+            sourceCodes.push(code);
+        }
     });
-    // return <Text>{JSON.stringify(sourceRoutes)}</Text>;
     return <SelectDropdown list={sourceRoutes} {...props} />;
 };
 
