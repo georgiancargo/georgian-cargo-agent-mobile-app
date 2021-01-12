@@ -26,20 +26,25 @@ const styles = StyleSheet.create({
     },
 });
 const InputWithError = ({
-    name,
-    label,
-    error,
-    style = {},
-    onChangeText,
-    isNumber,
-    ...rest
-}) => {
+                            name,
+                            label,
+                            error,
+                            style = {},
+                            onChangeText,
+                            isNumber,
+                            ...rest
+                        }) => {
     const onChangeWrapper = (text) => {
         if (isNumber) {
             const number = parseFloat(text);
-            if (isNaN(number)) onChangeText(name, 0);
-            else onChangeText(name, text);
-        } else onChangeText(name, text);
+            if (isNaN(number)) {
+                onChangeText(name, 0);
+            } else {
+                onChangeText(name, text);
+            }
+        } else {
+            onChangeText(name, text);
+        }
     };
     return (
         <>
