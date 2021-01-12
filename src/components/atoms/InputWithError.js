@@ -32,6 +32,7 @@ const InputWithError = ({
                             style = {},
                             onChangeText,
                             isNumber,
+                            isInt,
                             ...rest
                         }) => {
     const onChangeWrapper = (text) => {
@@ -44,6 +45,14 @@ const InputWithError = ({
             }
         } else {
             onChangeText(name, text);
+        }
+        if (isInt) {
+            const number = parseInt(text);
+            if (isNaN(number)) {
+                onChangeText(name, 0);
+            } else {
+                onChangeText(name, number);
+            }
         }
     };
     return (

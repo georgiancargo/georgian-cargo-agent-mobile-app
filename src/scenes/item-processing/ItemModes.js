@@ -62,14 +62,14 @@ const ItemModes = ({navigation}) => {
                             placeholder="First code"
                             onChangeText={changeParams}
                             value={params.first.toString()}
-                            isNumber
+                            isInt
                         />
                         <InputWithError
                             name="size"
                             placeholder="Number of codes"
                             onChangeText={changeParams}
                             value={params.size.toString()}
-                            isNumber
+                            isInt
                         />
                     </View>
                     <Button
