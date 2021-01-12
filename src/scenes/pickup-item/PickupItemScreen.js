@@ -130,6 +130,7 @@ const PickupItemScreen = ({navigation}) => {
                         name="country_code"
                         onSelect={onChange}
                         error={errors.country_code}
+                        selectedValue={sender.country_code}
                         placeholder="Sender address country code"
                     />
                     <SelectDropdown
