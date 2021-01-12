@@ -17,7 +17,6 @@ const EditParcelValidations = (data, field) => {
             "currency_code",
             "freight_price",
             "delivery_price",
-            "discount",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {
                 enforce(data[elem].toString()).isNotEmpty();
