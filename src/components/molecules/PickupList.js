@@ -20,10 +20,10 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                 style={[s.tableRow, s.tableStripedRow(index)]}
                 key={parcel.tracking_number}
             >
-                <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
+                <View style={[s.tableHeadCol, s.flex3, s.justifyContentCenter]}>
                     <Text style={[s.text]}>{parcel.tracking_number}</Text>
                 </View>
-                <View style={[s.tableHeadCol, s.flex6]}>
+                <View style={[s.tableHeadCol, s.flex3]}>
                     <TouchableOpacity onPress={edit}>
                         <Text>{receiver.name}</Text>
                     </TouchableOpacity>
@@ -64,9 +64,9 @@ const Header = () => {
     return (
         <View style={[s.tableHead]}>
             <View style={[s.tableHeadCol]}>
-                <Text style={[s.text, s.flex1]}>#</Text>
+                <Text style={[s.text, s.flex3]}>#</Text>
             </View>
-            <View style={[s.tableHeadCol, s.flex6]}>
+            <View style={[s.tableHeadCol, s.flex3]}>
                 <Text style={[s.text, s.textCenter]}>Receiver</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex1]}>
