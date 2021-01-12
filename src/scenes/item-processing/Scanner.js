@@ -17,7 +17,7 @@ const Scanner = (props) => {
 
     const handleBarCodeScanned = ({type, data}) => {
         if (props.barCodes) {
-            if (barCodes.indexOf(data) == -1) {
+            if (barCodes.indexOf(data) === -1) {
                 setBarCodes([...barCodes, data]);
                 Vibration.vibrate();
             }

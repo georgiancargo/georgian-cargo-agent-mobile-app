@@ -41,20 +41,22 @@ const PickupItemScreen = ({navigation}) => {
     ];
     
     const addReceiver = () => {
-        // const temp = {0: {sender: sender, receiver: {}}};
-        const index = parcels.length;
-        // setParcels({...parcels, [index]: temp});
-
-        navigation.navigate("Add Parcel", {
-            index: index,
-            setParcels: setParcels,
-            // parcels: index ? {...parcels, [index]: temp} : temp,
-            parcels: parcels,
-            newParcel: {description: "Clothes"},
-            newReceiver: {},
-            source_country_code: sender.country_code,
-            parcel_type: globalSettings.parcel_type,
-            customer_type: globalSettings.customer_type,
+        alert(JSON.stringify(sender));
+        validate(sender).then(()=>{
+            const index = parcels.length;
+            navigation.navigate("Add Parcel", {
+                index: index,
+                setParcels: setParcels,
+                // parcels: index ? {...parcels, [index]: temp} : temp,
+                parcels: parcels,
+                newParcel: {description: "Clothes"},
+                newReceiver: {},
+                source_country_code: sender.country_code,
+                parcel_type: globalSettings.parcel_type,
+                customer_type: globalSettings.customer_type,
+            });
+        }).catch((e)=>{
+            alert(JSON.stringify(e));
         });
     };
 
@@ -129,7 +131,7 @@ const PickupItemScreen = ({navigation}) => {
                     <SourceRoutesDropdown
                         name="country_code"
                         onSelect={onChange}
-                        selectedValue={sender.country_code}
+                        error={errors.country_code}
                         placeholder="Sender address country code"
                     />
                     <SelectDropdown

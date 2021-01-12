@@ -21,16 +21,11 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                 key={parcel.tracking_number}
             >
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
-                    <Text style={[s.text]}>{index + 1}</Text>
+                    <Text style={[s.text]}>{parcel.tracking_number}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex6]}>
                     <TouchableOpacity onPress={edit}>
-                        <Text>name: {receiver.name}</Text>
-                        <Text>phone: {receiver.phone}</Text>
-                        <Text>email: {receiver.email}</Text>
-                        <Text>tracking number: {parcel.tracking_number}</Text>
-                        <Text>weight: {parcel.weight}</Text>
-                        <Text>description: {parcel.description}</Text>
+                        <Text>{receiver.name}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
@@ -42,7 +37,7 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                         }}
                         onPress={() => removeParcel(index)}
                     >
-                        <Text style={{color: "red"}}>X</Text>
+                        <Text style={{color: "red", fontWeight: 'bold'}}>X</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -72,10 +67,10 @@ const Header = () => {
                 <Text style={[s.text, s.flex1]}>#</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex6]}>
-                <Text style={[s.text, s.textCenter]}>Parcel</Text>
+                <Text style={[s.text, s.textCenter]}>Receiver</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex1]}>
-                <Text style={[s.text]}></Text>
+                <Text style={[s.text]}/>
             </View>
         </View>
     );

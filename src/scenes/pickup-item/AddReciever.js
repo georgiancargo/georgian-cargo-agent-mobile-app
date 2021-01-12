@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, Text, View} from "react-native";
+import {ScrollView, Text, View, Vibration} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button, InputAutoComplete} from "_atoms";
 import {
@@ -87,6 +87,7 @@ const AddReciever = ({navigation, route}) => {
                     price:
                         data.prices.freight_price + data.prices.delivery_price,
                 });
+                setPolicyError(false);
             })
             .catch(() => {
                 setPolicyError(true);
@@ -149,7 +150,8 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         try {
-            validateReceiver(newReceiver, name).then(() => {});
+            validateReceiver(newReceiver, name).then(() => {
+            });
         } catch (error) {
 
         }
@@ -158,7 +160,7 @@ const AddReciever = ({navigation, route}) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
         try {
-            validateParcel(next, name);
+            validateParcel(next, name).then(()=>{});
         } catch (error) {
 
         }
@@ -174,16 +176,18 @@ const AddReciever = ({navigation, route}) => {
                     newParcels[index] = {...parcel, receiver: receiver};
                     setParcels(newParcels);
                 }
+                navigation.goBack();
             })
-            .catch(() => {
+            .catch((e) => {
             });
-        navigation.goBack();
     };
     const goToScanner = () => {
         navigation.navigate("cameraScanner", {
             scanOnce: true,
-            callback: (number) =>
-                setParcel({...parcel, tracking_number: number}),
+            callback: (number) =>{
+                const next = {...parcel, tracking_number: number};
+                validateParcel(next).then(()=>setParcel(next));
+            }
         });
     };
     return (
@@ -222,7 +226,7 @@ const AddReciever = ({navigation, route}) => {
                     <Divider style={{marginBottom: 10}}/>
                     <View style={[s.formGroup]}>
                         <View style={{flexDirection: "row"}}>
-                            <View style={{flexDirection: "column", flex: 3}}>
+                            <View style={{flex: 3}}>
                                 <InputWithError
                                     error={parcelErrors.tracking_number}
                                     name="tracking_number"
@@ -234,14 +238,13 @@ const AddReciever = ({navigation, route}) => {
                             <View
                                 style={{
                                     flex: 1,
-                                    paddingTop: 15,
-                                    paddingBottom: 5,
+                                    justifyContent: 'center',
+                                    padding: 3
                                 }}
                             >
                                 <Button
-                                    mode="outlined"
                                     onPress={goToScanner}
-                                    style={{flexGrow: 1}}
+                                    style={{}}
                                 >
                                     Scan
                                 </Button>
@@ -314,12 +317,13 @@ const AddReciever = ({navigation, route}) => {
                                         No route policy found for current setting, please adjust inputs or contact
                                         administrator
                                     </Text>}
-                                    <Chip style={{marginBottom: 5, marginTop: 10}}>
-                                        {`Freight price: ${price.freight_price} ${price.currency_code}`}
-                                    </Chip>
-                                    <Chip>
-                                        {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
-                                    </Chip>
+                                    {!policyError && <>
+                                        <Chip style={{marginBottom: 5, marginTop: 10}}>
+                                            {`Freight price: ${price.freight_price} ${price.currency_code}`}
+                                        </Chip>
+                                        <Chip>
+                                            {`Delivery price: ${price.delivery_price} ${price.currency_code}`}
+                                        </Chip></>}
                                 </>
                             )}
                         </View>
@@ -328,7 +332,7 @@ const AddReciever = ({navigation, route}) => {
                 <View style={[s.formGroup, s.pb3]}>
                     <Button
                         onPress={onSave}
-                        disabled={receiverHasErrors || parcelHasErrors}
+                        disabled={policyError}
                     >
                         Add
                     </Button>

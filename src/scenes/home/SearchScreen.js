@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View} from "react-native";
+import {Text, View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {ParcelList} from "_molecules";
 import {useRequest} from "_hooks";
@@ -48,6 +48,7 @@ const SearchScreen = ({navigation}) => {
                 Search
             </Button>
             <View style={{flex: 1}}>
+                {parcels.length === 0 && <Text>No parcels matching term were found</Text>}
                 <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>
