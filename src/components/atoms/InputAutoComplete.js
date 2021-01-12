@@ -42,7 +42,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
         // });
         setUser({...user, ...user.address});
     };
-    const renderItem = ({item}) => {
+    const renderItem = ({item, index}) => {
         switch (typeof item) {
             case "string":
                 return <Text>{item}</Text>;
@@ -52,6 +52,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
                     <TouchableOpacity
                         style={{borderBottomWidth: 1, borderBottomColor: '#ddd', padding: 15}}
                         onPress={() => onPress(item)}
+                        key={index}
                     >
                         <Text style={{fontSize: 15}}>{item.name}</Text>
                     </TouchableOpacity>
@@ -61,14 +62,12 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
 
     useEffect(() => {
         if (value && selectedValue !== value && value.length >= 1)
-            request(
-                {
-                    name: value
-                }
-            )
-                .then((r) =>
-                    setData(isCustomer ? r.data.customers : r.data.receivers)
-                )
+            request({name: value})
+                .then((r) => {
+                    const list = isCustomer? r.data.customers : r.data.receivers;
+                    const newData = Object.values(list);
+                    setData(newData);
+                })
                 .catch((e) => setData([]));
     }, [value]);
 
