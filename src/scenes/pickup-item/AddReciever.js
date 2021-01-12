@@ -149,21 +149,12 @@ const AddReciever = ({navigation, route}) => {
     const onChangeReceiver = (name, value) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
-        try {
-            validateReceiver(newReceiver, name).then(() => {
-            });
-        } catch (error) {
-
-        }
+        validateReceiver(newReceiver, name).catch((e) => {});
     };
     const onChangeParcel = (name, value) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
-        try {
-            validateParcel(next, name).then(()=>{});
-        } catch (error) {
-
-        }
+        validateParcel(next, name).catch((e) => {});
     };
     const onSave = () => {
         validateReceiver(receiver)
