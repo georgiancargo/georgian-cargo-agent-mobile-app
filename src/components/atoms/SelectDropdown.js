@@ -1,14 +1,32 @@
 import React, {useState, useEffect} from "react";
 import {Picker} from "@react-native-picker/picker";
-import {View, SafeAreaView} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
+import {View, StyleSheet} from "react-native";
 import {Text} from "react-native";
 import {useTheme} from "react-native-paper";
-import { ScrollView } from "react-native";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
-
+const style = StyleSheet.create({
+    input: {
+        minHeight: 46,
+        borderWidth: 1,
+        borderColor: "grey",
+        fontSize: 16,
+        borderRadius: 10,
+        zIndex: 1,
+        color: "#000000",
+        backgroundColor: "#f5f5f5",
+        marginBottom: 3,
+    },
+    errorText: {
+        fontSize: 12,
+        color: "red",
+        marginLeft: 9,
+    },
+    label: {
+        fontSize: 12,
+        color: "#616161",
+        marginLeft: 9,
+    },
+});
 const SelectDropdown = ({
     list = [],
     disabled,
@@ -17,16 +35,11 @@ const SelectDropdown = ({
     selectedValue,
     label,
     placeholder,
-    error
+    error,
 }) => {
-    const {colors, roundness} = useTheme();const [pickerStyle, setPickerStyle] = useState({});
-    const [viewStyle, setViewStyle] = useState({
-        borderWidth: 1,
-        borderColor: colors.backdrop,
-        backgroundColor: colors.background,
-        borderRadius: roundness,
-        marginTop: 6,
-    });
+    const {colors, roundness} = useTheme();
+    const [pickerStyle, setPickerStyle] = useState({height: 46});
+    const [viewStyle, setViewStyle] = useState(style.input);
 
     useEffect(() => {
         if (selectedValue && selectedValue !== "") {
@@ -47,32 +60,29 @@ const SelectDropdown = ({
     };
     return (
         <>
-            {/* <ScrollView style={{flex: 1}}> */}
-                {label ? (
-                    <Text style={[s.formLabelText, s.textMuted]}>{label}</Text>
-                ) : null}
-                {/* <Text>{JSON.stringify(style)}</Text> */}
-                <View style={viewStyle}>
-                    <Picker
-                        selectedValue={selectedValue}
-                        onValueChange={onSelectWrapper}
-                        style={pickerStyle}
-                        enabled={!disabled}
-                    >
-                        {selectedValue && selectedValue !== "" ? null : (
-                            <Picker.Item label={placeholder} value="" />
-                        )}
-                        {list.map((item, i) => (
-                            <Picker.Item
-                                label={item.label}
-                                value={item.value}
-                                key={item.value}
-                            />
-                        ))}
-                    </Picker>
-                    {error ? <Text style={styles.errorText}>{error}</Text> : null}
-                </View>
-            {/* </ScrollView> */}
+            {label || placeholder ? (
+                <Text style={style.label}>{label ? label : placeholder}</Text>
+            ) : null}
+            <View style={viewStyle}>
+                <Picker
+                    selectedValue={selectedValue}
+                    onValueChange={onSelectWrapper}
+                    style={pickerStyle}
+                    enabled={!disabled}
+                >
+                    {selectedValue && selectedValue !== "" ? null : (
+                        <Picker.Item label={placeholder} value="" />
+                    )}
+                    {list.map((item, i) => (
+                        <Picker.Item
+                            label={item.label}
+                            value={item.value}
+                            key={item.value}
+                        />
+                    ))}
+                </Picker>
+            </View>
+            {error ? <Text style={style.errorText}>{error}</Text> : null}
         </>
     );
 };
