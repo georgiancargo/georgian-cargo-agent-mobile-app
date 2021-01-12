@@ -52,8 +52,10 @@ const Summary = ({navigation, route: {params}}) => {
 
     useEffect(() => {
         const newMethods = payment_methods.slice();
-        if (getCash) newMethods.push({label: "Cash", value: "CASH"});
-        if (getBank) newMethods.push({label: "Bank", value: "BANK"});
+        if (getCash && newMethods.length < 3)
+            newMethods.push({label: "Cash", value: "CASH"});
+        if (getBank && newMethods.length < 3)
+            newMethods.push({label: "Bank", value: "BANK"});
         setPaymentMethods(newMethods);
     }, [auth]);
 
