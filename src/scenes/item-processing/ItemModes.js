@@ -39,16 +39,16 @@ const ItemModes = ({navigation}) => {
     const hideModal = () => setModalVisible(false);
 
     const Delivered = () => {
-        const [num, setNum] = useState(1);
-        const onChange = (_, value) => {
-            setNum(value);
+        const [params, setParams] = useState({size: 1, first: 1});
+        const changeParams = (name, value) => {
+            setParams({...params, [name]: value});
         };
         const done = () => {
             hideModal();
             if (mode === -1)
-                navigation.navigate("Delivered Item Processing", {size: num});
+                navigation.navigate("Delivered Item Processing", params);
             else
-                navigation.navigate("Item Processing", {event: modes[mode], size: num});
+                navigation.navigate("Item Processing", {event: modes[mode], ...params});
         };
         return (
             <ModalContainer
@@ -58,10 +58,17 @@ const ItemModes = ({navigation}) => {
                 <ScrollView style={styles.container}>
                     <View>
                         <InputWithError
-                            name="data"
+                            name="first"
+                            placeholder="First code"
+                            onChangeText={changeParams}
+                            value={params.first.toString()}
+                            isNumber
+                        />
+                        <InputWithError
+                            name="size"
                             placeholder="Number of codes"
-                            onChangeText={onChange}
-                            value={num.toString()}
+                            onChangeText={changeParams}
+                            value={params.size.toString()}
                             isNumber
                         />
                     </View>

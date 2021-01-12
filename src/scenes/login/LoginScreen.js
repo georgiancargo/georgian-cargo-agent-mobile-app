@@ -1,31 +1,26 @@
-import React, {useContext, useState, useEffect} from "react";
-import {View, StyleSheet, Text, Image} from "react-native";
+import React, {useContext, useState} from "react";
+import {View, StyleSheet, Image} from "react-native";
 import {useRequest} from "_hooks";
 import {InputWithError, Button} from "_atoms";
 import {loginRequest} from "_requests";
 import {AuthContext} from "_context";
 import loginScreenValidations from "./LoginScreenValidations";
 import {useValidation} from "_hooks";
-import logoImage from './logo.png'
+import logoImage from "./logo.png";
 
-
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({}) => {
     const [user, setUser] = useState({username: "admin", password: "12341234"});
-    const {setAuth, auth} = useContext(AuthContext);
+    const {setAuth} = useContext(AuthContext);
     const [request, requesting] = useRequest(loginRequest);
     const {errors, validate, addErrors} = useValidation(loginScreenValidations);
-    useEffect(() => {
-        if (auth.is_logged_in) navigation.navigate("Home");
-    }, []);
     const onChangeText = (name, text) => {
         const newUser = {...user, [name]: text};
         setUser(newUser);
-        validate(newUser, name).catch((e) => {
-        });
+        validate(newUser, name).catch(() => {});
     };
     const login = () => {
         validate(user)
-            .then((r) => {
+            .then(() => {
                 request({...user, remember_token: true})
                     .then(({data}) => {
                         setAuth({
@@ -33,22 +28,20 @@ const LoginScreen = ({navigation}) => {
                             remember_token: data.remember_token,
                             is_logged_in: true,
                             agent: data.staff,
+                            username: user.username,
+                            password: user.password,
                         })
-                            .then((r) => {
-                                navigation.navigate("Home");
-                            })
-                            .catch(() => {
-                            });
+                            .then(() => {})
+                            .catch(() => {});
                     })
-                    .catch((e) => {
+                    .catch(() => {
                         addErrors({
                             username: "Wrong username/password",
                             password: "Wrong username/password",
                         });
                     });
             })
-            .catch((e) => {
-            });
+            .catch(() => {});
     };
     return (
         <View style={styles.container}>
@@ -83,7 +76,7 @@ const LoginScreen = ({navigation}) => {
                     Login
                 </Button>
             </View>
-            <View style={styles.elasticBottom}/>
+            <View style={styles.elasticBottom} />
         </View>
     );
 };
@@ -92,11 +85,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        backgroundColor: "white",
     },
     logo: {
         flex: 2,
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     formGroup: {
         flex: 4,
@@ -106,12 +100,12 @@ const styles = StyleSheet.create({
         margin: 5,
     },
     elasticBottom: {
-        flex: 1,
+        flex: 2,
     },
-    logoImage:{
+    logoImage: {
         width: 300,
-        resizeMode: 'contain'
-    }
+        resizeMode: "contain",
+    },
 });
 
 export default LoginScreen;

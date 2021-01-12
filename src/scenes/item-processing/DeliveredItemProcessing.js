@@ -17,17 +17,19 @@ const {s, c} = bootstrapStyleSheet;
 const DeliveredItemProcessing = ({
     navigation,
     route: {
-        params: {size: n},
+        params: {size: n, first},
     },
 }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState([]);
+    const [releaseCodes, setCodes] = useState([first]);
     const [missingCodes, setMissing] = useState([]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
     const [modalVisible, setModalVisible] = useState(false);
     const [editedCode, setEdited] = useState({});
     const [visible, setVisible] = useState(false);
+    const [shouldAlert, setAlert] = useState(true);
+
     const [request, requesting] = useOfflineRequest({
         url: "/cargo/release",
         method: "POST",
@@ -36,7 +38,7 @@ const DeliveredItemProcessing = ({
 
     useEffect(() => {
         const l = releaseCodes.length;
-        if (l < n) setSize(n - l);
+        if (l <= n) setSize(n - l);
     }, [releaseCodes]);
 
     const showDialog = () => setVisible(true);
@@ -60,8 +62,10 @@ const DeliveredItemProcessing = ({
         setCode(value);
     };
     const release = () => {
+        setAlert(false);
         hideDialog();
-        releaseCodes.forEach(async (code) => {
+
+        releaseCodes.forEach(async (code, i) => {
             try {
                 await request({release_code: code});
                 setError("");
@@ -70,30 +74,44 @@ const DeliveredItemProcessing = ({
                     setError(e.response.data.message);
                 } catch (error) {}
             }
+            if (i === releaseCodes.length - 1) navigation.navigate("Home");
         });
     };
     const preReleaseCheck = () => {
-        if (size !== 0) {
-            let checkOn = [];
-            releaseCodes.forEach((item) => {
-                try {
-                    checkOn.push(parseInt(item));
-                } catch (error) {}
-            });
-            showDialog();
-            checkOn = checkOn.sort((a, b) => a - b);
-            const missing = [];
-            for (let i = 0; i < checkOn.length - 1; i++) {
-                const a = checkOn[i];
-                const b = checkOn[i + 1];
-                if (b - a >= 2) {
-                    for (let j = a + 1; j < b - 1; j++) {
-                        missing.push(j);
-                    }
+        let checkOn = [];
+        releaseCodes.forEach((item) => {
+            try {
+                checkOn.push(parseInt(item));
+            } catch (error) {}
+        });
+        checkOn = checkOn.sort((a, b) => a - b);
+        let remaining = size;
+        const missing = [];
+        for (let i = 0; i < checkOn.length - 1; i++) {
+            const a = checkOn[i];
+            const b = checkOn[i + 1];
+            const range = b - a > 20 ? a + 10 : b;
+            if (b - a >= 2) {
+                for (let j = a + 1; j < range; j++) {
+                    missing.push(j);
+                    remaining--;
                 }
             }
+        }
+        if (remaining > 0) {
+            const last = checkOn.pop();
+            for (let i = 1; i <= remaining; i++) {
+                missing.push(last + i);
+            }
+        }
+        if (missing.length) {
             setMissing(missing);
+            showDialog();
+        } else if (size !== 0) {
+            setMissing(missing);
+            showDialog();
         } else {
+            hideDialog();
             release();
         }
     };
@@ -126,7 +144,10 @@ const DeliveredItemProcessing = ({
     // const renderItem = ({item}) => <Text>{item}</Text>;
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
-            <PreventGoingBack navigation={navigation} />
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+            />
             <CustomDialog
                 visible={visible}
                 hideDialog={hideDialog}
@@ -199,9 +220,11 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
             <Dialog visible={visible} onDismiss={hideDialog}>
                 <Dialog.Title>Alert</Dialog.Title>
                 <Dialog.Content>
-                    <Paragraph>
-                        {`You have entered only ${entered} out of ${size} Codes`}
-                    </Paragraph>
+                    {size === entered || entered > size ? (
+                        <Paragraph>{`The codes you have entered are not sequential`}</Paragraph>
+                    ) : (
+                        <Paragraph>{`You have entered only ${entered} out of ${size} Codes`}</Paragraph>
+                    )}
                     <Paragraph>Missing codes are:</Paragraph>
                     <FlatList
                         data={list}

@@ -92,7 +92,9 @@ const Summary = ({route: {params}}) => {
             payment_method: summaryData.payment_method,
         })
             .then(() => {})
-            .catch(() => {});
+            .catch(() => {}).finally(()=>{
+                navigation.navigate("Home");
+            });
     };
     return (
         <>

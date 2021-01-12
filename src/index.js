@@ -2,6 +2,7 @@ import React from "react";
 import Navigator from "_navigations";
 import {AuthContextProvider} from "_context";
 import {DefaultTheme, Provider as PaperProvider} from "react-native-paper";
+import {StatusBar} from "expo-status-bar";
 
 const theme = {
     ...DefaultTheme,
@@ -15,6 +16,7 @@ const theme = {
 const App = () => (
     <AuthContextProvider>
         <PaperProvider theme={theme}>
+            <StatusBar hidden/>
             <Navigator />
         </PaperProvider>
     </AuthContextProvider>
