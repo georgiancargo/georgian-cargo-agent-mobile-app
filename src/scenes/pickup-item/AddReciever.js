@@ -158,7 +158,7 @@ const AddReciever = ({navigation, route}) => {
     };
     const onSave = () => {
         validateReceiver(receiver)
-            .then(() => {
+            .finally(() => {
                 return validateParcel(parcel);
             })
             .then(() => {
@@ -170,6 +170,7 @@ const AddReciever = ({navigation, route}) => {
                 navigation.goBack();
             })
             .catch((e) => {
+                return validateParcel(parcel);
             });
     };
     const goToScanner = () => {
@@ -208,6 +209,7 @@ const AddReciever = ({navigation, route}) => {
                             <DestinationRoutesDropdown
                                 name="country_code"
                                 onSelect={onChangeReceiver}
+                                error={receiverErrors.country_code}
                                 selectedValue={receiver.country_code}
                                 placeholder="Receiver address country code"
                             />

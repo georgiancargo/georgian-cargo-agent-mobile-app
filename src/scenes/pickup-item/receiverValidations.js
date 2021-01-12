@@ -11,6 +11,7 @@ const receiverValidations = (data, field) => {
             "country_code",
             "address_line_1",
             // "address_line_2",
+            "country_code",
             "postal_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {

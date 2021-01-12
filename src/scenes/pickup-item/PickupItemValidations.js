@@ -11,17 +11,18 @@ const senderDataValidations = (data, field) => {
             "phone",
             "address_line_1",
             "postal_code",
+            "country_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {
-                if(typeof data[elem] === "undefined"){
-                    data[elem] = '';
+                if (typeof data[elem] === "undefined") {
+                    data[elem] = "";
                 }
                 enforce(data[elem].toString()).isNotEmpty();
             });
         });
 
-        if(typeof data.email === "undefined"){
-            data.email = '';
+        if (typeof data.email === "undefined") {
+            data.email = "";
         }
 
         const trimmedEmail = truncate(data.email.toString(), 15);
