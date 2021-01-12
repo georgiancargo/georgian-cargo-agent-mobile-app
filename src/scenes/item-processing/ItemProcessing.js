@@ -75,9 +75,11 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         }
     };
     const remove = (i) => {
-        const newBars = barCodes.slice();
-        newBars.splice(i, 1);
-        setBarCodes(newBars);
+        if (barCodes.length > 1) {
+            const newBars = barCodes.slice();
+            newBars.splice(i, 1);
+            setBarCodes(newBars);
+        }
     };
 
     const edit = (index) => {

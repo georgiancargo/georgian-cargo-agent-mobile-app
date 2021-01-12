@@ -118,10 +118,12 @@ const DeliveredItemProcessing = ({
         }
     };
     const remove = (i) => {
-        const newRelease = releaseCodes.slice();
-        newRelease.splice(i, 1);
-        // setSize(size + 1);
-        setCodes(newRelease);
+        if (releaseCodes.length > 1) {
+            const newRelease = releaseCodes.slice();
+            newRelease.splice(i, 1);
+            // setSize(size + 1);
+            setCodes(newRelease);
+        }
     };
 
     const edit = (index) => {
