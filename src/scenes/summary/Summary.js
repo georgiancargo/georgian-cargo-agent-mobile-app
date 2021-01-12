@@ -14,8 +14,8 @@ import {paymentRequest} from "_requests";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
 
-const Summary = ({route: {params}}) => {
-    const {parcels = []} = params;
+const Summary = ({navigation, route: {params}}) => {
+    const {parcels = [], setAlert = () => {}} = params;
     const [pickupRequest, requesting] = useOfflineRequest({
         url: "/cargo/pickup",
         method: "POST",
@@ -66,7 +66,7 @@ const Summary = ({route: {params}}) => {
     const onCheckout = () => {
         const invoice_ids = [];
 
-        parcels.forEach(async (data) => {
+        parcels.forEach(async (data, i) => {
             const payload = {
                 ...summaryData,
                 ...data,
@@ -86,15 +86,19 @@ const Summary = ({route: {params}}) => {
                     }
                 } catch (error) {}
             }
+            if (i === parcels.length - 1) {
+                setAlert(false);
+                pay({
+                    invoice_ids: invoice_ids,
+                    payment_method: summaryData.payment_method,
+                })
+                    .then(() => {})
+                    .catch(() => {})
+                    .finally(() => {
+                        navigation.navigate("Home");
+                    });
+            }
         });
-        pay({
-            invoice_ids: invoice_ids,
-            payment_method: summaryData.payment_method,
-        })
-            .then(() => {})
-            .catch(() => {}).finally(()=>{
-                navigation.navigate("Home");
-            });
     };
     return (
         <>

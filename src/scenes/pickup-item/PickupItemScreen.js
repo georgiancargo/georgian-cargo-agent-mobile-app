@@ -22,6 +22,7 @@ const PickupItemScreen = ({navigation}) => {
 
     const [parcels, setParcels] = useState([]);
     const [sender, setSender] = useState({});
+    const [shouldAlert, setAlert] = useState(true);
     
     const [globalSettings, setGlobal] = useState({
         parcel_type: "PARCEL",
@@ -91,6 +92,7 @@ const PickupItemScreen = ({navigation}) => {
                     }
                     navigation.navigate("Summary", {
                         parcels: parcelsTemp,
+                        setAlert: setAlert,
                     });
                 }
             })
@@ -105,7 +107,7 @@ const PickupItemScreen = ({navigation}) => {
         <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
             <PreventGoingBack
                 navigation={navigation}
-                shouldAlert={parcels.length}
+                shouldAlert={parcels.length ? shouldAlert : false}
             />
             <InputAutoComplete
                 name="name"
