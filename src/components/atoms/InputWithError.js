@@ -38,7 +38,7 @@ const InputWithError = ({
         if (isNumber) {
             const number = parseFloat(text);
             if (isNaN(number)) onChangeText(name, 0);
-            else onChangeText(name, number);
+            else onChangeText(name, text);
         } else onChangeText(name, text);
     };
     return (
