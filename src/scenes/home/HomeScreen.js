@@ -1,5 +1,6 @@
 import React, {useEffect, useState, useContext} from "react";
 import {View, StyleSheet} from "react-native";
+import {ActivityIndicator} from "react-native-paper";
 import {ParcelList} from "_molecules";
 import {Button} from "_atoms";
 import SyncButton from "./SyncButton";
@@ -12,7 +13,7 @@ const Home = ({navigation}) => {
     const canPickup = auth.agent.privileges.includes("PICKUP_CARGO");
     const canProccess = auth.agent.privileges.includes("HANDLE_CARGO");
     const [parcels, setParcels] = useState([]);
-    const [request] = useRequest(getGargosRequest);
+    const [request, requesting] = useRequest(getGargosRequest);
     const [_logout, logging_out] = useRequest(logoutRequest);
 
 
@@ -30,18 +31,23 @@ const Home = ({navigation}) => {
             })
             .catch(() => {});
     };
-    useEffect(() => {
-        request({
-            paging_specification: {
-                page_offset: 0,
-                page_size: 30,
-            },
-        })
-            .then((r) => {
-                setParcels(r.data.cargos);
-            })
-            .catch(() => {});
-    }, []);
+    useEffect(
+        () =>
+            navigation.addListener("focus", () => {
+                request({
+                    paging_specification: {
+                        page_offset: 0,
+                        page_size: 30,
+                    },
+                })
+                    .then((r) => {
+                        setParcels(r.data.cargos);
+                    })
+                    .catch(() => {});
+            }),
+
+        [navigation]
+    );
     return (
         <View style={s.container}>
             <View style={s.buttons}>
@@ -70,7 +76,11 @@ const Home = ({navigation}) => {
                 </View>
             </View>
             <View style={s.listContainer}>
-                <ParcelList parcels={parcels} navigation={navigation} />
+                {requesting ? (
+                    <ActivityIndicator animating={true} />
+                ) : (
+                    <ParcelList parcels={parcels} navigation={navigation} />
+                )}
             </View>
         </View>
     );
