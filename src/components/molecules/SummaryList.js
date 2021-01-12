@@ -10,6 +10,11 @@ const {s, c} = bootstrapStyleSheet;
 const SummaryList = ({parcels}) => {
     const renderItem = ({item, index}) => {
         const {price, ...parcel} = item;
+        let totalPrice = price;
+        if (parcel.extra_charges)
+            parcel.extra_charges.map(
+                (extra) => (totalPrice += parseFloat(extra.amount))
+            );
         return (
             <View style={[s.tableRow]}>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
@@ -25,7 +30,7 @@ const SummaryList = ({parcels}) => {
                         {justifyContent: "center"},
                     ]}
                 >
-                    <SummaryListItem price={price} />
+                    <SummaryListItem price={totalPrice} />
                 </View>
             </View>
         );
