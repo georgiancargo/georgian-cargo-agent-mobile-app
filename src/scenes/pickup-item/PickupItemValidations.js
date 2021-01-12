@@ -9,7 +9,6 @@ const senderDataValidations = (data, field) => {
             "name",
             "email",
             "phone",
-            "country_code",
             "address_line_1",
             "postal_code",
         ].forEach((elem) => {

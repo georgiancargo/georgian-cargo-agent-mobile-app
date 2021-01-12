@@ -41,7 +41,6 @@ const PickupItemScreen = ({navigation}) => {
     ];
     
     const addReceiver = () => {
-        alert(JSON.stringify(sender));
         validate(sender).then(()=>{
             const index = parcels.length;
             navigation.navigate("Add Parcel", {
@@ -56,7 +55,6 @@ const PickupItemScreen = ({navigation}) => {
                 customer_type: globalSettings.customer_type,
             });
         }).catch((e)=>{
-            alert(JSON.stringify(e));
         });
     };
 
