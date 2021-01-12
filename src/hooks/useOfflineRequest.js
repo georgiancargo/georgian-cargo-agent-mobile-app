@@ -9,7 +9,7 @@ export default function useOfflineRequest(r) {
 
     const isConnected = async () => {
         try {
-            await axios.get("google.com");
+            await axios.get("https://www.google.com/");
             return true;
         } catch (e) {
             return false;
