@@ -1,5 +1,5 @@
 export default function paymentRequest(axios, data) {
-    const payload = {invoice_ids: invoice.invoice_id};
+    const payload = {invoice_ids: data.invoice_ids};
     switch (data.payment_method) {
         case "ONLINE":
             return axios.post("/billing/payment/method/stripe", payload);

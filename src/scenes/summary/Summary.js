@@ -21,7 +21,7 @@ const Summary = ({navigation, route: {params}}) => {
         method: "POST",
     });
 
-    const [pay] = useRequest(paymentRequest);
+    const [pay, paying] = useRequest(paymentRequest);
 
     const {auth} = useContext(AuthContext);
     const getCash = auth.agent.privileges.includes("COLLECT_CASH_PAYMENTS");
@@ -126,7 +126,7 @@ const Summary = ({navigation, route: {params}}) => {
                 <SummaryList parcels={parcels} />
             </View>
             <View style={{marginBottom: 10}}>
-                <Button onPress={onCheckout} loading={requesting}>
+                <Button onPress={onCheckout} loading={requesting || paying}>
                     Checkout
                 </Button>
             </View>
