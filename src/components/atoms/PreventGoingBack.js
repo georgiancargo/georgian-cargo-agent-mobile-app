@@ -1,14 +1,19 @@
 import {useEffect} from "react";
 import {Alert} from "react-native";
 
-const PreventGoingBack = ({navigation, shouldAlert = true}) => {
+const PreventGoingBack = ({
+    navigation,
+    title = "Go back?",
+    paragraph = "Are you sure to continue?",
+    shouldAlert = true,
+}) => {
     useEffect(
         () =>
             navigation.addListener("beforeRemove", (e) => {
                 if (!shouldAlert) return;
 
                 e.preventDefault();
-                Alert.alert("Go back?", "Are you sure to continue?", [
+                Alert.alert(title, paragraph, [
                     {
                         text: "No",
                         style: "cancel",
