@@ -2,7 +2,8 @@ import React from "react";
 import Navigator from "_navigations";
 import {AuthContextProvider} from "_context";
 import {DefaultTheme, Provider as PaperProvider} from "react-native-paper";
-import {StatusBar} from "expo-status-bar";
+// import {StatusBar} from "expo-status-bar";
+import {StatusBar} from "react-native";
 
 const theme = {
     ...DefaultTheme,
@@ -16,7 +17,7 @@ const theme = {
 const App = () => (
     <AuthContextProvider>
         <PaperProvider theme={theme}>
-            <StatusBar hidden/>
+            <StatusBar/>
             <Navigator />
         </PaperProvider>
     </AuthContextProvider>
