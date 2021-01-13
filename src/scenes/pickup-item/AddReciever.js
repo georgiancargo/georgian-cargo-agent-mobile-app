@@ -32,22 +32,11 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
-    const {
-        errors: receiverErrors,
-        validate: validateReceiver,
-        hasErrors: receiverHasErrors
-    } = useValidation(receiverValidations);
-    const {
-        errors: parcelErrors,
-        validate: validateParcel,
-        hasErrors: parcelHasErrors
-    } = useValidation(parcelValidations);
+    const {errors: receiverErrors, validate: validateReceiver} = useValidation(receiverValidations);
+    const {errors: parcelErrors, validate: validateParcel} = useValidation(parcelValidations);
     const [policyError, setPolicyError] = useState(false);
-    const [price, setPrice] = useState({
-        currency_code: "",
-        freight_price: 0,
-        delivery_price: 0,
-    });
+    const [shouldAlert, setAlert] = useState(false);
+    const [price, setPrice] = useState({currency_code: "",freight_price: 0,delivery_price: 0});
     const [extra, setExtra] = useState({note: "", amount: ""});
     const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
@@ -81,11 +70,6 @@ const AddReciever = ({navigation, route}) => {
                     currency_code: data.prices.currency_code,
                     freight_price: data.prices.freight_price,
                     delivery_price: data.prices.delivery_price,
-                });
-                setParcel({
-                    ...parcel,
-                    price:
-                        data.prices.freight_price + data.prices.delivery_price,
                 });
                 setPolicyError(false);
             })
@@ -150,11 +134,13 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         validateReceiver(newReceiver, name).catch((e) => {});
+        setAlert(true);
     };
     const onChangeParcel = (name, value) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
         validateParcel(next, name).catch((e) => {});
+        setAlert(true);
     };
     const onSave = () => {
         validateReceiver(receiver)
@@ -162,9 +148,11 @@ const AddReciever = ({navigation, route}) => {
                 return validateParcel(parcel);
             })
             .then(() => {
+                setAlert(false);
                 if (index <= parcels.length) {
                     const newParcels = parcels.slice();
-                    newParcels[index] = {...parcel, receiver: receiver};
+                    const _price =  price.freight_price + price.delivery_price;
+                    newParcels[index] = {...parcel, receiver: receiver, price: _price};
                     setParcels(newParcels);
                 }
                 navigation.goBack();
@@ -184,7 +172,12 @@ const AddReciever = ({navigation, route}) => {
     };
     return (
         <>
-            <PreventGoingBack navigation={navigation}/>
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+                title="You haven't saved"
+                paragraph="Sure you want to go back?"
+            />
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
                     <InputAutoComplete
