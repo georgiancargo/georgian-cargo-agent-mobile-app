@@ -9,8 +9,8 @@ import {TouchableOpacity} from "react-native";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const PickupList = ({parcels, editParcel, removeParcel}) => {
-    const RenderItem = ({item, index}) => {
+const PickupList = ({parcels = [], editParcel, removeParcel}) => {
+    const renderItem = ({item, index}) => {
         const {sender, receiver, ...parcel} = item;
         const edit = () => {
             editParcel(index, parcel, receiver);
@@ -52,24 +52,15 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
         <>
             <SafeAreaView>
                 {parcels.length ? (
-                    <>
-                        <Header />
-                        {parcels.map((parcel, i) => (
-                            <RenderItem
-                                item={parcel}
-                                index={i}
-                                key={parcel.tracking_number + i}
-                            />
-                        ))}
-                    </>
-                ) : // <FlatList
-                //     data={parcels}
-                //     style={[s.table]}
-                //     ListHeaderComponent={Header}
-                //     renderItem={renderItem}
-                //     keyExtractor={(item) => item.id}
-                // />
-                null}
+                    <FlatList
+                        nestedScrollEnabled={true}
+                        data={parcels}
+                        style={[s.table]}
+                        ListHeaderComponent={Header}
+                        renderItem={renderItem}
+                        keyExtractor={(item) => item.id}
+                    />
+                ) : null}
             </SafeAreaView>
         </>
     );
