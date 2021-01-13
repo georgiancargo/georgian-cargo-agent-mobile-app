@@ -21,11 +21,13 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                 key={parcel.tracking_number}
             >
                 <View style={[s.tableHeadCol, s.flex3, s.justifyContentCenter]}>
-                    <Text style={[s.text]}>{parcel.tracking_number}</Text>
+                    <TouchableOpacity onPress={edit}>
+                        <Text>{parcel.tracking_number}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex3]}>
                     <TouchableOpacity onPress={edit}>
-                        <Text>{receiver.name}</Text>
+                        <Text style={[s.text]}>{receiver.name}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
@@ -37,7 +39,9 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                         }}
                         onPress={() => removeParcel(index)}
                     >
-                        <Text style={{color: "red", fontWeight: 'bold'}}>X</Text>
+                        <Text style={{color: "red", fontWeight: "bold"}}>
+                            X
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
