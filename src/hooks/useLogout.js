@@ -2,6 +2,7 @@ import {AuthContext} from "_context";
 import {useRequest} from "./useRequest";
 import {useContext} from "react";
 import {deleteItemAsync as _delete} from "expo-secure-store";
+import * as fs from "expo-file-system";
 
 const useLogout = () => {
     const {setAuth} = useContext(AuthContext);

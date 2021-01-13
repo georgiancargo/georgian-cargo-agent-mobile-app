@@ -7,6 +7,7 @@ import SyncButton from "./SyncButton";
 import {useRequest} from "_hooks";
 import {getGargosRequest, logout as logoutRequest} from "_requests";
 import {AuthContext} from "_context";
+import * as fs from "expo-file-system";
 
 const Home = ({navigation}) => {
     const {auth, setAuth} = useContext(AuthContext);
@@ -23,6 +24,8 @@ const Home = ({navigation}) => {
     const logout = () => {
         _logout()
             .then(() => {
+                const sessionPath = fs.cacheDirectory + '/creds.json';
+                fs.deleteAsync(sessionPath);
                 setAuth({
                     isLoggedIn: false,
                     accessToken: null,
