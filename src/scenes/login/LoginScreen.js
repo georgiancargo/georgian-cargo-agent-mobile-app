@@ -42,7 +42,6 @@ const LoginScreen = ({}) => {
     const setLoggedIn = (data) => {
         const state = getLoginState(data);
         const toWrite = JSON.stringify({loginCreds: {...user, remember_token: true}, authState: state});
-        alert(toWrite);
         fs.writeAsStringAsync(sessionPath, toWrite)
             .then(()=>{
                 setLoggedInState(data);
@@ -62,7 +61,7 @@ const LoginScreen = ({}) => {
                         setLoggedIn(data);
                     })
                     .catch((e) => {
-                        alert(e);
+                        // alert(e);
                         addErrors({
                             username: "Wrong username/password",
                             password: "Wrong username/password",
@@ -76,7 +75,7 @@ const LoginScreen = ({}) => {
     useEffect(() => {
         // Try to read username/password from file
         fs.readAsStringAsync(sessionPath).then((raw) => {
-            alert(raw);
+            // alert(raw);
             const json = JSON.parse(raw);
             return request(json.loginCreds);
         }).then(({data}) => {
