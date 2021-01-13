@@ -103,13 +103,15 @@ const PickupItemScreen = ({navigation}) => {
         newParcels.splice(index, 1);
         setParcels(newParcels);
     };
+    const container = {flex:1, backgroundColor:"white", padding:10}
     return (
-        <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
+        // <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
+        <>
             <PreventGoingBack
                 navigation={navigation}
                 shouldAlert={parcels.length ? shouldAlert : false}
             />
-            <ScrollView>
+            <ScrollView style={container}>
                 <View style={{borderWidth: 0, flex: 5.1}}>
                     <InputAutoComplete
                         name="name"
@@ -180,7 +182,7 @@ const PickupItemScreen = ({navigation}) => {
                     </View>
                 </View>
             </ScrollView>
-        </View>
+        </>
     );
 };
 
