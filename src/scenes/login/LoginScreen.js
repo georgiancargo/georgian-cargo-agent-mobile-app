@@ -9,7 +9,7 @@ import {useValidation} from "_hooks";
 import logoImage from "./logo.png";
 
 const LoginScreen = ({}) => {
-    const [user, setUser] = useState({username: "admin", password: "12341234"});
+    const [user, setUser] = useState({username: "", password: ""});
     const {setAuth} = useContext(AuthContext);
     const [request, requesting] = useRequest(loginRequest);
     const {errors, validate, addErrors} = useValidation(loginScreenValidations);
