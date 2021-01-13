@@ -5,8 +5,8 @@ import * as fs from "expo-file-system"
 import {useIsFocused} from "@react-navigation/core";
 
 const SyncButton = () => {
-    const [label, setLabel] = useState("Sync Items");
-    const [sync, setSync] = useState(true);
+    const [label, setLabel] = useState("No sync");
+    const [sync, setSync] = useState(false);
     const [request, requesting] = useStoredRequest();
 
     const isFocused = useIsFocused();
