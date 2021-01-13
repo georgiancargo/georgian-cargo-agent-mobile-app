@@ -26,15 +26,15 @@ const styles = StyleSheet.create({
     },
 });
 const InputWithError = ({
-                            name,
-                            label,
-                            error,
-                            style = {},
-                            onChangeText,
-                            isNumber,
-                            isInt,
-                            ...rest
-                        }) => {
+    name,
+    label,
+    error,
+    style = {},
+    onChangeText,
+    isNumber,
+    isInt,
+    ...rest
+}) => {
     const onChangeWrapper = (text) => {
         if (isNumber) {
             const number = parseFloat(text);
@@ -69,6 +69,9 @@ const InputWithError = ({
                 keyboardType={isNumber ? "numeric" : "default"}
                 mode={"outlined"}
                 error={error}
+                autoCapitalize
+                autoCorrect={false}
+                autoCapitalize="none"
                 {...rest}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
