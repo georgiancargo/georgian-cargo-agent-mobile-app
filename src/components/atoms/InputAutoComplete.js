@@ -26,7 +26,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             zIndex: 99,
             width: "100%",
             alignSelf: "center",
-            top: 75,
+            top: 60,
         },
     };
     const onPress = (user) => {
@@ -85,6 +85,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
                         <ActivityIndicator animating={requesting}/>
                     ) : (
                         <FlatList
+                            nestedScrollEnabled={true}
                             data={data}
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id}

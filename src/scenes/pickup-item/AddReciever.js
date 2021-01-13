@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, Text, View, Vibration} from "react-native";
+import {ScrollView, Text, View, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button, InputAutoComplete} from "_atoms";
 import {
@@ -180,6 +180,7 @@ const AddReciever = ({navigation, route}) => {
             />
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
+                    <SafeAreaView>
                     <InputAutoComplete
                         name="name"
                         value={receiver.name}
@@ -190,6 +191,7 @@ const AddReciever = ({navigation, route}) => {
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
                     />
+                    </SafeAreaView>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}

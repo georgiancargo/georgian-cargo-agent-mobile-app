@@ -109,18 +109,18 @@ const PickupItemScreen = ({navigation}) => {
                 navigation={navigation}
                 shouldAlert={parcels.length ? shouldAlert : false}
             />
-            <InputAutoComplete
-                name="name"
-                value={sender.name}
-                error={errors.name}
-                // label={label}
-                placeholder="Sender name"
-                onChangeText={onChange}
-                setUser={setSender}
-                isCustomer
-            />
             <ScrollView>
                 <View style={{borderWidth: 0, flex: 5.1}}>
+                    <InputAutoComplete
+                        name="name"
+                        value={sender.name}
+                        error={errors.name}
+                        // label={label}
+                        placeholder="Sender name"
+                        onChangeText={onChange}
+                        setUser={setSender}
+                        isCustomer
+                    />
                     {keys.map((key, i) => (
                         <InputWithError
                             name={key}
@@ -171,7 +171,6 @@ const PickupItemScreen = ({navigation}) => {
                             Summary
                         </Button>
                     </View>
-
                     <View style={{borderWidth: 0, flex: 3}}>
                         <PickupList
                             parcels={parcels}
