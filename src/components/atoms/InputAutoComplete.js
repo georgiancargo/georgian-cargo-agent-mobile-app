@@ -10,6 +10,7 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     const [selectedValue, setSelected] = useState();
     const {colors, roundness} = useTheme();
     const [request, requesting] = useRequest(getUserRequest);
+    const [firstTime, setFirst] = useState(true);
 
     const styles = {
         dropdown: {
@@ -61,14 +62,18 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     };
 
     useEffect(() => {
-        if (value && selectedValue !== value && value.length >= 1)
-            request({name: value})
-                .then((r) => {
-                    const list = isCustomer? r.data.customers : r.data.receivers;
-                    const newData = Object.values(list);
-                    setData(newData);
-                })
-                .catch((e) => setData([]));
+        if (!firstTime) {
+            if (value && selectedValue !== value && value.length >= 1)
+                request({name: value})
+                    .then((r) => {
+                        const list = isCustomer
+                            ? r.data.customers
+                            : r.data.receivers;
+                        const newData = Object.values(list);
+                        setData(newData);
+                    })
+                    .catch((e) => setData([]));
+        } else setFirst(false);
     }, [value]);
 
     return (
