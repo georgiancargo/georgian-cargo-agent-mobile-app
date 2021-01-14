@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {View} from "react-native";
-import {InputWithError, Button} from "_atoms";
+import {InputWithError, Button, PreventGoingBack} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {ScrollView} from "react-native";
 import {useValidation} from "_hooks";
@@ -17,6 +17,7 @@ const EditUser = ({
 }) => {
     const [user, setUser] = useState(oldUser);
     const [isValidating, setValidating] = useState(false);
+    const [shouldAlert, setAlert] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditUserValidations);
 
     useEffect(() => {
@@ -30,11 +31,13 @@ const EditUser = ({
         const newUser = {...user, [name]: value};
         setUser(newUser);
         validate(newUser, name).catch((e) => {});
+        setAlert(true);
     };
     const onSave = () => {
         setValidating(true);
         validate(user)
             .then((r) => {
+                setAlert(false);
                 if (type === "Sender") setParcel({...parcel, sender: user});
                 else setParcel({...parcel, receiver: user});
                 navigation.goBack();
@@ -45,6 +48,12 @@ const EditUser = ({
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             {/* <Text>{JSON.stringify(type)}</Text> */}
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+                title="You haven't saved"
+                paragraph="Sure you want to go back?"
+            />
             <View style={[s.formGroup]}>
                 {keys.map((key, i) => {
                     const val = user[key];

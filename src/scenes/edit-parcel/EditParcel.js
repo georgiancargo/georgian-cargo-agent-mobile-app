@@ -8,7 +8,7 @@ import {
     DestinationRoutesDropdown,
     ExtraChargesList
 } from "_molecules";
-import {SelectDropdown} from "_atoms";
+import {SelectDropdown, PreventGoingBack} from "_atoms";
 import {useRequest} from "_hooks";
 import {editParcel} from "_requests";
 import {useValidation} from "_hooks";
@@ -30,6 +30,7 @@ const EditParcel = ({
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
     const {auth} = useContext(AuthContext);
     const [parcel, setParcel] = useState(oldParcel);
+    const [shouldAlert, setAlert] = useState(false);
     const [extra, setExtra] = useState({note: "", amount: ""});
 
     // const [editRoutes, setEditRoutes] = useState(false);
@@ -97,6 +98,7 @@ const EditParcel = ({
     const onChange = (name, value) => {
         const newParcel = {...parcel, [name]: value};
         setParcel(newParcel);
+        setAlert(true);
         validate(newParcel, name).catch((e) => {});
     };
     const edit = (isSender = false) => {
@@ -113,14 +115,20 @@ const EditParcel = ({
         validate(parcel)
             .then((r) => {
                 request(parcel)
-                    .then((r) => {})
-                    .catch((e) => {});
+                    .then((r) => {
+                        setAlert(false);
+                        navigation.goBack();
+                    })
+                    .catch((e) => {
+                        alert(e);
+                    });
             })
             .catch((e) => {})
             .finally(() => setValidating(false));
     };
     const onExtraChange = (name, value)=>{
         setExtra({...extra, [name]: value});
+        setAlert(true);
     }
     const onAdd = () => {
         const newExtra = parcel.extra_charges
@@ -129,15 +137,23 @@ const EditParcel = ({
         newExtra.push(extra);
         setExtra({note: "", amount: ""});
         setParcel({...parcel, extra_charges: newExtra});
+        setAlert(true);
     };
     const removeExtraCharge = (index) => {
         const newExtra = parcel.extra_charges.slice();
         newExtra.splice(index, 1);
         setParcel({...parcel, extra_charges: newExtra});
+        setAlert(true);
     };
 
     return (
         <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+                title="You haven't saved"
+                paragraph="Sure you want to go back?"
+            />
             <View style={[s.formGroup]}>
                 {keys.map((key, i) => {
                     const val = parcel[key];
