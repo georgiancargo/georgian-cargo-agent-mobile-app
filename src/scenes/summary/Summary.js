@@ -10,6 +10,7 @@ import {ErrorText} from "_atoms";
 import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
 import {paymentRequest} from "_requests";
+import {confirmAlert} from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -65,8 +66,9 @@ const Summary = ({navigation, route: {params}}) => {
     //     setSummary({...summaryData, extra_charges: newExtra});
     // };
 
-    const onCheckout = () => {
+    const checkout = () => {
         const invoice_ids = [];
+        let hasErrors = false;
 
         parcels.forEach(async (data, i) => {
             const payload = {
@@ -80,6 +82,7 @@ const Summary = ({navigation, route: {params}}) => {
                 invoice_ids.push(res.data.cargo.invoice.invoice_id);
                 setErrors("");
             } catch (error) {
+                hasErrors = true;
                 try {
                     if(error.response.data.data.errors.length > 0){
                         setErrors(error.response.data.data.errors[0]);
@@ -88,19 +91,27 @@ const Summary = ({navigation, route: {params}}) => {
                     }
                 } catch (error) {}
             }
-            if (i === parcels.length - 1) {
+            if (i === parcels.length - 1 && !hasErrors) {
                 setAlert(false);
                 pay({
                     invoice_ids: invoice_ids,
                     payment_method: summaryData.payment_method,
                 })
-                    .then(() => {})
-                    .catch(() => {})
-                    .finally(() => {
+                    .then(() => {
                         navigation.navigate("Home");
+                    })
+                    .catch((e) => {
+                        alert(e);
                     });
             }
         });
+    };
+    const confirmCheckout = () => {
+        confirmAlert({
+            paragraph: "Sure you want to checkout?",
+            onConfirm: checkout,
+        });
+        
     };
     return (
         <>
@@ -128,7 +139,7 @@ const Summary = ({navigation, route: {params}}) => {
                 <SummaryList parcels={parcels} />
             </View>
             <View style={{marginBottom: 10}}>
-                <Button onPress={onCheckout} loading={requesting || paying}>
+                <Button onPress={confirmCheckout} loading={requesting || paying}>
                     Checkout
                 </Button>
             </View>
