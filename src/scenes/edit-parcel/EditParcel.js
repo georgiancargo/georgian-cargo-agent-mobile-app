@@ -14,6 +14,7 @@ import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
 import {ScrollView} from "react-native-gesture-handler";
+import { confirmAlert } from "_utils";
 
 const EditParcel = ({
     navigation,
@@ -106,7 +107,7 @@ const EditParcel = ({
             setParcel: setParcel,
         });
     };
-    const save = () => {
+    const saveParcel = () => {
         // alert(JSON.stringify(parcel))
         setAlert(false);
         setValidating(true);
@@ -116,7 +117,7 @@ const EditParcel = ({
                 return request(parcel);
             })
             .then((r) => {
-                alert("Saved Successfully");
+                // alert("Saved Successfully");
                 navigation.goBack();
             })
             .catch((e) => {
@@ -124,6 +125,12 @@ const EditParcel = ({
                 alert(e.response.data.data.errors);
             });
     };
+    const save = ()=>{
+        confirmAlert({
+            paragraph: "Are you sure you want to save this data?",
+            onConfirm: saveParcel,
+        });
+    }
     const onExtraChange = (name, value)=>{
         setExtra({...extra, [name]: value});
         setAlert(true);
