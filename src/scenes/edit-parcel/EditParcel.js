@@ -1,7 +1,6 @@
 import React, {useContext, useState} from "react";
 import {View} from "react-native";
 import {InputWithError, Button} from "_atoms";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {
     RadioButtonGroup,
     SourceRoutesDropdown,
@@ -15,9 +14,6 @@ import {useValidation} from "_hooks";
 import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
 import {ScrollView} from "react-native-gesture-handler";
-
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
 
 const EditParcel = ({
     navigation,
@@ -111,20 +107,22 @@ const EditParcel = ({
         });
     };
     const save = () => {
+        // alert(JSON.stringify(parcel))
+        setAlert(false);
         setValidating(true);
         validate(parcel)
             .then((r) => {
-                request(parcel)
-                    .then((r) => {
-                        setAlert(false);
-                        navigation.goBack();
-                    })
-                    .catch((e) => {
-                        alert(e);
-                    });
+                setValidating(false);
+                return request(parcel);
             })
-            .catch((e) => {})
-            .finally(() => setValidating(false));
+            .then((r) => {
+                alert("Saved Successfully");
+                navigation.goBack();
+            })
+            .catch((e) => {
+                // alert(e);
+                alert(e.response.data.data.errors);
+            });
     };
     const onExtraChange = (name, value)=>{
         setExtra({...extra, [name]: value});
@@ -147,14 +145,14 @@ const EditParcel = ({
     };
 
     return (
-        <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+        <View style={{flex:1, backgroundColor:"white", padding:10}}>
             <PreventGoingBack
                 navigation={navigation}
                 shouldAlert={shouldAlert}
                 title="You haven't saved"
                 paragraph="Sure you want to go back?"
             />
-            <View style={[s.formGroup]}>
+            <ScrollView>
                 {keys.map((key, i) => {
                     const val = parcel[key];
                     const isNumber = typeof val != "string";
@@ -247,8 +245,6 @@ const EditParcel = ({
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
-            </View>
-            <View style={[s.formGroup]}>
                 <Button
                     onPress={() => edit(true)}
                     disabled={requesting || !privileges.sender}
@@ -265,12 +261,12 @@ const EditParcel = ({
                 <Button
                     onPress={save}
                     loading={requesting || isValidating}
-                    disable={hasErrors}
+                    disabled={hasErrors || !shouldAlert}
                 >
                     Save
                 </Button>
-            </View>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 };
 
