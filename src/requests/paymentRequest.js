@@ -7,6 +7,8 @@ export default function paymentRequest(axios, data) {
             return axios.post("/billing/payment/cash", payload);
         case "BANK":
             return axios.post("/billing/payment/bank", payload);
+        case "CARD":
+            return axios.post("/billing/payment/card", payload);
         default:
             break;
     }

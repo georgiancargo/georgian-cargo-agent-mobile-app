@@ -27,6 +27,7 @@ const Summary = ({navigation, route: {params}}) => {
     const {auth} = useContext(AuthContext);
     const getCash = auth.agent.privileges.includes("COLLECT_CASH_PAYMENTS");
     const getBank = auth.agent.privileges.includes("COLLECT_BANK_PAYMENTS");
+    const getCard = auth.agent.privileges.includes("COLLECT_CARD_PAYMENTS");
 
     const [summaryData, setSummary] = useState({
         coupon_code: "",
@@ -53,10 +54,19 @@ const Summary = ({navigation, route: {params}}) => {
 
     useEffect(() => {
         const newMethods = payment_methods.slice();
-        if (getCash && newMethods.length < 3)
-            newMethods.push({label: "Cash", value: "CASH"});
-        if (getBank && newMethods.length < 3)
-            newMethods.push({label: "Bank", value: "BANK"});
+
+        const cash = {label: "Cash", value: "CASH"};
+        const bank = {label: "Bank", value: "BANK"};
+        const card = {label: "Card", value: "CARD"};
+
+        const includes_cash = newMethods.some(({value}) => value === "CASH");
+        const includes_bank = newMethods.some(({value}) => value === "BANK");
+        const includes_card = newMethods.some(({value}) => value === "CARD");
+
+        if (getCash && !includes_cash) newMethods.push(cash);
+        if (getBank && !includes_bank) newMethods.push(bank);
+        if (getCard && !includes_card) newMethods.push(card);
+
         setPaymentMethods(newMethods);
     }, [auth]);
 
