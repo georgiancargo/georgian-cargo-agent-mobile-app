@@ -122,6 +122,7 @@ const EditParcel = ({
             })
             .catch((e) => {
                 // alert(e);
+                
                 alert(e.response.data.data.errors);
             });
     };
