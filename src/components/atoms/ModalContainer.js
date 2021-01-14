@@ -1,7 +1,7 @@
 import React from "react";
 import {Modal, StyleSheet, View} from "react-native";
 
-const ModalContainer = ({children, modalVisible, setModalVisible}) => {
+const ModalContainer = ({children, modalVisible}) => {
     return (
         <Modal animationType="fade" transparent={true} visible={modalVisible}>
             <View style={styles.centeredView}>

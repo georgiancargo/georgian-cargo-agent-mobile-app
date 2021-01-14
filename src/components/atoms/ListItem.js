@@ -3,23 +3,26 @@ import {StyleSheet, Text} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
 import {useTheme} from "react-native-paper";
-import { codes } from "_utils";
+import {codes} from "_utils";
 
 const ListItem = ({parcel: p, edit, i}) => {
     const {colors, roundness} = useTheme();
-    const container = {
-        // flexDirection: "row",
-        borderWidth: 1,
-        padding: 8,
-        flexWrap: "wrap",
-        // height: 120,
-        borderRadius: roundness,
-        borderColor: colors.placeholder,
-        backgroundColor: i % 2 === 1 ? "#f5f5f5" : "white",
-        justifyContent: "space-between",
-        alignContent: "space-between",
-        marginBottom: 5
-    };
+    const style = StyleSheet.create({
+        container: {
+            // flexDirection: "row",
+            borderWidth: 1,
+            padding: 8,
+            flexWrap: "wrap",
+            // height: 120,
+            borderRadius: roundness,
+            borderColor: "rgba(0,0,0,0.26)",
+            backgroundColor: i % 2 === 1 ? "#f5f5f5" : "white",
+            justifyContent: "space-between",
+            alignContent: "space-between",
+            marginBottom: 5,
+        },
+    });
+    const container = style.container;
     const C = ({children, style}) => (
         <Text mode="outlined" style={{margin: 3, ...style}}>
             {children}
@@ -63,6 +66,6 @@ const styles = StyleSheet.create({
         padding: 3,
         borderRadius: 10,
         width: "45%",
-    }
+    },
 });
 export default ListItem;
