@@ -222,7 +222,7 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
     return (
         <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title>Alert</Dialog.Title>
+                <Dialog.Title style={{color:"red"}}>Alert</Dialog.Title>
                 <Dialog.Content>
                     {size === entered || entered > size ? (
                         <Paragraph>{`The codes you have entered are not sequential`}</Paragraph>
@@ -242,10 +242,11 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
                         style={{flex: 1, margin: 5}}
                         onPress={hideDialog}
                         mode="outlined"
+                        color="black"
                     >
                         Go back
                     </Button>
-                    <Button style={{flex: 1, margin: 5}} onPress={onOK}>
+                    <Button style={{flex: 1, margin: 5}} color="red" onPress={onOK}>
                         OK
                     </Button>
                 </Dialog.Actions>
