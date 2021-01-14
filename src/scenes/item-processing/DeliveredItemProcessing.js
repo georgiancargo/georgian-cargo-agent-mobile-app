@@ -219,6 +219,10 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
             {item}
         </Chip>
     );
+    const ok = () => {
+        hideDialog();
+        onOK();
+    };
     return (
         <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
@@ -246,7 +250,7 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
                     >
                         Go back
                     </Button>
-                    <Button style={{flex: 1, margin: 5}} color="red" onPress={onOK}>
+                    <Button style={{flex: 1, margin: 5}} color="red" onPress={ok}>
                         OK
                     </Button>
                 </Dialog.Actions>

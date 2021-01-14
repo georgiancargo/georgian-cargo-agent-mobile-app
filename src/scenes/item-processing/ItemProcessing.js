@@ -7,6 +7,7 @@ import {ErrorText} from "_atoms";
 import {useOfflineRequest} from "_hooks";
 import { CustomDialog } from "./DeliveredItemProcessing";
 import { PreventGoingBack } from "_atoms";
+import { confirmAlert } from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -71,7 +72,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
             showDialog();
         } else {
             hideDialog();
-            send();
+            confirmSend();
         }
     };
     const remove = (i) => {
@@ -117,6 +118,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         hideDialog();
         request({tracking_numbers: barCodes, event: params.event})
             .then((r) => {
+                // alert("Done");
                 navigation.navigate("Home");
             })
             .catch((e) => {
@@ -124,6 +126,12 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     setErrors(e.response.data.message);
                 } catch (error) {}
             });
+    };
+    const confirmSend = () => {
+        confirmAlert({
+            paragraph: `Are you sure you want to process these codes to be ${params.event}?`,
+            onConfirm: send,
+        });
     };
     return (
         <>
@@ -138,7 +146,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     entered={barCodes.length}
                     size={params.size}
                     list={missingCodes}
-                    onOK={send}
+                    onOK={confirmSend}
                 />
                 <View style={[s.formGroup]}>
                     <InputWithError
