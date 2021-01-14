@@ -119,7 +119,7 @@ const ParcelInfoModal = ({
         const User = ({user, role}) => {
         if (!user) return null;
         const email = (mail) => Linking.openURL(`mailto:${mail}`);
-        const call = (number) => Linking.openURL(`tel:${number}`);
+        const call = (number) => Linking.openURL(`sms:${number}`);
 
         return userKeys.map((key, i) => {
             const data = user[key] ? user[key] : "N/A";
