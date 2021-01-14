@@ -29,12 +29,15 @@ const ListItem = ({parcel: p, edit, i}) => {
     const dst = codes[p.shipping_specs.route.destination_country_code];
     const sender_name = p.shipping_specs.sender_information.name;
     const receiver_name = p.shipping_specs.receiver_information.name;
+    let pickup_date = new Date(p.created_at);
+    pickup_date = pickup_date.toLocaleString();
     const collection_option = p.shipping_specs.collection_option;
     const customer_type = p.shipping_specs.customer_type;
     const parcel_type = p.shipping_specs.parcel_type;
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
             <C>Tracking number: <Text style={{fontWeight: 'bold'}}>{p.tracking_number}</Text></C>
+            <C>Pickup date: {pickup_date}</C>
             <C>Parcel status: {p.status}</C>
             <C>From: {src} To: {dst}</C>
             <C>Weight: {p.item.weight + " Kg"}</C>
