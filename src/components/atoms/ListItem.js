@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, Text} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
-import {useTheme} from "react-native-paper";
+import {useTheme, Chip} from "react-native-paper";
 import { codes } from "_utils";
 
 const ListItem = ({parcel: p, edit, i}) => {
@@ -36,12 +36,20 @@ const ListItem = ({parcel: p, edit, i}) => {
     const parcel_type = p.shipping_specs.parcel_type;
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
-            <C>Tracking number: <Text style={{fontWeight: 'bold'}}>{p.tracking_number}</Text></C>
+            <C>
+                Tracking number:{" "}
+                <Text style={{fontWeight: "bold"}}>{p.tracking_number}</Text>
+            </C>
             <C>Pickup date: {pickup_date}</C>
             <C>Parcel status: {p.status}</C>
-            <C>From: {src} To: {dst}</C>
+            <C>
+                From: <C style={{color: "green"}}> {src} </C>
+                To: <C style={{color: "red"}}> {dst} </C>
+            </C>
             <C>Weight: {p.item.weight + " Kg"}</C>
-            <C>{sender_name} to {receiver_name} </C>
+            <C>
+                {sender_name} to {receiver_name}{" "}
+            </C>
         </TouchableOpacity>
     );
 };
