@@ -1,7 +1,6 @@
 import React, {useState, useContext} from "react";
 import {
     SafeAreaView,
-    FlatList,
     StyleSheet,
     View,
     Text,
@@ -12,6 +11,7 @@ import {ListItem, ModalContainer, Button} from "_atoms";
 import {Divider} from "react-native-paper";
 import {AuthContext} from "_context";
 import {codes} from "_utils";
+import { VirtualizedList } from "react-native";
 
 
 const ParcelList = ({parcels = [], navigation}) => {
@@ -19,7 +19,7 @@ const ParcelList = ({parcels = [], navigation}) => {
     const [parcel, setParcel] = useState({});
 
     const showModal = (parcel) => {
-        const {shipping_specs, item, invoice, created_at,...p} = parcel;
+        const {shipping_specs, item, invoice, created_at, ...p} = parcel;
         const {
             route,
             sender_information,
@@ -50,9 +50,18 @@ const ParcelList = ({parcels = [], navigation}) => {
     };
     const hideModal = () => setModalVisible(false);
 
-    const renderItem = ({item, index}) => <ListItem parcel={item} edit={showModal} i={index} key={index}/>;
+    const renderItem = ({item, index}) => (
+        <ListItem parcel={item} edit={showModal} i={index} key={index} />
+    );
 
-    
+    const getItem = (data, index) => {
+        return data[index];
+    };
+
+    const getItemCount = (data) => {
+        return data.length;
+    };
+
     return (
         <>
             <ParcelInfoModal
@@ -62,10 +71,14 @@ const ParcelList = ({parcels = [], navigation}) => {
                 modalVisible={modalVisible}
             />
             <SafeAreaView style={styles.container}>
-                <FlatList
+                <VirtualizedList
                     data={parcels}
+                    initialNumToRender={3}
+                    keyExtractor={(item, index) => item + index}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id}
+                    getItemCount={getItemCount}
+                    windowSize={3}
+                    getItem={getItem}
                 />
             </SafeAreaView>
         </>
