@@ -50,7 +50,7 @@ const ParcelList = ({parcels = [], navigation}) => {
         hideModal();
         navigation.navigate("Edit Parcel", {parcel: parcel});
     };
-    const renderItem = ({item, index}) => <ListItem parcel={item} edit={showModal} i={index}/>;
+    const renderItem = ({item, index}) => <ListItem parcel={item} edit={showModal} i={index} key={index}/>;
 
     const ParcelInfoModal = () => {
         const receiver = parcel.receiver;
