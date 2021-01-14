@@ -168,7 +168,7 @@ const PickupItemScreen = ({navigation}) => {
                         <Button
                             style={[btnGroup]}
                             onPress={gotoSummary}
-                            disabled={hasErrors}
+                            disabled={hasErrors || parcels.length <= 0}
                         >
                             Summary
                         </Button>
