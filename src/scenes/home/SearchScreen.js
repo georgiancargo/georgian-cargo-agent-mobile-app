@@ -1,20 +1,24 @@
 import React, {useState} from "react";
-import {Text, View} from "react-native";
+import {View, StyleSheet} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {ParcelList} from "_molecules";
 import {useRequest} from "_hooks";
 import {getGargosRequest} from "_requests";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "white",
+        padding: 10,
+    },
+});
 
 const SearchScreen = ({navigation}) => {
-    const [trackingNumber, setTrackingNumber] = useState("");
+    const [searchQuery, setQuery] = useState({});
     const [parcels, setParcels] = useState([]);
     const [request, requesting] = useRequest(getGargosRequest);
-    const onChangeText = (_, value) => {
-        setTrackingNumber(value);
+    const onChangeText = (name, value) => {
+        setQuery({...searchQuery, [name]: value});
     };
     const search = () => {
         request({
@@ -24,7 +28,7 @@ const SearchScreen = ({navigation}) => {
             },
             filter_specification: {
                 filter_by: "TRACKING_NUMBER",
-                filter_value: trackingNumber,
+                filter_value: searchQuery.tracking_number,
             },
         })
             .then((r) => {
@@ -33,12 +37,24 @@ const SearchScreen = ({navigation}) => {
             .catch((e) => {});
     };
     return (
-        <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+        <View style={styles.container}>
             <InputWithError
-                name="trackingNumber"
-                value={trackingNumber}
+                name="tracking_number"
+                value={searchQuery.tracking_number}
                 onChangeText={onChangeText}
                 placeholder="Enter tracking number"
+            />
+            <InputWithError
+                name="sender_name"
+                value={searchQuery.sender_name}
+                onChangeText={onChangeText}
+                placeholder="Enter Receiver's name"
+            />
+            <InputWithError
+                name="receiver_name"
+                value={searchQuery.receiver_name}
+                onChangeText={onChangeText}
+                placeholder="Enter Sender's name"
             />
             <Button
                 style={{marginVertical: 8}}
@@ -48,7 +64,6 @@ const SearchScreen = ({navigation}) => {
                 Search
             </Button>
             <View style={{flex: 1}}>
-                {parcels.length === 0 && <Text>No parcels matching term were found</Text>}
                 <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>

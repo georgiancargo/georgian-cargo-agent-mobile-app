@@ -62,7 +62,11 @@ const ParcelList = ({parcels = [], navigation}) => {
     const getItemCount = (data) => {
         return data.length;
     };
-
+    const Empty = () => (
+        <View style={styles.empty}>
+            <Text style={styles.emptyText}>No parcels matching term were found</Text>
+        </View>
+    );
     return (
         <>
             <ParcelInfoModal
@@ -80,6 +84,7 @@ const ParcelList = ({parcels = [], navigation}) => {
                     getItemCount={getItemCount}
                     windowSize={3}
                     getItem={getItem}
+                    ListEmptyComponent={Empty}
                 />
             </SafeAreaView>
         </>
@@ -193,4 +198,14 @@ const styles = StyleSheet.create({
     },
     btnContainer: {flex: 1},
     buttonRow: {flexDirection: "row"},
+    empty: {
+        justifyContent: "center",
+        alignItems: "center",
+        marginTop: 20,
+        // borderWidth: 1,
+    },
+    emptyText: {
+        fontSize: 18,
+        fontWeight: "bold",
+    },
 });
