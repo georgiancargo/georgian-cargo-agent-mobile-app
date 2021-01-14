@@ -31,8 +31,8 @@ const ParcelList = ({parcels = [], navigation}) => {
         const receiver = receiver_information;
         const receiver_address = receiver_information.address;
         let route_name = {
-            source_country_code: codes[route.source_country_code],
-            destination_country_code: codes[route.destination_country_code],
+            source_country: codes[route.source_country_code],
+            destination_country: codes[route.destination_country_code],
         };
         let pickup_date = new Date(created_at);
         pickup_date = pickup_date.toLocaleString();
@@ -41,6 +41,7 @@ const ParcelList = ({parcels = [], navigation}) => {
             created_at: pickup_date,
             ...item,
             ...route_name,
+            ...route,
             sender: {...sender, ...sender_address, address: {}},
             receiver: {...receiver, ...receiver_address, address: {}},
             ...rest,
@@ -94,7 +95,7 @@ const ParcelInfoModal = ({
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
 
     const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Pickup date", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
-    const keys = ["tracking_number", "weight", "status", "source_country_code", "destination_country_code", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code", "currency_code", "freight_price", "delivery_price", "discount"];
+    const keys = ["tracking_number", "weight", "status", "source_country", "destination_country", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code", "currency_code", "freight_price", "delivery_price", "discount"];
     const userLabels = ["Name", "Email", "Phone", "Address line 1", "Address line 2", "Postal code"];
     const userKeys = ["name", "email", "phone", "address_line_1", "address_line_2", "postal_code"];
 
