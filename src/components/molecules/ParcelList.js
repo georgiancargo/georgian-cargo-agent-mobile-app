@@ -5,6 +5,7 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {Divider, useTheme} from "react-native-paper";
 import {AuthContext} from "_context";
 import {ScrollView} from "react-native";
+import { codes } from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -16,13 +17,13 @@ const ParcelList = ({parcels = [], navigation}) => {
     const {colors} = useTheme();
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
 
-    const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Created at", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
+    const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Pickup date", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
     const keys = ["tracking_number", "weight", "status", "source_country_code", "destination_country_code", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code", "currency_code", "freight_price", "delivery_price", "discount"];
     const userLabels = ["Name", "Email", "Phone", "Address line 1", "Address line 2", "Postal code"];
     const userKeys = ["name", "email", "phone", "address_line_1", "address_line_2", "postal_code"];
 
     const showModal = (parcel) => {
-        const {shipping_specs, item, invoice, ...p} = parcel;
+        const {shipping_specs, item, invoice, created_at,...p} = parcel;
         const {
             route,
             sender_information,
@@ -33,14 +34,21 @@ const ParcelList = ({parcels = [], navigation}) => {
         const sender_address = sender_information.address;
         const receiver = receiver_information;
         const receiver_address = receiver_information.address;
+        let route_name = {
+            source_country_code: codes[route.source_country_code],
+            destination_country_code: codes[route.destination_country_code],
+        };
+        let pickup_date = new Date(created_at);
+        pickup_date = pickup_date.toLocaleString();
         setParcel({
             ...p,
+            created_at: pickup_date,
             ...item,
-            ...route,
+            ...route_name,
             sender: {...sender, ...sender_address, address: {}},
             receiver: {...receiver, ...receiver_address, address: {}},
             ...rest,
-            ...invoice
+            ...invoice,
         });
         setModalVisible(true);
     };

@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet, Text} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
-import {useTheme, Chip} from "react-native-paper";
+import {useTheme} from "react-native-paper";
 import { codes } from "_utils";
 
 const ListItem = ({parcel: p, edit, i}) => {
