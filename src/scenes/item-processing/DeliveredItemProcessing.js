@@ -10,6 +10,7 @@ import {Dialog, Paragraph, Portal} from "react-native-paper";
 import {FlatList} from "react-native";
 import {useOfflineRequest} from "_hooks";
 import { PreventGoingBack } from "_atoms";
+import { Alert } from "react-native";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -17,12 +18,17 @@ const {s, c} = bootstrapStyleSheet;
 const DeliveredItemProcessing = ({
     navigation,
     route: {
-        params: {size: n, first},
+        params: {size: n},
     },
 }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState([first]);
-    const [missingCodes, setMissing] = useState([]);
+    const [releaseCodes, setCodes] = useState([
+        "RE5953",
+        "RE4630",
+        "RE8958",
+        "RE7212",
+        "RE3866",
+    ]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
     const [modalVisible, setModalVisible] = useState(false);
@@ -64,53 +70,30 @@ const DeliveredItemProcessing = ({
     const release = () => {
         setAlert(false);
         hideDialog();
-
+        const tracking_numbers = [];
         releaseCodes.forEach(async (code, i) => {
             try {
-                await request({release_code: code});
+                const res = await request({release_code: code});
+                tracking_numbers.push(res.data.tracking_number);
                 setError("");
             } catch (e) {
                 try {
                     setError(e.response.data.message);
                 } catch (error) {}
             }
-            if (i === releaseCodes.length - 1) navigation.navigate("Home");
+            if (i === releaseCodes.length - 1) {
+                Alert.alert(
+                    "Success",
+                    `Tracking numbers released are: ${tracking_numbers}`,
+                    [{text: "OK", onPress: () => {}}],
+                    {cancelable: true}
+                );
+                // navigation.navigate("Home");
+            }
         });
     };
     const preReleaseCheck = () => {
-        let checkOn = [];
-        let max = first + n - 1;
-        releaseCodes.forEach((item) => {
-            try {
-                const n = parseInt(item);
-                if (n <= max) checkOn.push(n);
-            } catch (error) {}
-        });
-        checkOn = checkOn.sort((a, b) => a - b);
-        let remaining = n - checkOn.length;
-        const missing = [];
-        for (let i = 0; i < checkOn.length - 1; i++) {
-            const a = checkOn[i];
-            const b = checkOn[i + 1];
-            const range = b - a > 20 ? a + 10 : b;
-            if (b - a >= 2) {
-                for (let j = a + 1; j < range; j++) {
-                    missing.push(j);
-                    remaining--;
-                }
-            }
-        }
-        if (remaining > 0) {
-            const last = checkOn.pop();
-            for (let i = 1; i <= remaining; i++) {
-                missing.push(last + i);
-            }
-        }
-        if (missing.length) {
-            setMissing(missing);
-            showDialog();
-        } else if (size !== 0) {
-            setMissing(missing);
+        if (size > 0) {
             showDialog();
         } else {
             hideDialog();
@@ -157,7 +140,6 @@ const DeliveredItemProcessing = ({
                 hideDialog={hideDialog}
                 entered={releaseCodes.length}
                 size={n}
-                list={missingCodes}
                 onOK={release}
             />
             <View style={[s.flex1]}>
@@ -174,6 +156,7 @@ const DeliveredItemProcessing = ({
                         // style={{flex: 1, height: 35, alignSelf: "flex-end"}}
                         mode="outlined"
                         onPress={goToScanner}
+                        disabled={requesting}
                     >
                         Scan
                     </Button>
@@ -213,7 +196,7 @@ const DeliveredItemProcessing = ({
 
 export default DeliveredItemProcessing;
 
-const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
+const CustomDialog = ({visible, hideDialog, entered, size, list = [], onOK}) => {
     const renderItem = ({item}) => (
         <Chip mode="outlined" style={{marginRight: 2}}>
             {item}
@@ -226,20 +209,24 @@ const CustomDialog = ({visible, hideDialog, entered, size, list, onOK}) => {
     return (
         <Portal>
             <Dialog visible={visible} onDismiss={hideDialog}>
-                <Dialog.Title style={{color:"red"}}>Alert</Dialog.Title>
+                <Dialog.Title style={{color: "red"}}>Alert</Dialog.Title>
                 <Dialog.Content>
                     {size === entered || entered > size ? (
                         <Paragraph>{`The codes you have entered are not sequential`}</Paragraph>
                     ) : (
                         <Paragraph>{`You have entered only ${entered} out of ${size} Codes`}</Paragraph>
                     )}
-                    <Paragraph>Missing codes are:</Paragraph>
-                    <FlatList
-                        data={list}
-                        renderItem={renderItem}
-                        keyExtractor={(item) => item.id}
-                        horizontal
-                    />
+                    {list.length > 0 && (
+                        <>
+                            <Paragraph>Missing codes are:</Paragraph>
+                            <FlatList
+                                data={list}
+                                renderItem={renderItem}
+                                keyExtractor={(item) => item.id}
+                                horizontal
+                            />
+                        </>
+                    )}
                 </Dialog.Content>
                 <Dialog.Actions>
                     <Button
