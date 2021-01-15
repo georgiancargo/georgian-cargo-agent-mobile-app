@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import {View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {ParcelList} from "_molecules";
 import {useRequest} from "_hooks";
@@ -14,12 +14,14 @@ const styles = StyleSheet.create({
 });
 
 const SearchScreen = ({navigation}) => {
-    const [searchQuery, setQuery] = useState({});
+    const [searchQuery, setQuery] = useState("");
     const [parcels, setParcels] = useState([]);
     const [request, requesting] = useRequest(getGargosRequest);
-    const onChangeText = (name, value) => {
-        setQuery({...searchQuery, [name]: value});
+
+    const onChangeText = (_, value) => {
+        setQuery(value);
     };
+
     const search = () => {
         request({
             paging_specification: {
@@ -27,8 +29,8 @@ const SearchScreen = ({navigation}) => {
                 page_size: 30,
             },
             filter_specification: {
-                filter_by: "TRACKING_NUMBER",
-                filter_value: searchQuery.tracking_number,
+                filter_by: "ALL",
+                filter_value: searchQuery,
             },
         })
             .then((r) => {
@@ -39,22 +41,10 @@ const SearchScreen = ({navigation}) => {
     return (
         <View style={styles.container}>
             <InputWithError
-                name="tracking_number"
-                value={searchQuery.tracking_number}
+                name="trackingNumber"
+                value={searchQuery}
                 onChangeText={onChangeText}
-                placeholder="Enter tracking number"
-            />
-            <InputWithError
-                name="sender_name"
-                value={searchQuery.sender_name}
-                onChangeText={onChangeText}
-                placeholder="Enter Receiver's name"
-            />
-            <InputWithError
-                name="receiver_name"
-                value={searchQuery.receiver_name}
-                onChangeText={onChangeText}
-                placeholder="Enter Sender's name"
+                placeholder="Search"
             />
             <Button
                 style={{marginVertical: 8}}
