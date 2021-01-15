@@ -8,7 +8,7 @@ import {
     RadioButtonGroup,
 } from "_molecules";
 import {useRequest, useValidation} from "_hooks";
-import {getParcelPrice} from "_requests";
+import {getParcelPrice, getTrackingDuplicates} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 import {PreventGoingBack} from "_atoms";
 import receiverValidations from "./receiverValidations";
@@ -54,10 +54,13 @@ const AddReciever = ({navigation, route}) => {
         newExtra.splice(index, 1);
         setParcel({...parcel, extra_charges: newExtra});
     };
-    const [request, requesting] = useRequest(getParcelPrice);
+    const [priceRequest, requestingPrice] = useRequest(getParcelPrice);
+    const [trackingRequest, requestingTracking] = useRequest(getTrackingDuplicates);
+    
+    const existing = "9999";
 
     useEffect(() => {
-        request({
+        priceRequest({
             source_country_code: source_country_code,
             destination_country_code: receiver.country_code,
             collection_option: parcel.collection_option,
@@ -148,14 +151,23 @@ const AddReciever = ({navigation, route}) => {
                 return validateParcel(parcel);
             })
             .then(() => {
-                setAlert(false);
-                if (index <= parcels.length) {
-                    const newParcels = parcels.slice();
-                    const _price =  price.freight_price + price.delivery_price;
-                    newParcels[index] = {...parcel, receiver: receiver, price: _price};
-                    setParcels(newParcels);
-                }
-                navigation.goBack();
+                trackingRequest({tracking_number: parcel.tracking_number})
+                    .then((r) => alert("This tracking number already exists"))
+                    .catch((e) => {
+                        setAlert(false);
+                        if (index <= parcels.length) {
+                            const newParcels = parcels.slice();
+                            const _price =
+                                price.freight_price + price.delivery_price;
+                            newParcels[index] = {
+                                ...parcel,
+                                receiver: receiver,
+                                price: _price,
+                            };
+                            setParcels(newParcels);
+                        }
+                        // navigation.goBack();
+                    });
             })
             .catch((e) => {
                 return validateParcel(parcel);
@@ -295,9 +307,9 @@ const AddReciever = ({navigation, route}) => {
                             checkLabels={["Home", "Office"]}
                         />
                         <View style={{marginBottom: 5}}>
-                            {requesting ? (
+                            {requestingPrice ? (
                                 <ActivityIndicator
-                                    animating={requesting}
+                                    animating={requestingPrice}
                                 />
                             ) : (
                                 <>
@@ -321,6 +333,7 @@ const AddReciever = ({navigation, route}) => {
                     <Button
                         onPress={onSave}
                         disabled={policyError}
+                        loading={requestingTracking}
                     >
                         Add
                     </Button>
