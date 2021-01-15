@@ -6,12 +6,15 @@ import {
     Text,
     ScrollView,
     Linking,
+    Alert,
+    VirtualizedList
 } from "react-native";
 import {ListItem, ModalContainer, Button} from "_atoms";
 import {Divider} from "react-native-paper";
 import {AuthContext} from "_context";
 import {codes} from "_utils";
-import { VirtualizedList } from "react-native";
+import {useRequest} from "_hooks";
+import {releaseParcelRequest} from "_requests";
 
 
 const ParcelList = ({parcels = [], navigation}) => {
@@ -97,7 +100,10 @@ const ParcelInfoModal = ({
     modalVisible,
 }) => {
     const {auth} = useContext(AuthContext);
+    const [request, releasing] = useRequest(releaseParcelRequest);
+
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
+    const canRelease = auth.agent.privileges.includes("RELEASE_CARGO_BY_TRACKING_NUMBER");
 
     const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Pickup date", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
     const keys = ["tracking_number", "weight", "status", "source_country", "destination_country", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code", "currency_code", "freight_price", "delivery_price", "discount"];
@@ -110,6 +116,17 @@ const ParcelInfoModal = ({
     const edit = () => {
         hideModal();
         navigation.navigate("Edit Parcel", {parcel: parcel});
+    };
+
+    const release = () => {
+        request({tracking_number: parcel.tracking_number})
+            .then((r) => {
+                hideModal();
+            })
+            .catch((e) => {
+                Alert.alert("Error", `${e}`, [{text: "OK", onPress: () => {}}], {cancelable: true});
+            })
+            .finally(() => {});
     };
 
     const Parcel = () =>
@@ -161,11 +178,19 @@ const ParcelInfoModal = ({
                 </ScrollView>
                 <View style={styles.buttonRow}>
                     <Button
-                        style={{flex: 8, marginHorizontal: 2}}
+                        style={{flex: 4}}
                         onPress={edit}
-                        disabled={!canEdit}
+                        disabled={!canEdit || releasing}
                     >
                         Edit
+                    </Button>
+                    <Button
+                        style={{flex: 4, marginHorizontal: 2}}
+                        onPress={release}
+                        loading={releasing}
+                        disabled={!canRelease || releasing}
+                    >
+                        Release
                     </Button>
                     <Button
                         style={{flex: 1, marginHorizontal: 2}}
