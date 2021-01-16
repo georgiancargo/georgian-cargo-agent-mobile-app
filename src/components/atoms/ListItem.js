@@ -1,33 +1,60 @@
 import React from "react";
-import {StyleSheet, Text} from "react-native";
+import {StyleSheet, Text, View} from "react-native";
 import {TouchableOpacity} from "react-native-gesture-handler";
 import {GRAY_DARK} from "_styles/colors";
 import {useTheme} from "react-native-paper";
 import {codes} from "_utils";
+// import { Avatar, Badge, Icon, withBadge } from 'react-native-elements';
 
+const style = StyleSheet.create({
+    container: {
+        // flexDirection: "row",
+        borderWidth: 1,
+        padding: 8,
+        flexWrap: "wrap",
+        // height: 120,
+        borderColor: "rgba(0,0,0,0.26)",
+        justifyContent: "space-between",
+        alignContent: "space-between",
+        marginBottom: 5,
+    },
+    badge: {
+        position: "absolute",
+        top: 15,
+        right: 25,
+        paddingVertical: 6,
+        paddingHorizontal: 12,
+        borderRadius: 50,
+        // transform: [{ rotate: '45deg' }]
+    },
+    badgeText: {
+        color: "white",
+        fontSize: 12,
+        textTransform: "capitalize",
+    },
+});
+const C = ({children, style}) => (
+    <Text mode="outlined" style={{margin: 3, ...style}}>
+        {children}
+    </Text>
+);
+const Badge = ({children, ...props}) => (
+    <View {...props}>
+        <Text style={style.badgeText}>{children}</Text>
+    </View>
+);
 const ListItem = ({parcel: p, edit, i}) => {
-    const {colors, roundness} = useTheme();
-    const style = StyleSheet.create({
-        container: {
-            // flexDirection: "row",
-            borderWidth: 1,
-            padding: 8,
-            flexWrap: "wrap",
-            // height: 120,
-            borderRadius: roundness,
-            borderColor: "rgba(0,0,0,0.26)",
-            backgroundColor: i % 2 === 1 ? "#f5f5f5" : "white",
-            justifyContent: "space-between",
-            alignContent: "space-between",
-            marginBottom: 5,
-        },
-    });
-    const container = style.container;
-    const C = ({children, style}) => (
-        <Text mode="outlined" style={{margin: 3, ...style}}>
-            {children}
-        </Text>
-    );
+    const {roundness} = useTheme();
+    const status = p.invoice.payment_status;
+    const container = {
+        ...style.container,
+        borderRadius: roundness,
+        backgroundColor: i % 2 === 1 ? "#f5f5f5" : "white",
+    };
+    const badge = {
+        ...style.badge,
+        backgroundColor: status === "PAID" ? "#a2cc3a" : "#ed1c24",
+    };
     const src = codes[p.shipping_specs.route.source_country_code];
     const dst = codes[p.shipping_specs.route.destination_country_code];
     const sender_name = p.shipping_specs.sender_information.name;
@@ -39,6 +66,7 @@ const ListItem = ({parcel: p, edit, i}) => {
     const parcel_type = p.shipping_specs.parcel_type;
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
+            <Badge style={badge}>{status}</Badge>
             <C>
                 Tracking number:{" "}
                 <Text style={{fontWeight: "bold"}}>{p.tracking_number}</Text>
