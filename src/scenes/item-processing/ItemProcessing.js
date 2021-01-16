@@ -42,7 +42,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         barCodes.forEach((item) => {
             try {
                 const n = parseInt(item);
-                if (n <= max) checkOn.push(n);
+                if (n <= max && n >= params.first) checkOn.push(n);
             } catch (error) {}
         });
         checkOn = checkOn.sort((a, b) => a - b);
@@ -186,6 +186,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                         barcode={barcode}
                         setBarcode={setBarcode}
                         save={save}
+                        isNumber
                     />
                     <ProcessingList
                         barCodes={barCodes}

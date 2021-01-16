@@ -13,6 +13,7 @@ const EditBarCode = ({
     save,
     placeholder = "Barcode",
     name = "barcode",
+    isNumber
 }) => {
     const onChangeText = (name, value) => {
         setBarcode({...barcode, [name]: value});
@@ -35,6 +36,7 @@ const EditBarCode = ({
                         name={name}
                         autoFocus={true}
                         value={barcode[name]}
+                        isNumber={isNumber}
                     />
                 </View>
                 <View style={{flexDirection: "row", justifyContent: "center"}}>
