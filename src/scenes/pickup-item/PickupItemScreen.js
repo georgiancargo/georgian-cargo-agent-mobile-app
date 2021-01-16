@@ -123,6 +123,7 @@ const PickupItemScreen = ({navigation}) => {
                         placeholder="Sender name"
                         onChangeText={onChange}
                         setUser={setSender}
+                        validate={validate}
                         isCustomer
                     />
                     {keys.map((key, i) => (

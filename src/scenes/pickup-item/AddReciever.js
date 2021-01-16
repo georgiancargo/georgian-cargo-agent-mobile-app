@@ -166,7 +166,7 @@ const AddReciever = ({navigation, route}) => {
                             };
                             setParcels(newParcels);
                         }
-                        // navigation.goBack();
+                        navigation.goBack();
                     });
             })
             .catch((e) => {
@@ -202,6 +202,7 @@ const AddReciever = ({navigation, route}) => {
                         // onChangeText={onChange}
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
+                        validate={validateReceiver}
                     />
                     </SafeAreaView>
                     <View style={[s.formGroup]}>
