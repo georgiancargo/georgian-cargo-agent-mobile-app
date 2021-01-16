@@ -11,6 +11,7 @@ import {FlatList} from "react-native";
 import {useOfflineRequest} from "_hooks";
 import { PreventGoingBack } from "_atoms";
 import { Alert } from "react-native";
+import { confirmAlert } from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -91,7 +92,7 @@ const DeliveredItemProcessing = ({
             showDialog();
         } else {
             hideDialog();
-            release();
+            confirmSend();
         }
     };
     const remove = (i) => {
@@ -123,6 +124,12 @@ const DeliveredItemProcessing = ({
         }
     };
     // const renderItem = ({item}) => <Text>{item}</Text>;
+    const confirmSend = () => {
+        confirmAlert({
+            paragraph: `Are you sure you want to release these codes?`,
+            onConfirm: release,
+        });
+    };
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             <PreventGoingBack
@@ -134,7 +141,7 @@ const DeliveredItemProcessing = ({
                 hideDialog={hideDialog}
                 entered={releaseCodes.length}
                 size={n}
-                onOK={release}
+                onOK={confirmSend}
             />
             <View style={[s.flex1]}>
                 <View>
@@ -144,7 +151,6 @@ const DeliveredItemProcessing = ({
                         name="releaseCode"
                         value={releaseCode}
                         onChangeText={onChangeText}
-                        isNumber
                     />
                     <Button
                         // style={{flex: 1, height: 35, alignSelf: "flex-end"}}
