@@ -92,7 +92,7 @@ const ListItem = ({parcel: p, edit, i}) => {
             <C>Pickup date: {pickup_date}</C>
             <C>
                 From <C style={{color: "green"}}> {src} </C>
-                To <C style={{color: "red"}}> {dst} </C>
+                to <C style={{color: "red"}}> {dst} </C>
             </C>
             <C>
                 {sender_name} to {receiver_name}{" "}
