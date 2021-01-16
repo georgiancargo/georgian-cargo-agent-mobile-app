@@ -116,7 +116,7 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Saved successfully!",
-                    [{text: "OK", onPress: () => navigation.goBack()}],
+                    [{text: "Home", onPress: () => navigation.goBack()}],
                     {cancelable: true}
                 );
             })

@@ -98,7 +98,7 @@ const ParcelInfoModal = ({
                 Alert.alert(
                     "Done",
                     "Released successfully!",
-                    [{text: "OK", onPress: hideModal}],
+                    [{text: "Home", onPress: hideModal}],
                     {cancelable: true}
                 );
             })
