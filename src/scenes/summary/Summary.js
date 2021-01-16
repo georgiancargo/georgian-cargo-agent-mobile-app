@@ -47,7 +47,6 @@ const Summary = ({navigation, route: {params}}) => {
             const payload = {
                 ...summaryData,
                 ...data,
-                tracking_number:"9090",
                 source_country_code: data.sender.country_code,
                 destination_country_code: data.receiver.country_code,
             };
@@ -72,7 +71,7 @@ const Summary = ({navigation, route: {params}}) => {
                     payment_method: summaryData.payment_method,
                 })
                     .then(() => {
-                        // navigation.navigate("Home");
+                        navigation.navigate("Home");
                     })
                     .catch((e) => {
                         alert(e);
