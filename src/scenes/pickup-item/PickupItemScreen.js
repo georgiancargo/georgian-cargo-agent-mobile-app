@@ -165,11 +165,11 @@ const PickupItemScreen = ({navigation}) => {
                             flexDirection: "row",
                         }}
                     >
-                        <Button style={[btnGroup]} onPress={addReceiver}>
+                        <Button style={btnGroup} onPress={addReceiver}>
                             Add Parcel
                         </Button>
                         <Button
-                            style={[btnGroup]}
+                            style={btnGroup}
                             onPress={gotoSummary}
                             disabled={hasErrors || parcels.length <= 0}
                         >
