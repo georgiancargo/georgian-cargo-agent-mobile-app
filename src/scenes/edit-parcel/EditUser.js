@@ -12,12 +12,12 @@ const {s, c} = bootstrapStyleSheet;
 const EditUser = ({
     navigation,
     route: {
-        params: {user: oldUser, parcel, type, setParcel},
+        params: {user: oldUser, parcel, type, setParcel, setAlert},
     },
 }) => {
     const [user, setUser] = useState(oldUser);
     const [isValidating, setValidating] = useState(false);
-    const [shouldAlert, setAlert] = useState(false);
+    const [changed, setChanged] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditUserValidations);
 
     useEffect(() => {
@@ -32,12 +32,13 @@ const EditUser = ({
         setUser(newUser);
         validate(newUser, name).catch((e) => {});
         setAlert(true);
+        setChanged(true);
     };
     const onSave = () => {
         setValidating(true);
         validate(user)
             .then((r) => {
-                setAlert(false);
+                setChanged(false);
                 if (type === "Sender") setParcel({...parcel, sender: user});
                 else setParcel({...parcel, receiver: user});
                 navigation.goBack();
@@ -50,7 +51,7 @@ const EditUser = ({
             {/* <Text>{JSON.stringify(type)}</Text> */}
             <PreventGoingBack
                 navigation={navigation}
-                shouldAlert={shouldAlert}
+                shouldAlert={changed}
                 title="You haven't saved"
                 paragraph="Sure you want to go back?"
             />
@@ -76,7 +77,7 @@ const EditUser = ({
             <View style={[s.formGroup]}>
                 <Button
                     onPress={onSave}
-                    disabled={hasErrors}
+                    disabled={hasErrors || !changed}
                     loading={isValidating}
                 >
                     Save

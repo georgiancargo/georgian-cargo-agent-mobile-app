@@ -5,7 +5,8 @@ import {
     RadioButtonGroup,
     SourceRoutesDropdown,
     DestinationRoutesDropdown,
-    ExtraChargesList
+    ExtraChargesList,
+    PaymentDropdown
 } from "_molecules";
 import {SelectDropdown, PreventGoingBack} from "_atoms";
 import {useRequest} from "_hooks";
@@ -15,6 +16,9 @@ import EditParcelValidations from "./EditParcelValidations";
 import {AuthContext} from "_context";
 import {ScrollView} from "react-native-gesture-handler";
 import { confirmAlert } from "_utils";
+import { Text } from "react-native";
+import { paymentRequest } from "_requests";
+import { Alert } from "react-native";
 
 const EditParcel = ({
     navigation,
@@ -22,17 +26,16 @@ const EditParcel = ({
         params: {parcel: oldParcel},
     },
 }) => {
-    const [request, requesting] = useRequest(editParcel);
+    const [request, saving] = useRequest(editParcel);
     const [isValidating, setValidating] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditParcelValidations);
     const {auth} = useContext(AuthContext);
     const [parcel, setParcel] = useState(oldParcel);
     const [shouldAlert, setAlert] = useState(false);
+    const [paymentMethod, setMethod] = useState("ONLINE");
     const [extra, setExtra] = useState({note: "", amount: ""});
+    const [payment, paying] = useRequest(paymentRequest);
 
-    // const [editRoutes, setEditRoutes] = useState(false);
-    // const [editPrices, setEditPrices] = useState(false);
-    // const [editWeight, setEditWeight] = useState(false);
     const labels = [
         "Tracking number",
         "Weight",
@@ -61,15 +64,7 @@ const EditParcel = ({
     const editRoutes = auth.agent.privileges.includes("AMEND_CARGO_ROUTE");
     const editPrices = auth.agent.privileges.includes("AMEND_CARGO_PRICING");
     const editWeight = auth.agent.privileges.includes("AMEND_CARGO_WEIGHT");
-    // useEffect(() => {
-    //     if (auth && auth.agent) {
-    //         setEditRoutes(auth.agent.privileges.includes("AMEND_CARGO_ROUTE"));
-    //         setEditPrices(
-    //             auth.agent.privileges.includes("AMEND_CARGO_PRICING")
-    //         );
-    //         setEditWeight(auth.agent.privileges.includes("AMEND_CARGO_WEIGHT"));
-    //     }
-    // }, [auth]);
+
     const privileges = {
         tracking_number: false,
         weight: editWeight,
@@ -102,9 +97,9 @@ const EditParcel = ({
         navigation.navigate(`Edit ${isSender ? "Sender" : "Receiver"}`, {
             user: isSender ? parcel.sender : parcel.receiver,
             parcel: parcel,
-            // type: "meme",
             type: isSender ? "Sender" : "Receiver",
             setParcel: setParcel,
+            setAlert: setAlert,
         });
     };
     const saveParcel = () => {
@@ -150,6 +145,28 @@ const EditParcel = ({
         newExtra.splice(index, 1);
         setParcel({...parcel, extra_charges: newExtra});
         setAlert(true);
+    };
+
+    const changePaymentMethod = (_, value)=>{
+        setMethod(value);
+    };
+
+    const pay = () => {
+        payment({
+            invoice_ids: [parcel.invoice_id],
+            payment_method: paymentMethod,
+        })
+            .then(() => {
+                Alert.alert(
+                    "Done",
+                    "Payment success",
+                    [{text: "OK", onPress: () => {}}],
+                    {cancelable: true}
+                );
+            })
+            .catch((e) => {
+                alert(e);
+            });
     };
 
     return (
@@ -203,6 +220,28 @@ const EditParcel = ({
                 />
                 {/* </ScrollView> */}
                 <View style={{flexDirection: "row"}}>
+                    <View style={{flex: 2, marginRight:5}}>
+                        <PaymentDropdown
+                            name=""
+                            onSelect={changePaymentMethod}
+                            selectedValue={paymentMethod}
+                            placeholder="Payment method"
+                        />
+                    </View>
+                    <View style={{flex: 1}}>
+                        <Text></Text>
+                        <Button
+                            style={{height: 43}}
+                            onPress={pay}
+                            loading={paying}
+                            disabled={shouldAlert}
+                        >
+                            Pay
+                        </Button>
+                    </View>
+                </View>
+
+                <View style={{flexDirection: "row"}}>
                     <View style={{flex: 2}}>
                         <InputWithError
                             name="note"
@@ -222,8 +261,9 @@ const EditParcel = ({
                             disabled={!editPrices}
                         />
                     </View>
-                    <View style={{flex: 1, paddingTop: 15, paddingBottom: 5}}>
-                        <Button onPress={onAdd} disabled={!editPrices} style={{flexGrow: 1}}>
+                    <View style={{flex: 1}}>
+                        <Text></Text>
+                        <Button onPress={onAdd} disabled={!editPrices || saving || paying} style={{height:43}}>
                             add
                         </Button>
                     </View>
@@ -255,20 +295,20 @@ const EditParcel = ({
                 />
                 <Button
                     onPress={() => edit(true)}
-                    disabled={requesting || !privileges.sender}
+                    disabled={saving || paying || !privileges.sender}
                 >
                     Edit Sender
                 </Button>
                 <Button
                     onPress={() => edit(false)}
-                    disabled={requesting || !privileges.receiver}
+                    disabled={saving || paying || !privileges.receiver}
                     style={{marginVertical: 5}}
                 >
                     Edit Receiver
                 </Button>
                 <Button
                     onPress={save}
-                    loading={requesting || isValidating}
+                    loading={saving || isValidating}
                     disabled={hasErrors || !shouldAlert}
                 >
                     Save
