@@ -23,7 +23,7 @@ const DeliveredItemProcessing = ({
                                      },
                                  }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState(["RE9316", "RE5405"]);
+    const [releaseCodes, setCodes] = useState([]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
     const [modalVisible, setModalVisible] = useState(false);
