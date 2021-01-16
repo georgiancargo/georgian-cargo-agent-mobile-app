@@ -18,17 +18,20 @@ const style = StyleSheet.create({
         alignContent: "space-between",
         marginBottom: 5,
     },
-    badge: {
+    badgeContainer: {
         position: "absolute",
-        top: 15,
-        right: 25,
-        paddingVertical: 6,
-        paddingHorizontal: 12,
+        top: 10,
+        right: 10,
+    },
+    badge: {
+        paddingVertical: 4,
+        paddingHorizontal: 8,
         borderRadius: 50,
+        margin: 2,
+        alignItems: "center"
         // transform: [{ rotate: '45deg' }]
     },
     badgeText: {
-        color: "white",
         fontSize: 12,
         textTransform: "capitalize",
     },
@@ -40,7 +43,7 @@ const C = ({children, style}) => (
 );
 const Badge = ({children, ...props}) => (
     <View {...props}>
-        <Text style={style.badgeText}>{children}</Text>
+        <Text style={props.style.text}>{children}</Text>
     </View>
 );
 const ListItem = ({parcel: p, edit, i}) => {
@@ -54,6 +57,16 @@ const ListItem = ({parcel: p, edit, i}) => {
     const badge = {
         ...style.badge,
         backgroundColor: status === "PAID" ? "#a2cc3a" : "#ed1c24",
+        text: {
+            color: "#fff"
+        }
+    };
+    const badgeDefault = {
+        ...style.badge,
+        backgroundColor: "#ddd",
+        text: {
+            color: "#000"
+        }
     };
     const src = codes[p.shipping_specs.route.source_country_code];
     const dst = codes[p.shipping_specs.route.destination_country_code];
@@ -66,18 +79,21 @@ const ListItem = ({parcel: p, edit, i}) => {
     const parcel_type = p.shipping_specs.parcel_type;
     return (
         <TouchableOpacity style={container} onPress={() => edit(p)}>
-            <Badge style={badge}>{status}</Badge>
+            <View style={style.badgeContainer}>
+                <Badge style={badge}>{status}</Badge>
+                <Badge style={{...badgeDefault, backgroundColor: '#1e96cd', text: {color: '#fff'}}}>{p.status.replace('_', ' ')}</Badge>
+                <Badge style={badgeDefault}>{p.item.weight} KG</Badge>
+
+            </View>
             <C>
                 Tracking number:{" "}
                 <Text style={{fontWeight: "bold"}}>{p.tracking_number}</Text>
             </C>
             <C>Pickup date: {pickup_date}</C>
-            <C>Parcel status: {p.status}</C>
             <C>
                 From: <C style={{color: "green"}}> {src} </C>
                 To: <C style={{color: "red"}}> {dst} </C>
             </C>
-            <C>Weight: {p.item.weight + " Kg"}</C>
             <C>
                 {sender_name} to {receiver_name}{" "}
             </C>
