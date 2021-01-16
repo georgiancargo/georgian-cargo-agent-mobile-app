@@ -1,18 +1,14 @@
-import React, {useState, useEffect, useContext} from "react";
+import React, {useState, useEffect} from "react";
 import {Text, View} from "react-native";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {SelectDropdown} from "_atoms";
 import {InputWithError, Button} from "_atoms";
-import {SummaryList} from "_molecules";
+import {SummaryList, PaymentDropdown} from "_molecules";
 import {Divider} from "react-native-paper";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
-import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
 import {paymentRequest} from "_requests";
+import {confirmAlert} from "_utils";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s} = bootstrapStyleSheet;
 
 const Summary = ({navigation, route: {params}}) => {
     const {parcels = [], setAlert = () => {}} = params;
@@ -23,10 +19,6 @@ const Summary = ({navigation, route: {params}}) => {
 
     const [pay, paying] = useRequest(paymentRequest);
 
-    const {auth} = useContext(AuthContext);
-    const getCash = auth.agent.privileges.includes("COLLECT_CASH_PAYMENTS");
-    const getBank = auth.agent.privileges.includes("COLLECT_BANK_PAYMENTS");
-
     const [summaryData, setSummary] = useState({
         coupon_code: "",
         payment_method: "ONLINE",
@@ -34,9 +26,6 @@ const Summary = ({navigation, route: {params}}) => {
     });
     const [sum, setSum] = useState(0);
     const [errors, setErrors] = useState([]);
-    const [payment_methods, setPaymentMethods] = useState([
-        {label: "Online", value: "ONLINE"},
-    ]);
 
     useEffect(() => {
         let s = 0;
@@ -50,23 +39,9 @@ const Summary = ({navigation, route: {params}}) => {
         setSummary({...summaryData, [name]: value});
     };
 
-    useEffect(() => {
-        const newMethods = payment_methods.slice();
-        if (getCash && newMethods.length < 3)
-            newMethods.push({label: "Cash", value: "CASH"});
-        if (getBank && newMethods.length < 3)
-            newMethods.push({label: "Bank", value: "BANK"});
-        setPaymentMethods(newMethods);
-    }, [auth]);
-
-    // const removeExtraCharge = (index) => {
-    //     const newExtra = summaryData.extra_charges.slice();
-    //     newExtra.splice(index, 1);
-    //     setSummary({...summaryData, extra_charges: newExtra});
-    // };
-
-    const onCheckout = () => {
+    const checkout = () => {
         const invoice_ids = [];
+        let hasErrors = false;
 
         parcels.forEach(async (data, i) => {
             const payload = {
@@ -80,6 +55,7 @@ const Summary = ({navigation, route: {params}}) => {
                 invoice_ids.push(res.data.cargo.invoice.invoice_id);
                 setErrors("");
             } catch (error) {
+                hasErrors = true;
                 try {
                     if(error.response.data.data.errors.length > 0){
                         setErrors(error.response.data.data.errors[0]);
@@ -88,19 +64,27 @@ const Summary = ({navigation, route: {params}}) => {
                     }
                 } catch (error) {}
             }
-            if (i === parcels.length - 1) {
+            if (i === parcels.length - 1 && !hasErrors) {
                 setAlert(false);
                 pay({
                     invoice_ids: invoice_ids,
                     payment_method: summaryData.payment_method,
                 })
-                    .then(() => {})
-                    .catch(() => {})
-                    .finally(() => {
+                    .then(() => {
                         navigation.navigate("Home");
+                    })
+                    .catch((e) => {
+                        alert(e);
                     });
             }
         });
+    };
+    const confirmCheckout = () => {
+        confirmAlert({
+            paragraph: "Sure you want to checkout?",
+            onConfirm: checkout,
+        });
+        
     };
     return (
         <>
@@ -112,8 +96,9 @@ const Summary = ({navigation, route: {params}}) => {
                         onChangeText={onChange}
                         value={summaryData.coupon_code}
                     />
-                    <SelectDropdown
-                        list={payment_methods}
+                    <PaymentDropdown
+                        // list={payment_methods}
+                        dummyBank={true}
                         name="payment_method"
                         onSelect={onChange}
                         selectedValue={summaryData.payment_method}
@@ -121,14 +106,14 @@ const Summary = ({navigation, route: {params}}) => {
                     />
                     <ErrorText error={errors} />
                     <Divider style={{marginBottom: 10}} />
-                    <View style={[s.formGroup]}>
+                    <View style={{marginBottom: 10}}>
                         <Text>Sum is: {isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text>
                     </View>
                 </View>
                 <SummaryList parcels={parcels} />
             </View>
             <View style={{marginBottom: 10}}>
-                <Button onPress={onCheckout} loading={requesting || paying}>
+                <Button onPress={confirmCheckout} loading={requesting || paying}>
                     Checkout
                 </Button>
             </View>

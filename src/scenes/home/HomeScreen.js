@@ -43,10 +43,8 @@ const Home = ({navigation}) => {
                         page_size: 30,
                     },
                 })
-                    .then((r) => {
-                        setParcels(r.data.cargos);
-                    })
-                    .catch(() => {});
+                    .then((r) => setParcels(r.data.cargos))
+                    .catch((e) => {});
             }),
 
         [navigation]

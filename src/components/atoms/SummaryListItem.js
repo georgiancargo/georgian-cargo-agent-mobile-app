@@ -31,7 +31,7 @@ const SummaryListItem = ({price, parcel = {}, isParcel}) => {
             <View style={[s.flexRow, s.flexWrap]}>
                 {isParcel ? (
                     <View style={styles.side}>
-                        <Text style={[s.text]}>
+                        <Text style={[s.text, {fontWeight: "bold"}]}>
                             Tracking number: {parcel.tracking_number}
                         </Text>
                         <Text style={[s.text]}>weight: {parcel.weight}</Text>

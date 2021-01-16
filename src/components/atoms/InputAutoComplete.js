@@ -5,11 +5,18 @@ import InputWithError from "./InputWithError";
 import {getUserRequest} from "_requests";
 import {useRequest} from "_hooks";
 
-const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
+const InputAutoComplete = ({
+    value,
+    isCustomer,
+    setUser,
+    validate = async() => {},
+    ...props
+}) => {
     const [data, setData] = useState([]);
     const [selectedValue, setSelected] = useState();
     const {colors, roundness} = useTheme();
     const [request, requesting] = useRequest(getUserRequest);
+    const [firstTime, setFirst] = useState(true);
 
     const styles = {
         dropdown: {
@@ -25,22 +32,15 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             zIndex: 99,
             width: "100%",
             alignSelf: "center",
-            top: 75,
+            top: 60,
         },
     };
     const onPress = (user) => {
         setData([]);
         setSelected(user.name);
-        // setUser({
-        //     name: user.name,
-        //     phone: user.email,
-        //     email: user.phone,
-        //     country_code: user.address.countryCode,
-        //     addrees_line_1: user.address.addressLine1,
-        //     address_line_2: user.address.addressLine2,
-        //     postal_code: user.address.postalCode,
-        // });
-        setUser({...user, ...user.address});
+        const newUser = {...user, ...user.address};
+        setUser(newUser);
+        validate(newUser).catch((e)=>{});
     };
     const renderItem = ({item, index}) => {
         switch (typeof item) {
@@ -50,7 +50,11 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
             default:
                 return (
                     <TouchableOpacity
-                        style={{borderBottomWidth: 1, borderBottomColor: '#ddd', padding: 15}}
+                        style={{
+                            borderBottomWidth: 1,
+                            borderBottomColor: "#ddd",
+                            padding: 15,
+                        }}
                         onPress={() => onPress(item)}
                         key={index}
                     >
@@ -61,25 +65,31 @@ const InputAutoComplete = ({value, isCustomer, setUser, ...props}) => {
     };
 
     useEffect(() => {
-        if (value && selectedValue !== value && value.length >= 1)
-            request({name: value})
-                .then((r) => {
-                    const list = isCustomer? r.data.customers : r.data.receivers;
-                    const newData = Object.values(list);
-                    setData(newData);
-                })
-                .catch((e) => setData([]));
+        if (!firstTime) {
+            if (value && selectedValue !== value && value.length >= 1)
+                request({name: value})
+                    .then((r) => {
+                        const list = isCustomer
+                            ? r.data.customers
+                            : r.data.receivers;
+                        const newData = Object.values(list);
+                        setData(newData);
+                    })
+                    .catch((e) => setData([]));
+        } else setFirst(false);
     }, [value]);
 
     return (
         <>
             <InputWithError value={value} {...props} />
-            {(data && value && value !== "" && data.length > 0) || requesting ? (
+            {(data && value && value !== "" && data.length > 0) ||
+            requesting ? (
                 <SafeAreaView style={styles.dropdown}>
                     {requesting ? (
-                        <ActivityIndicator animating={requesting}/>
+                        <ActivityIndicator animating={requesting} />
                     ) : (
                         <FlatList
+                            nestedScrollEnabled={true}
                             data={data}
                             renderItem={renderItem}
                             keyExtractor={(item) => item.id}

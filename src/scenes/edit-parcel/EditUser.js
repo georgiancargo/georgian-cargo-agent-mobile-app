@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {View} from "react-native";
-import {InputWithError, Button} from "_atoms";
+import {InputWithError, Button, PreventGoingBack} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {ScrollView} from "react-native";
 import {useValidation} from "_hooks";
@@ -12,11 +12,12 @@ const {s, c} = bootstrapStyleSheet;
 const EditUser = ({
     navigation,
     route: {
-        params: {user: oldUser, parcel, type, setParcel},
+        params: {user: oldUser, parcel, type, setParcel, setAlert},
     },
 }) => {
     const [user, setUser] = useState(oldUser);
     const [isValidating, setValidating] = useState(false);
+    const [changed, setChanged] = useState(false);
     const {errors, validate, hasErrors} = useValidation(EditUserValidations);
 
     useEffect(() => {
@@ -30,11 +31,14 @@ const EditUser = ({
         const newUser = {...user, [name]: value};
         setUser(newUser);
         validate(newUser, name).catch((e) => {});
+        setAlert(true);
+        setChanged(true);
     };
     const onSave = () => {
         setValidating(true);
         validate(user)
             .then((r) => {
+                setChanged(false);
                 if (type === "Sender") setParcel({...parcel, sender: user});
                 else setParcel({...parcel, receiver: user});
                 navigation.goBack();
@@ -45,6 +49,12 @@ const EditUser = ({
     return (
         <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
             {/* <Text>{JSON.stringify(type)}</Text> */}
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={changed}
+                title="You haven't saved"
+                paragraph="Sure you want to go back?"
+            />
             <View style={[s.formGroup]}>
                 {keys.map((key, i) => {
                     const val = user[key];
@@ -67,7 +77,7 @@ const EditUser = ({
             <View style={[s.formGroup]}>
                 <Button
                     onPress={onSave}
-                    disabled={hasErrors}
+                    disabled={hasErrors || !changed}
                     loading={isValidating}
                 >
                     Save

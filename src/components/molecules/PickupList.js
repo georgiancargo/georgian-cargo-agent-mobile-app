@@ -1,14 +1,15 @@
 import React from "react";
+// import {useState} from "react";
 import {SafeAreaView} from "react-native";
 import {FlatList, Text, View} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {TouchableOpacity} from "react-native";
-import {PickupListItem} from "_atoms";
+// import {ModalContainer, Button} from "_atoms";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const PickupList = ({parcels, editParcel, removeParcel}) => {
+const PickupList = ({parcels = [], editParcel, removeParcel}) => {
     const renderItem = ({item, index}) => {
         const {sender, receiver, ...parcel} = item;
         const edit = () => {
@@ -21,11 +22,13 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                 key={parcel.tracking_number}
             >
                 <View style={[s.tableHeadCol, s.flex3, s.justifyContentCenter]}>
-                    <Text style={[s.text]}>{parcel.tracking_number}</Text>
+                    <TouchableOpacity onPress={edit}>
+                        <Text>{parcel.tracking_number}</Text>
+                    </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex3]}>
                     <TouchableOpacity onPress={edit}>
-                        <Text>{receiver.name}</Text>
+                        <Text style={[s.text]}>{receiver.name}</Text>
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, s.flex1, s.justifyContentCenter]}>
@@ -37,7 +40,9 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
                         }}
                         onPress={() => removeParcel(index)}
                     >
-                        <Text style={{color: "red", fontWeight: 'bold'}}>X</Text>
+                        <Text style={{color: "red", fontWeight: "bold"}}>
+                            X
+                        </Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -48,6 +53,7 @@ const PickupList = ({parcels, editParcel, removeParcel}) => {
             <SafeAreaView>
                 {parcels.length ? (
                     <FlatList
+                        nestedScrollEnabled={true}
                         data={parcels}
                         style={[s.table]}
                         ListHeaderComponent={Header}
@@ -70,9 +76,40 @@ const Header = () => {
                 <Text style={[s.text, s.textCenter]}>Receiver</Text>
             </View>
             <View style={[s.tableHeadCol, s.flex1]}>
-                <Text style={[s.text]}/>
+                <Text style={[s.text]} />
             </View>
         </View>
     );
 };
+// const PickupModal = ({parcels, editParcel, removeParcel}) => {
+//     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
+
+//     const [visible, setVisible] = useState(false);
+
+//     const showModal = () => setVisible(true);
+//     const hideModal = () => setVisible(false);
+
+//     return (
+//         <View style={{marginVertical: 5}}>
+//             <Button
+//                 style={btnGroup}
+//                 onPress={showModal}
+//                 disabled={!parcels.length}
+//             >
+//                 Show parcel list
+//             </Button>
+//             <ModalContainer modalVisible={visible} setModalVisible={setVisible}>
+//                 <View style={{flex: 1}}>
+//                     <PickupList
+//                         parcels={parcels}
+//                         editParcel={editParcel}
+//                         removeParcel={removeParcel}
+//                     />
+//                     <Button onPress={hideModal}>Done</Button>
+//                 </View>
+//             </ModalContainer>
+//         </View>
+//     );
+// };
+// export default PickupModal;
 export default PickupList;

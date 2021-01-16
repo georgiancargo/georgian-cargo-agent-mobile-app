@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from "react";
-import {ScrollView, Text, View, Vibration} from "react-native";
+import {ScrollView, Text, View, SafeAreaView} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {InputWithError, Button, InputAutoComplete} from "_atoms";
 import {
@@ -8,7 +8,7 @@ import {
     RadioButtonGroup,
 } from "_molecules";
 import {useRequest, useValidation} from "_hooks";
-import {getParcelPrice} from "_requests";
+import {getParcelPrice, getTrackingDuplicates} from "_requests";
 import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 import {PreventGoingBack} from "_atoms";
 import receiverValidations from "./receiverValidations";
@@ -32,22 +32,11 @@ const AddReciever = ({navigation, route}) => {
     };
     const [receiver, setReceiver] = useState({});
     const [parcel, setParcel] = useState({});
-    const {
-        errors: receiverErrors,
-        validate: validateReceiver,
-        hasErrors: receiverHasErrors
-    } = useValidation(receiverValidations);
-    const {
-        errors: parcelErrors,
-        validate: validateParcel,
-        hasErrors: parcelHasErrors
-    } = useValidation(parcelValidations);
+    const {errors: receiverErrors, validate: validateReceiver} = useValidation(receiverValidations);
+    const {errors: parcelErrors, validate: validateParcel} = useValidation(parcelValidations);
     const [policyError, setPolicyError] = useState(false);
-    const [price, setPrice] = useState({
-        currency_code: "",
-        freight_price: 0,
-        delivery_price: 0,
-    });
+    const [shouldAlert, setAlert] = useState(false);
+    const [price, setPrice] = useState({currency_code: "",freight_price: 0,delivery_price: 0});
     const [extra, setExtra] = useState({note: "", amount: ""});
     const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
@@ -65,10 +54,13 @@ const AddReciever = ({navigation, route}) => {
         newExtra.splice(index, 1);
         setParcel({...parcel, extra_charges: newExtra});
     };
-    const [request, requesting] = useRequest(getParcelPrice);
+    const [priceRequest, requestingPrice] = useRequest(getParcelPrice);
+    const [trackingRequest, requestingTracking] = useRequest(getTrackingDuplicates);
+    
+    const existing = "9999";
 
     useEffect(() => {
-        request({
+        priceRequest({
             source_country_code: source_country_code,
             destination_country_code: receiver.country_code,
             collection_option: parcel.collection_option,
@@ -81,11 +73,6 @@ const AddReciever = ({navigation, route}) => {
                     currency_code: data.prices.currency_code,
                     freight_price: data.prices.freight_price,
                     delivery_price: data.prices.delivery_price,
-                });
-                setParcel({
-                    ...parcel,
-                    price:
-                        data.prices.freight_price + data.prices.delivery_price,
                 });
                 setPolicyError(false);
             })
@@ -150,11 +137,13 @@ const AddReciever = ({navigation, route}) => {
         const newReceiver = {...receiver, [name]: value};
         setReceiver(newReceiver);
         validateReceiver(newReceiver, name).catch((e) => {});
+        setAlert(true);
     };
     const onChangeParcel = (name, value) => {
         const next = {...parcel, [name]: value};
         setParcel(next);
         validateParcel(next, name).catch((e) => {});
+        setAlert(true);
     };
     const onSave = () => {
         validateReceiver(receiver)
@@ -162,12 +151,23 @@ const AddReciever = ({navigation, route}) => {
                 return validateParcel(parcel);
             })
             .then(() => {
-                if (index <= parcels.length) {
-                    const newParcels = parcels.slice();
-                    newParcels[index] = {...parcel, receiver: receiver};
-                    setParcels(newParcels);
-                }
-                navigation.goBack();
+                trackingRequest({tracking_number: parcel.tracking_number})
+                    .then((r) => alert("This tracking number already exists"))
+                    .catch((e) => {
+                        setAlert(false);
+                        if (index <= parcels.length) {
+                            const newParcels = parcels.slice();
+                            const _price =
+                                price.freight_price + price.delivery_price;
+                            newParcels[index] = {
+                                ...parcel,
+                                receiver: receiver,
+                                price: _price,
+                            };
+                            setParcels(newParcels);
+                        }
+                        navigation.goBack();
+                    });
             })
             .catch((e) => {
                 return validateParcel(parcel);
@@ -184,9 +184,15 @@ const AddReciever = ({navigation, route}) => {
     };
     return (
         <>
-            <PreventGoingBack navigation={navigation}/>
+            <PreventGoingBack
+                navigation={navigation}
+                shouldAlert={shouldAlert}
+                title="You haven't saved"
+                paragraph="Sure you want to go back?"
+            />
             <ScrollView style={[s.container, s.bgWhite, s.p3, s.flex1]}>
                 <View>
+                    <SafeAreaView>
                     <InputAutoComplete
                         name="name"
                         value={receiver.name}
@@ -196,7 +202,9 @@ const AddReciever = ({navigation, route}) => {
                         // onChangeText={onChange}
                         onChangeText={onChangeReceiver}
                         setUser={setReceiver}
+                        validate={validateReceiver}
                     />
+                    </SafeAreaView>
                     <View style={[s.formGroup]}>
                         <Form
                             labels={receiveLabels}
@@ -300,9 +308,9 @@ const AddReciever = ({navigation, route}) => {
                             checkLabels={["Home", "Office"]}
                         />
                         <View style={{marginBottom: 5}}>
-                            {requesting ? (
+                            {requestingPrice ? (
                                 <ActivityIndicator
-                                    animating={requesting}
+                                    animating={requestingPrice}
                                 />
                             ) : (
                                 <>
@@ -326,6 +334,7 @@ const AddReciever = ({navigation, route}) => {
                     <Button
                         onPress={onSave}
                         disabled={policyError}
+                        loading={requestingTracking}
                     >
                         Add
                     </Button>

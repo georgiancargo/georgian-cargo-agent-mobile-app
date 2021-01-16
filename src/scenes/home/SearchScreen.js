@@ -1,21 +1,27 @@
 import React, {useState} from "react";
-import {Text, View} from "react-native";
+import {Text, View, StyleSheet} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {ParcelList} from "_molecules";
 import {useRequest} from "_hooks";
 import {getGargosRequest} from "_requests";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s, c} = bootstrapStyleSheet;
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "white",
+        padding: 10,
+    },
+});
 
 const SearchScreen = ({navigation}) => {
-    const [trackingNumber, setTrackingNumber] = useState("");
+    const [searchQuery, setQuery] = useState("");
     const [parcels, setParcels] = useState([]);
     const [request, requesting] = useRequest(getGargosRequest);
+
     const onChangeText = (_, value) => {
-        setTrackingNumber(value);
+        setQuery(value);
     };
+
     const search = () => {
         request({
             paging_specification: {
@@ -23,8 +29,8 @@ const SearchScreen = ({navigation}) => {
                 page_size: 30,
             },
             filter_specification: {
-                filter_by: "TRACKING_NUMBER",
-                filter_value: trackingNumber,
+                filter_by: "ALL",
+                filter_value: searchQuery,
             },
         })
             .then((r) => {
@@ -33,12 +39,12 @@ const SearchScreen = ({navigation}) => {
             .catch((e) => {});
     };
     return (
-        <View style={[s.container, s.bgWhite, s.p3, s.flex1]}>
+        <View style={styles.container}>
             <InputWithError
                 name="trackingNumber"
-                value={trackingNumber}
+                value={searchQuery}
                 onChangeText={onChangeText}
-                placeholder="Enter tracking number"
+                placeholder="Search"
             />
             <Button
                 style={{marginVertical: 8}}
@@ -48,7 +54,6 @@ const SearchScreen = ({navigation}) => {
                 Search
             </Button>
             <View style={{flex: 1}}>
-                {parcels.length === 0 && <Text>No parcels matching term were found</Text>}
                 <ParcelList parcels={parcels} navigation={navigation} />
             </View>
         </View>

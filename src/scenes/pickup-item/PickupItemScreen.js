@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import {ScrollView, View} from "react-native";
 import {
     InputWithError,
@@ -7,14 +7,10 @@ import {
     InputAutoComplete,
     PreventGoingBack
 } from "_atoms";
-import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {PickupList, RadioButtonGroup} from "_molecules";
 import {useValidation} from "_hooks";
 import senderDataValidations from "./PickupItemValidations";
 import { SourceRoutesDropdown } from "_molecules";
-
-const bootstrapStyleSheet = new BootstrapStyleSheet();
-const {s} = bootstrapStyleSheet;
 
 const PickupItemScreen = ({navigation}) => {
     const btnGroup = {flex: 1, borderRadius: 20, marginRight: 5};
@@ -22,7 +18,7 @@ const PickupItemScreen = ({navigation}) => {
 
     const [parcels, setParcels] = useState([]);
     const [sender, setSender] = useState({});
-    const [shouldAlert, setAlert] = useState(true);
+    const [shouldAlert, setAlert] = useState(false);
     
     const [globalSettings, setGlobal] = useState({
         parcel_type: "PARCEL",
@@ -31,8 +27,13 @@ const PickupItemScreen = ({navigation}) => {
     const labels = ["Sender phone", "Sender Email", "Sender addrees line 1", "Sender address line 2", "Sender address postal code"];
     const keys = ["phone", "email", "address_line_1", "address_line_2", "postal_code"];
     
+    useEffect(() => {
+        if (parcels.length > 0) setAlert(true);
+    }, [parcels.length]);
+    
     const onChangeParcel = (name, value) => {
         setGlobal({...globalSettings, [name]: value});
+        setAlert(true);
     };
     
     const parcelType = [
@@ -74,6 +75,7 @@ const PickupItemScreen = ({navigation}) => {
     const onChange = (name, value) => {
         const newSender = {...sender, [name]: value};
         setSender(newSender);
+        setAlert(true);
         validate(newSender, name).catch(() => {});
     };
     const gotoSummary = () => {
@@ -103,24 +105,27 @@ const PickupItemScreen = ({navigation}) => {
         newParcels.splice(index, 1);
         setParcels(newParcels);
     };
+    const container = {flex:1, backgroundColor:"white", padding:10}
     return (
-        <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
+        // <View style={[s.container, s.bgWhite, s.p3, {flex: 1}]}>
+        <>
             <PreventGoingBack
                 navigation={navigation}
-                shouldAlert={parcels.length ? shouldAlert : false}
+                shouldAlert={shouldAlert}
             />
-            <InputAutoComplete
-                name="name"
-                value={sender.name}
-                error={errors.name}
-                // label={label}
-                placeholder="Sender name"
-                onChangeText={onChange}
-                setUser={setSender}
-                isCustomer
-            />
-            <ScrollView>
+            <ScrollView style={container}>
                 <View style={{borderWidth: 0, flex: 5.1}}>
+                    <InputAutoComplete
+                        name="name"
+                        value={sender.name}
+                        error={errors.name}
+                        // label={label}
+                        placeholder="Sender name"
+                        onChangeText={onChange}
+                        setUser={setSender}
+                        validate={validate}
+                        isCustomer
+                    />
                     {keys.map((key, i) => (
                         <InputWithError
                             name={key}
@@ -166,12 +171,11 @@ const PickupItemScreen = ({navigation}) => {
                         <Button
                             style={[btnGroup]}
                             onPress={gotoSummary}
-                            disabled={hasErrors}
+                            disabled={hasErrors || parcels.length <= 0}
                         >
                             Summary
                         </Button>
                     </View>
-
                     <View style={{borderWidth: 0, flex: 3}}>
                         <PickupList
                             parcels={parcels}
@@ -181,7 +185,7 @@ const PickupItemScreen = ({navigation}) => {
                     </View>
                 </View>
             </ScrollView>
-        </View>
+        </>
     );
 };
 

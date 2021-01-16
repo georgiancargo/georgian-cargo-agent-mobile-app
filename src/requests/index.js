@@ -11,3 +11,5 @@ export {default as bankRequest} from "./bankRequest";
 export {default as getParcelPrice} from "./getParcelPrice";
 export {default as logout} from "./logout";
 export {default as paymentRequest} from "./paymentRequest";
+export {default as releaseParcelRequest} from "./releaseParcelRequest";
+export {default as getTrackingDuplicates} from "./getTrackingDuplicates";

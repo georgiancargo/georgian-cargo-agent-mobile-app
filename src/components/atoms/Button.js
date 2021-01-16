@@ -63,7 +63,7 @@ const ButtonWrapper = ({
         // </TouchableOpacity>
         <Button
             mode="contained"
-            style={style}
+            style={{...style, justifyContent: "center"}}
             disabled={disabled || loading}
             loading={loading}
             uppercase={false}

@@ -57,13 +57,15 @@ const ItemModes = ({navigation}) => {
             >
                 <ScrollView style={styles.container}>
                     <View>
-                        <InputWithError
-                            name="first"
-                            placeholder="First code"
-                            onChangeText={changeParams}
-                            value={params.first.toString()}
-                            isInt
-                        />
+                        {mode !== -1 && (
+                            <InputWithError
+                                name="first"
+                                placeholder="First code"
+                                onChangeText={changeParams}
+                                value={params.first.toString()}
+                                isInt
+                            />
+                        )}
                         <InputWithError
                             name="size"
                             placeholder="Number of codes"
