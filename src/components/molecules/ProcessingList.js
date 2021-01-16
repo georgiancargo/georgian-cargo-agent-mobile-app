@@ -6,7 +6,7 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const ProcessingList = ({barCodes, remove, edit}) => {
+const ProcessingList = ({barCodes = [], remove, edit}) => {
     const renderItem = ({item, index}) => {
         const {price, ...parcel} = item;
         return (
@@ -28,12 +28,17 @@ const ProcessingList = ({barCodes, remove, edit}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
-                    <TouchableOpacity
-                        style={{alignItems: "center", justifyContent: "center"}}
-                        onPress={() => remove(index)}
-                    >
-                        <Text style={[s.text, s.textDanger]}>X</Text>
-                    </TouchableOpacity>
+                    {barCodes.length > 1 && (
+                        <TouchableOpacity
+                            style={{
+                                alignItems: "center",
+                                justifyContent: "center",
+                            }}
+                            onPress={() => remove(index)}
+                        >
+                            <Text style={[s.text, s.textDanger]}>X</Text>
+                        </TouchableOpacity>
+                    )}
                 </View>
             </View>
         );
