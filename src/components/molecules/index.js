@@ -8,3 +8,4 @@ export {default as ExtraChargesTable} from "./ExtraChargesTable";
 export {default as DestinationRoutesDropdown} from "./DestinationRoutesDropdown";
 export {default as SourceRoutesDropdown} from "./SourceRoutesDropdown";
 export {default as ExtraChargesList} from "./ExtraChargesList";
+export {default as PaymentDropdown} from "./PaymentDropdown";
