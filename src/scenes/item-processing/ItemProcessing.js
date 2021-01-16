@@ -8,6 +8,7 @@ import {useOfflineRequest} from "_hooks";
 import { CustomDialog } from "./DeliveredItemProcessing";
 import { PreventGoingBack } from "_atoms";
 import { confirmAlert } from "_utils";
+import { Alert } from "react-native";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -119,7 +120,12 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         request({tracking_numbers: barCodes, event: params.event})
             .then((r) => {
                 // alert("Done");
-                navigation.navigate("Home");
+                Alert.alert(
+                    "Done",
+                    "Processed successfully!",
+                    [{text: "Home", onPress: () => navigation.navigate("Home")}],
+                    {cancelable: true}
+                );
             })
             .catch((e) => {
                 try {
