@@ -2,7 +2,7 @@ import React, {useState, useEffect, useContext} from "react";
 import {SelectDropdown} from "_atoms";
 import {AuthContext} from "_context";
 
-const PaymentDropdown = (props) => {
+const PaymentDropdown = ({dummyBank = false, ...props}) => {
     const [payment_methods, setPaymentMethods] = useState([
         {label: "Online", value: "ONLINE"},
     ]);
@@ -17,7 +17,7 @@ const PaymentDropdown = (props) => {
         const newMethods = payment_methods.slice();
 
         const cash = {label: "Cash", value: "CASH"};
-        const bank = {label: "Bank", value: "BANK"};
+        const bank = {label: "Bank", value: dummyBank ? "DUMMY_BANK" : "BANK"};
         const card = {label: "Card", value: "CARD"};
 
         const includes_cash = newMethods.some(({value}) => value === "CASH");
