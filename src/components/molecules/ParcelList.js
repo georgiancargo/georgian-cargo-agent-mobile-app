@@ -104,7 +104,8 @@ const ParcelInfoModal = ({
 
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
     const canRelease = auth.agent.privileges.includes("RELEASE_CARGO_BY_TRACKING_NUMBER");
-
+    const payed = parcel.payment_status === "PAID";
+    const notReleased = parcel.status !== "RELEASED";
     const labels = ["Tracking number", "Weight", "Status", "From", "To", "Collection option", "Customer type", "Parcel type", "Notes", "Description", "Customer id", "Pickup date", "Release code", "Currency code", "Freight price", "Delivery price", "Discount"];
     const keys = ["tracking_number", "weight", "status", "source_country", "destination_country", "collection_option", "customer_type", "parcel_type", "notes", "description", "customer_id", "created_at", "release_code", "currency_code", "freight_price", "delivery_price", "discount"];
     const userLabels = ["Name", "Email", "Phone", "Address line 1", "Address line 2", "Postal code"];
@@ -188,7 +189,7 @@ const ParcelInfoModal = ({
                         style={{flex: 4, marginHorizontal: 2}}
                         onPress={release}
                         loading={releasing}
-                        disabled={!canRelease || releasing}
+                        disabled={!(payed && notReleased && canRelease)|| releasing}
                     >
                         Release
                     </Button>
