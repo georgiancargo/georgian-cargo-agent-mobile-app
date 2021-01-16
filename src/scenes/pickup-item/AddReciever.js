@@ -178,7 +178,7 @@ const AddReciever = ({navigation, route}) => {
             scanOnce: true,
             callback: (number) =>{
                 const next = {...parcel, tracking_number: number};
-                validateParcel(next).then(()=>setParcel(next));
+                validateParcel(next, "tracking_number").then(()=>setParcel(next));
             }
         });
     };
