@@ -96,6 +96,10 @@ const Summary = ({navigation, route: {params}}) => {
     return (
         <>
             <View style={{flex: 1, backgroundColor: "white", padding: 15}}>
+                <SummaryList parcels={parcels} />
+                <View style={{marginBottom: 20}}>
+                    <Text style={{fontSize: 25}}>Sum is: <Text style={{fontWeight: 'bold'}}>{isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text></Text>
+                </View>
                 <View>
                     <InputWithError
                         name="coupon_code"
@@ -113,11 +117,7 @@ const Summary = ({navigation, route: {params}}) => {
                     />
                     <ErrorText error={errors} />
                     <Divider style={{marginBottom: 10}} />
-                    <View style={{marginBottom: 10}}>
-                        <Text>Sum is: {isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text>
-                    </View>
                 </View>
-                <SummaryList parcels={parcels} />
             </View>
             <View style={{marginBottom: 10}}>
                 <Button onPress={confirmCheckout} loading={requesting || paying}>
