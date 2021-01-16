@@ -6,7 +6,7 @@ import BootstrapStyleSheet from "react-native-bootstrap-styles";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const ProcessingList = ({barCodes = [], remove, edit}) => {
+const ProcessingList = ({barCodes = [], remove, edit, releaseList = false}) => {
     const renderItem = ({item, index}) => {
         return (
             <View style={[s.tableRow, s.tableStripedRow(index)]}>
@@ -17,7 +17,7 @@ const ProcessingList = ({barCodes = [], remove, edit}) => {
                     <TouchableOpacity
                         style={[s.btnTouchable, s.m1]}
                         key={item}
-                        disabled={index === 0}
+                        disabled={index === 0 && !releaseList}
                         onPress={() => edit(index)}
                     >
                         <View style={[s.btn, s.btnOutlineDark]}>
@@ -28,7 +28,7 @@ const ProcessingList = ({barCodes = [], remove, edit}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
-                    {index !== 0 && (
+                    {(index !== 0 || releaseList) && (
                         <TouchableOpacity
                             style={{
                                 alignItems: "center",
