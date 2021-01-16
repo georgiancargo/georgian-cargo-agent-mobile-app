@@ -80,10 +80,11 @@ const DeliveredItemProcessing = ({
                 Alert.alert(
                     "Success",
                     `Tracking numbers released are: ${tracking_numbers}`,
-                    [{text: "OK", onPress: () => {}}],
+                    [{text: "OK", onPress: () => {
+                        navigation.navigate("Home");
+                    }}],
                     {cancelable: true}
                 );
-                // navigation.navigate("Home");
             }
         });
     };
