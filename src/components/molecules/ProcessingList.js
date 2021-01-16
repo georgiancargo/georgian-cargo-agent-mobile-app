@@ -8,7 +8,6 @@ const {s, c} = bootstrapStyleSheet;
 
 const ProcessingList = ({barCodes = [], remove, edit}) => {
     const renderItem = ({item, index}) => {
-        const {price, ...parcel} = item;
         return (
             <View style={[s.tableRow, s.tableStripedRow(index)]}>
                 <View style={[s.tableHeadCol]}>
@@ -18,6 +17,7 @@ const ProcessingList = ({barCodes = [], remove, edit}) => {
                     <TouchableOpacity
                         style={[s.btnTouchable, s.m1]}
                         key={item}
+                        disabled={index === 0}
                         onPress={() => edit(index)}
                     >
                         <View style={[s.btn, s.btnOutlineDark]}>
@@ -28,7 +28,7 @@ const ProcessingList = ({barCodes = [], remove, edit}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
-                    {barCodes.length > 1 && (
+                    {index !== 0 && (
                         <TouchableOpacity
                             style={{
                                 alignItems: "center",
