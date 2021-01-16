@@ -113,11 +113,15 @@ const EditParcel = ({
             })
             .then((r) => {
                 // alert("Saved Successfully");
-                navigation.goBack();
+                Alert.alert(
+                    "Done",
+                    "Saved successfully!",
+                    [{text: "OK", onPress: () => navigation.goBack()}],
+                    {cancelable: true}
+                );
             })
             .catch((e) => {
                 // alert(e);
-                
                 alert(e.response.data.data.errors);
             });
     };
