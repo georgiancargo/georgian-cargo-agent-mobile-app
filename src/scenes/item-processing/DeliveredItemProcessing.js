@@ -9,21 +9,21 @@ import {Chip} from "react-native-paper";
 import {Dialog, Paragraph, Portal} from "react-native-paper";
 import {FlatList} from "react-native";
 import {useOfflineRequest} from "_hooks";
-import { PreventGoingBack } from "_atoms";
-import { Alert } from "react-native";
-import { confirmAlert } from "_utils";
+import {PreventGoingBack} from "_atoms";
+import {Alert} from "react-native";
+import {confirmAlert} from "_utils";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
 const DeliveredItemProcessing = ({
-    navigation,
-    route: {
-        params: {size: n},
-    },
-}) => {
+                                     navigation,
+                                     route: {
+                                         params: {size: n},
+                                     },
+                                 }) => {
     const [releaseCode, setCode] = useState("");
-    const [releaseCodes, setCodes] = useState([]);
+    const [releaseCodes, setCodes] = useState(["RE9316", "RE5405"]);
     const [error, setError] = useState("");
     const [size, setSize] = useState(n);
     const [modalVisible, setModalVisible] = useState(false);
@@ -62,10 +62,31 @@ const DeliveredItemProcessing = ({
     const onChangeText = (_, value) => {
         setCode(value);
     };
-    const release = () => {
+    const release = async () => {
         setAlert(false);
         hideDialog();
-        const tracking_numbers = [];
+        let tracking_numbers = [];
+        try {
+            for (let i = 0; i < releaseCodes.length; ++i) {
+                const response = await request({release_code: releaseCodes[i]});
+                tracking_numbers.push(response.data.tracking_number);
+            }
+            Alert.alert(
+                "Success",
+                `Tracking numbers released are: ${tracking_numbers}`,
+                [{
+                    text: "OK", onPress: () => {
+                        navigation.navigate("Home");
+                    }
+                }],
+                {cancelable: true}
+            );
+        } catch (e) {
+            setError(e.response.data.message);
+        }
+
+
+        /*
         releaseCodes.forEach(async (code, i) => {
             try {
                 const res = await request({release_code: code});
@@ -87,6 +108,7 @@ const DeliveredItemProcessing = ({
                 } catch (error) {}
             }
         });
+        */
     };
     const preReleaseCheck = () => {
         if (size > 0) {
@@ -162,7 +184,7 @@ const DeliveredItemProcessing = ({
                         Scan
                     </Button>
                 </View>
-                <ErrorText error={error} />
+                <ErrorText error={error}/>
                 <Button
                     onPress={add}
                     style={{marginVertical: 8}}
