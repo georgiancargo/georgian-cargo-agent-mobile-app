@@ -71,20 +71,20 @@ const DeliveredItemProcessing = ({
                 const res = await request({release_code: code});
                 tracking_numbers.push(res.data.tracking_number);
                 setError("");
+                if (i === releaseCodes.length - 1) {
+                    Alert.alert(
+                        "Success",
+                        `Tracking numbers released are: ${tracking_numbers}`,
+                        [{text: "OK", onPress: () => {
+                            navigation.navigate("Home");
+                        }}],
+                        {cancelable: true}
+                    );
+                }
             } catch (e) {
                 try {
                     setError(e.response.data.message);
                 } catch (error) {}
-            }
-            if (i === releaseCodes.length - 1) {
-                Alert.alert(
-                    "Success",
-                    `Tracking numbers released are: ${tracking_numbers}`,
-                    [{text: "OK", onPress: () => {
-                        navigation.navigate("Home");
-                    }}],
-                    {cancelable: true}
-                );
             }
         });
     };
