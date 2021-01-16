@@ -35,7 +35,7 @@ const EditParcel = ({
     const [paymentMethod, setMethod] = useState("ONLINE");
     const [extra, setExtra] = useState({note: "", amount: ""});
     const [payment, paying] = useRequest(paymentRequest);
-
+    const isPaid = oldParcel.payment_status === "PAID";
     const labels = [
         "Tracking number",
         "Weight",
@@ -113,11 +113,15 @@ const EditParcel = ({
             })
             .then((r) => {
                 // alert("Saved Successfully");
-                navigation.goBack();
+                Alert.alert(
+                    "Done",
+                    "Saved successfully!",
+                    [{text: "Home", onPress: () => navigation.goBack()}],
+                    {cancelable: true}
+                );
             })
             .catch((e) => {
                 // alert(e);
-                
                 alert(e.response.data.data.errors);
             });
     };
@@ -234,7 +238,7 @@ const EditParcel = ({
                             style={{height: 43}}
                             onPress={pay}
                             loading={paying}
-                            disabled={shouldAlert}
+                            disabled={shouldAlert || isPaid}
                         >
                             Pay
                         </Button>

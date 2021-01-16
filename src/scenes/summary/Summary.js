@@ -8,6 +8,7 @@ import {ErrorText} from "_atoms";
 import {useRequest} from "_hooks";
 import {paymentRequest} from "_requests";
 import {confirmAlert} from "_utils";
+import { Alert } from "react-native";
 
 
 const Summary = ({navigation, route: {params}}) => {
@@ -71,7 +72,13 @@ const Summary = ({navigation, route: {params}}) => {
                     payment_method: summaryData.payment_method,
                 })
                     .then(() => {
-                        navigation.navigate("Home");
+                        Alert.alert(
+                            "Done",
+                            "Checked out successfully!",
+                            [{text: "Home", onPress: () => navigation.navigate("Home")}],
+                            {cancelable: true}
+                        );
+                        // navigation.navigate("Home");
                     })
                     .catch((e) => {
                         alert(e);

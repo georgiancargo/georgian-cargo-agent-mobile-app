@@ -119,7 +119,7 @@ const DeliveredItemProcessing = ({
         }
     };
     const remove = (i) => {
-        if (releaseCodes.length > 1) {
+        if (releaseCodes.length >= 1) {
             const newRelease = releaseCodes.slice();
             newRelease.splice(i, 1);
             // setSize(size + 1);
@@ -208,6 +208,7 @@ const DeliveredItemProcessing = ({
                     barCodes={releaseCodes}
                     remove={remove}
                     edit={edit}
+                    releaseList={true}
                 />
             </View>
             <Button onPress={preReleaseCheck} loading={requesting}>
