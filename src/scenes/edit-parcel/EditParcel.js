@@ -206,10 +206,12 @@ const EditParcel = ({
             });
     };
     const confirmUpload = () => {
-        confirmAlert({
-            paragraph: "Are you sure you want to upload this invoice?",
-            onConfirm: uploadInvoice,
-        });
+        if (image)
+            confirmAlert({
+                paragraph: "Are you sure you want to upload this invoice?",
+                onConfirm: uploadInvoice,
+            });
+        else alert("Please Choose an invoice");
     };
     return (
         <View style={{flex:1, backgroundColor:"white", padding:10}}>
