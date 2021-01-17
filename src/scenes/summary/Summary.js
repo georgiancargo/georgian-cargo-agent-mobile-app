@@ -131,7 +131,7 @@ const Summary = ({navigation, route: {params}}) => {
                     />
                     <PaymentDropdown
                         // list={payment_methods}
-                        dummyBank={true}
+                        link={true}
                         name="payment_method"
                         onSelect={onChange}
                         selectedValue={summaryData.payment_method}
