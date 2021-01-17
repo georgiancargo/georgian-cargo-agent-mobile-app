@@ -122,11 +122,12 @@ const Summary = ({navigation, route: {params}}) => {
     };
     return (
         <>
-            <View style={{flex: 1, backgroundColor: "white", padding: 15, paddingBottom: 0}}>
+            <View style={{flex: 1, backgroundColor: "white", padding: 15}}>
                 <SummaryList parcels={parcels} />
                 <View style={{marginBottom: 20}}>
                     <Text style={{fontSize: 25}}>Sum is: <Text style={{fontWeight: 'bold'}}>{isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text></Text>
                 </View>
+                <ErrorText error={errors} />
                 <View>
                     <InputWithError
                         name="coupon_code"
@@ -142,7 +143,6 @@ const Summary = ({navigation, route: {params}}) => {
                         selectedValue={summaryData.payment_method}
                         placeholder="Payment method"
                     />
-                    <ErrorText error={errors} />
                     {/* <Divider style={{marginBottom: 10}} /> */}
                 </View>
             </View>
