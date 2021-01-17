@@ -69,7 +69,7 @@ const ParcelInfoModal = ({
         "freight_price_code",
         "delivery_price_code",
         "invoice_path",
-        "discount",
+        "discount_amount",
         "item_price_currency"
     ];
     const userLabels = [

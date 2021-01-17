@@ -66,7 +66,7 @@ const EditParcel = ({
         "delivery_price",
         "freight_price",
         "currency_code",
-        "discount",
+        "discount_amount",
         "item_price",
         "item_currency_code",
     ];
