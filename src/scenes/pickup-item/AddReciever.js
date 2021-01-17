@@ -268,11 +268,11 @@ const AddReciever = ({navigation, route}) => {
                             </View>
                             <View style={{flex: 1, marginLeft: 3}}>
                                 <InputWithError
-                                    error={parcelErrors.currency_code}
-                                    name="currency_code"
+                                    error={parcelErrors.item_currency_code}
+                                    name="item_currency_code"
                                     placeholder="Currency"
                                     onChangeText={onChangeParcel}
-                                    value={parcel.currency_code}
+                                    value={parcel.item_currency_code}
                                 />
                             </View>
                         </View>
