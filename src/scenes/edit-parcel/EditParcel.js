@@ -180,7 +180,7 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Payment success",
-                    [{text: "OK", onPress: () => {}}],
+                    [{text: "OK", onPress: () => {}}, {text: "back", onPress: () => navigation.goBack()}],
                     {cancelable: true}
                 );
             })
@@ -197,7 +197,7 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Upload success",
-                    [{text: "OK", onPress: () => {}}],
+                    [{text: "OK", onPress: () => {}}, {text: "back", onPress: () => navigation.goBack()}],
                     {cancelable: true}
                 );
             })
