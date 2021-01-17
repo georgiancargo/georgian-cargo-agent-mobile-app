@@ -45,12 +45,19 @@ const AddReciever = ({navigation, route}) => {
         setExtra({...extra, [name]: value});
     }
     const onAdd = () => {
-        const newExtra = parcel.extra_charges
-            ? parcel.extra_charges.slice()
-            : [];
-        newExtra.push(extra);
-        setExtra({note: "", amount: ""});
-        setParcel({...parcel, extra_charges: newExtra});
+        if (
+            extra &&
+            extra.amount !== 0 &&
+            extra.amount.toString() !== "" &&
+            extra.note !== ""
+        ) {
+            const newExtra = parcel.extra_charges
+                ? parcel.extra_charges.slice()
+                : [];
+            newExtra.push(extra);
+            setExtra({note: "", amount: ""});
+            setParcel({...parcel, extra_charges: newExtra});
+        }
     };
     const removeExtraCharge = (index) => {
         const newExtra = parcel.extra_charges.slice();
