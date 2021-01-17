@@ -20,17 +20,8 @@ const SummaryList = ({parcels}) => {
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
-                <View style={[s.tableHeadCol, s.flex6]}>
-                    <SummaryListItem isParcel parcel={parcel} />
-                </View>
-                <View
-                    style={[
-                        s.tableHeadCol,
-                        s.flex2,
-                        {justifyContent: "center"},
-                    ]}
-                >
-                    <SummaryListItem price={totalPrice} />
+                <View style={[s.tableHeadCol, s.flex12]}>
+                    <SummaryListItem parcel={parcel} price={totalPrice} />
                 </View>
             </View>
         );
@@ -56,11 +47,8 @@ const Header = () => {
             <View style={[s.tableHeadCol]}>
                 <Text style={[s.text]}>#</Text>
             </View>
-            <View style={[s.tableHeadCol, s.flex6]}>
+            <View style={[s.tableHeadCol, s.flex12]}>
                 <Text style={[s.text]}>Parcel</Text>
-            </View>
-            <View style={[s.tableHeadCol, s.flex2]}>
-                <Text style={[s.text]}>Price</Text>
             </View>
         </View>
     );

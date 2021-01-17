@@ -6,63 +6,6 @@ import {TouchableOpacity} from "react-native-gesture-handler";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
-
-const SummaryListItem = ({price, parcel = {}, isParcel}) => {
-    const parcelKeys = [
-        "tracking_number",
-        "weight",
-        "source_country_code",
-        "destination_country_code",
-        "description",
-        "notes",
-        "extra_charges",
-    ];
-    const parcelLabels = [
-        "Tracking number",
-        "weight",
-        "source country",
-        "dest. country",
-        "description",
-        "notes",
-        "extra charges",
-    ];
-    return (
-        <>
-            <View style={[s.flexRow, s.flexWrap]}>
-                {isParcel ? (
-                    <View style={styles.side}>
-                        <Text style={[s.text, {fontWeight: "bold"}]}>
-                            Tracking number: {parcel.tracking_number}
-                        </Text>
-                        <Text style={[s.text]}>weight: {parcel.weight}</Text>
-                        <Text style={[s.text]}>
-                            source country: {parcel.sender.country_code}
-                        </Text>
-                        <Text style={[s.text]}>
-                            dest. country: {parcel.receiver.country_code}
-                        </Text>
-                        <Text style={[s.text]}>
-                            description: {parcel.description}
-                        </Text>
-                        <Text style={[s.text]}>notes: {parcel.notes}</Text>
-                        <Text style={[s.text]}>extra charges: </Text>
-                        {parcel.extra_charges &&
-                            parcel.extra_charges.map((c, i) => (
-                                <Text
-                                    key={i + " " + parcel.tracking_number}
-                                >{`    ${c.note}: ${c.amount}`}</Text>
-                            ))}
-                    </View>
-                ) : (
-                    <View>
-                        <Text>{price ? price : 0}</Text>
-                    </View>
-                )}
-            </View>
-        </>
-    );
-};
-
 const styles = StyleSheet.create({
     side: {
         flex: 1,
@@ -77,5 +20,56 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
     },
+    container: {
+        flexWrap: "wrap",
+        flex: 1,
+        flexDirection: "row",
+    },
+    col1: {
+        flex: 1.5,
+    },
+    col2: {
+        flex: 1,
+    },
 });
+const SummaryListItem = ({price, parcel = {}}) => {
+    return (
+        <>
+            <View style={styles.container}>
+                <View style={styles.col1}>
+                    <Text style={[s.text, {fontWeight: "bold"}]}>
+                        Tracking number: {parcel.tracking_number}
+                    </Text>
+                    <Text style={[s.text]}>weight: {parcel.weight}</Text>
+                    <Text style={[s.text]}>
+                        description: {parcel.description}
+                    </Text>
+                    <Text style={[s.text]}>notes: {parcel.notes}</Text>
+                </View>
+                <View style={styles.col2}>
+                    <Text style={[s.text]}>
+                        From: {parcel.sender.country_code}
+                    </Text>
+                    <Text style={[s.text]}>
+                        To: {parcel.receiver.country_code}
+                    </Text>
+                    <Text>Price: {price ? price : 0}</Text>
+                    {parcel.extra_charges ? (
+                        <>
+                            <Text style={[s.text]}>extra charges: </Text>
+                            {parcel.extra_charges.map((c, i) => (
+                                <Text
+                                    key={i + parcel.tracking_number}
+                                >{`\t\t${c.note}: ${c.amount}`}</Text>
+                            ))}
+                        </>
+                    ) : (
+                        <Text style={[s.text]}>No Extra Charges</Text>
+                    )}
+                </View>
+            </View>
+        </>
+    );
+};
+
 export default SummaryListItem;
