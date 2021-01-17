@@ -45,6 +45,16 @@ const ParcelList = ({parcels = [], navigation, refresh}) => {
         };
         let pickup_date = new Date(created_at);
         pickup_date = pickup_date.toLocaleString();
+        let item_price_currency = "N/A";
+        let freight_price_code = "N/A";
+        let delivery_price_code = "N/A";
+        
+        if (item.item_price && item.item_currency_code)
+            item_price_currency = item.item_price + " " + item.item_currency_code;
+        if (invoice.freight_price && invoice.currency_code)
+            freight_price_code = invoice.freight_price + " " + invoice.currency_code;
+        if (invoice.delivery_price && invoice.currency_code)
+            delivery_price_code = invoice.delivery_price + " " + invoice.currency_code;
         setParcel({
             ...p,
             created_at: pickup_date,
@@ -55,6 +65,9 @@ const ParcelList = ({parcels = [], navigation, refresh}) => {
             receiver: {...receiver, ...receiver_address, address: {}},
             ...rest,
             ...invoice,
+            item_price_currency,
+            freight_price_code,
+            delivery_price_code,
         });
         setModalVisible(true);
     };
