@@ -336,16 +336,16 @@ const EditParcel = ({
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
-                <UploadInvoice image={image} setImage={setImage} onDone={confirmUpload}/>
+                <UploadInvoice image={image} setImage={setImage} onDone={confirmUpload} loading={uploading}/>
                 <Button
                     onPress={() => edit(true)}
-                    disabled={saving || paying || !privileges.sender}
+                    disabled={saving || paying || !privileges.sender || uploading}
                 >
                     Edit Sender
                 </Button>
                 <Button
                     onPress={() => edit(false)}
-                    disabled={saving || paying || !privileges.receiver}
+                    disabled={saving || paying || !privileges.receiver || uploading}
                     style={{marginVertical: 5}}
                 >
                     Edit Receiver
@@ -353,7 +353,7 @@ const EditParcel = ({
                 <Button
                     onPress={save}
                     loading={saving || isValidating}
-                    disabled={hasErrors || !shouldAlert}
+                    disabled={hasErrors || !shouldAlert || uploading}
                 >
                     Save
                 </Button>

@@ -30,7 +30,12 @@ const style = StyleSheet.create({
     },
 });
 
-export default function UploadInvoice({image=null, setImage=()=>{}, onDone=()=>{}}) {
+export default function UploadInvoice({
+    image = null,
+    setImage = () => {},
+    onDone = () => {},
+    loading = false,
+}) {
     const [modalVisible, setModalVisible] = useState(false);
 
     const showModal = () => setModalVisible(true);
@@ -73,7 +78,6 @@ export default function UploadInvoice({image=null, setImage=()=>{}, onDone=()=>{
             quality: 1,
         });
 
-
         if (!result.cancelled) {
             setImage(result.uri);
         }
@@ -99,7 +103,9 @@ export default function UploadInvoice({image=null, setImage=()=>{}, onDone=()=>{
                 </View>
             </ModalContainer>
             <View style={style.col}>
-                <Button onPress={showModal}> Upload Invoice </Button>
+                <Button onPress={showModal} loading={loading}>
+                    Upload Invoice
+                </Button>
             </View>
         </View>
     );
