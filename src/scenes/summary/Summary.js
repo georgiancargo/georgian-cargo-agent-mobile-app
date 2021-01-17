@@ -2,14 +2,13 @@ import React, {useState, useEffect} from "react";
 import {Text, View} from "react-native";
 import {InputWithError, Button} from "_atoms";
 import {SummaryList, PaymentDropdown} from "_molecules";
-import {Divider} from "react-native-paper";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {useRequest} from "_hooks";
 import {paymentRequest} from "_requests";
 import {confirmAlert} from "_utils";
 import { Alert } from "react-native";
-
+import * as SMS from 'expo-sms';
 
 const Summary = ({navigation, route: {params}}) => {
     const {parcels = [], setAlert = () => {}} = params;
@@ -93,9 +92,28 @@ const Summary = ({navigation, route: {params}}) => {
         });
         
     };
+    const sendSMS = async () => {
+        const isAvailable = await SMS.isAvailableAsync();
+        if (isAvailable) {
+            const number = parcels[0].sender.phone;
+            let msg = "";
+            // Tracking number, tracking link, weight and price
+            parcels.forEach((parcel, index) => {
+                const p = parcel.price;
+                const n = parcel.tracking_number;
+                const l = "//google/com";
+                const w = parcel.weight;
+                const i = index + 1;
+                msg += `${i})\tTracking number: ${n}\n\tTracking link: ${l}\n\tWeight: ${w}\n\tPrice: ${p}\n`;
+            });
+            const {result} = await SMS.sendSMSAsync(number, msg, {});
+        } else {
+            alert("Failed to open SMS app");
+        }
+    };
     return (
         <>
-            <View style={{flex: 1, backgroundColor: "white", padding: 15}}>
+            <View style={{flex: 1, backgroundColor: "white", padding: 15, paddingBottom: 0}}>
                 <SummaryList parcels={parcels} />
                 <View style={{marginBottom: 20}}>
                     <Text style={{fontSize: 25}}>Sum is: <Text style={{fontWeight: 'bold'}}>{isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text></Text>
@@ -116,8 +134,13 @@ const Summary = ({navigation, route: {params}}) => {
                         placeholder="Payment method"
                     />
                     <ErrorText error={errors} />
-                    <Divider style={{marginBottom: 10}} />
+                    {/* <Divider style={{marginBottom: 10}} /> */}
                 </View>
+            </View>
+            <View style={{marginBottom: 10}}>
+                <Button onPress={sendSMS} disabled={requesting || paying}>
+                    Send Summary SMS
+                </Button>
             </View>
             <View style={{marginBottom: 10}}>
                 <Button onPress={confirmCheckout} loading={requesting || paying}>
