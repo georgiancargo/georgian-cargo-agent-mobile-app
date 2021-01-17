@@ -90,7 +90,7 @@ const EditParcel = ({
         extra_charges: editPrices,
         freight_price: editPrices,
         delivery_price: editPrices,
-        discount: editPrices,
+        discount_amount: editPrices,
     };
     const parcelType = [
         {label: "Freight", value: "FREIGHT"},
