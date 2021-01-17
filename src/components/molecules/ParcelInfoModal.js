@@ -9,7 +9,7 @@ import {
     Alert,
 } from "react-native";
 import {ModalContainer, Button} from "_atoms";
-import {Divider} from "react-native-paper";
+import {Divider, ActivityIndicator} from "react-native-paper";
 import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
 import {releaseParcelRequest} from "_requests";
@@ -25,7 +25,7 @@ const ParcelInfoModal = ({
     const {auth} = useContext(AuthContext);
     const [payment, setPayment] = useState({});
     const [request, releasing] = useRequest(releaseParcelRequest);
-    const [paymentInfoRequest] = useRequest(parcelPaymentInfoRequest);
+    const [paymentInfoRequest, gettinInfo] = useRequest(parcelPaymentInfoRequest);
 
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
     const canRelease = auth.agent.privileges.includes(
@@ -100,7 +100,9 @@ const ParcelInfoModal = ({
                 payment_date = payment_date.toLocaleString();
                 setPayment({...payment, created_at: payment_date})
             })
-            .catch((e) => {});
+            .catch((e) => {
+                setPayment({});
+            });
     }, [parcel.tracking_number]);
 
     const edit = () => {
@@ -131,8 +133,15 @@ const ParcelInfoModal = ({
         return paymentKeys.map((key, i) => (
             <View style={styles.row} key={key}>
                 <Text style={styles.dd}>{paymentLabels[i]}</Text>
+
                 <Text style={styles.dt}>
-                    {payment[key] ? payment[key] : "Not Paid yet"}
+                    {gettinInfo ? (
+                        <ActivityIndicator animating />
+                    ) : payment[key] ? (
+                        payment[key]
+                    ) : (
+                        "Not Paid yet"
+                    )}
                 </Text>
             </View>
         ));
