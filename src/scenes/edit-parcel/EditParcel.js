@@ -145,13 +145,20 @@ const EditParcel = ({
         setAlert(true);
     }
     const onAdd = () => {
-        const newExtra = parcel.extra_charges
-            ? parcel.extra_charges.slice()
-            : [];
-        newExtra.push(extra);
-        setExtra({note: "", amount: ""});
-        setParcel({...parcel, extra_charges: newExtra});
-        setAlert(true);
+        if (
+            extra &&
+            extra.amount !== 0 &&
+            extra.amount.toString() !== "" &&
+            extra.note !== ""
+        ) {
+            const newExtra = parcel.extra_charges
+                ? parcel.extra_charges.slice()
+                : [];
+            newExtra.push(extra);
+            setExtra({note: "", amount: ""});
+            setParcel({...parcel, extra_charges: newExtra});
+            setAlert(true);
+        }
     };
     const removeExtraCharge = (index) => {
         const newExtra = parcel.extra_charges.slice();
