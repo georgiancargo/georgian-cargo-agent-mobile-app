@@ -14,6 +14,18 @@ const styles = StyleSheet.create({
         backgroundColor: "#f5f5f5",
         marginBottom: 3,
     },
+    disabled:{
+        minHeight: 46,
+        borderWidth: 1,
+        borderColor: "grey",
+        paddingHorizontal: 12,
+        fontSize: 16,
+        borderRadius: 10,
+        zIndex: 1,
+        color: "#000000",
+        backgroundColor: "#f5f5f5",
+        marginBottom: 3,
+    },
     errorText: {
         fontSize: 12,
         color: "red",
@@ -33,6 +45,7 @@ const InputWithError = ({
     onChangeText,
     isNumber,
     isInt,
+    disabled,
     ...rest
 }) => {
     const onChangeWrapper = (text) => {
@@ -72,6 +85,7 @@ const InputWithError = ({
                 autoCapitalize
                 autoCorrect={false}
                 autoCapitalize="none"
+                editable={!disabled}
                 {...rest}
             />
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
