@@ -1,4 +1,4 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {
     SafeAreaView,
     StyleSheet,
@@ -14,6 +14,7 @@ import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
 import {releaseParcelRequest} from "_requests";
 import { confirmAlert } from "_utils";
+import { parcelPaymentInfoRequest } from "_requests";
 
 const ParcelInfoModal = ({
     navigation,
@@ -22,7 +23,9 @@ const ParcelInfoModal = ({
     modalVisible,
 }) => {
     const {auth} = useContext(AuthContext);
+    const [payment, setPayment] = useState({});
     const [request, releasing] = useRequest(releaseParcelRequest);
+    const [paymentInfoRequest] = useRequest(parcelPaymentInfoRequest);
 
     const canEdit = auth.agent.privileges.includes("AMEND_CARGO_INFORMATION");
     const canRelease = auth.agent.privileges.includes(
@@ -84,9 +87,21 @@ const ParcelInfoModal = ({
         "address_line_2",
         "postal_code",
     ];
-
+    const paymentLabels = ["Payment time", "Payment method"];
+    const paymentKeys = ["created_at", "payment_method"];
     const receiver = parcel.receiver;
     const sender = parcel.sender;
+    useEffect(() => {
+        paymentInfoRequest({
+            tracking_number: parcel.tracking_number,
+        })
+            .then(({data: {payment}}) => {
+                let payment_date = new Date(payment.created_at);
+                payment_date = payment_date.toLocaleString();
+                setPayment({...payment, created_at: payment_date})
+            })
+            .catch((e) => {});
+    }, [parcel.tracking_number]);
 
     const edit = () => {
         hideModal();
@@ -112,7 +127,16 @@ const ParcelInfoModal = ({
             })
             .finally(() => {});
     };
-
+    const Payment = () => {
+        return paymentKeys.map((key, i) => (
+            <View style={styles.row} key={key}>
+                <Text style={styles.dd}>{paymentLabels[i]}</Text>
+                <Text style={styles.dt}>
+                    {payment[key] ? payment[key] : "Not Paid yet"}
+                </Text>
+            </View>
+        ));
+    };
     const Parcel = () => {
         const link = (url) => Linking.openURL(url);
 
@@ -171,6 +195,8 @@ const ParcelInfoModal = ({
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
                     <Parcel />
+                    <Divider style={{marginVertical: 3}} />
+                    <Payment />
                     <Divider style={{marginVertical: 3}} />
                     <User user={sender} role="Sender" />
                     <Divider style={{marginVertical: 3}} />
