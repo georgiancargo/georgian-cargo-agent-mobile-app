@@ -140,11 +140,14 @@ const ParcelInfoModal = ({
     const Parcel = () => {
         const link = (url) => Linking.openURL(url);
 
-        const Link = ({url}) => (
-            <Text style={styles.link} onPress={() => link(url)}>
-                Link
-            </Text>
-        );
+        const Link = ({url}) =>
+            url ? (
+                <Text style={styles.link} onPress={() => link(url)}>
+                    Link
+                </Text>
+            ) : (
+                <Text style={styles.dt}>N/A</Text>
+            );
         return keys.map((key, i) => (
             <View style={styles.row} key={key}>
                 <Text style={styles.dd}>{labels[i]}</Text>
