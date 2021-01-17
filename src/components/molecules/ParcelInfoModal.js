@@ -13,6 +13,7 @@ import {Divider} from "react-native-paper";
 import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
 import {releaseParcelRequest} from "_requests";
+import { confirmAlert } from "_utils";
 
 const ParcelInfoModal = ({
     navigation,
@@ -147,6 +148,12 @@ const ParcelInfoModal = ({
             );
         });
     };
+    const confirmRelease = () => {
+        confirmAlert({
+            paragraph: "Are you sure you want to release this parcel?",
+            onConfirm: release,
+        });
+    };
     return (
         <ModalContainer modalVisible={modalVisible}>
             <SafeAreaView style={{flex: 1}}>
@@ -168,7 +175,7 @@ const ParcelInfoModal = ({
                     </Button>
                     <Button
                         style={{flex: 4, marginHorizontal: 2}}
-                        onPress={release}
+                        onPress={confirmRelease}
                         loading={releasing}
                         disabled={
                             !(payed && notReleased && canRelease) || releasing
