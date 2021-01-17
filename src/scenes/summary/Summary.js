@@ -48,13 +48,16 @@ const Summary = ({navigation, route: {params}}) => {
             const payload = {
                 ...summaryData,
                 ...data,
+                tracking_number:"123123130",
                 source_country_code: data.sender.country_code,
                 destination_country_code: data.receiver.country_code,
             };
             try {
                 const res = await pickupRequest(payload);
-                const invoice_id = res.data.cargo.invoice.invoice_id;
+                const invoice_id = await res.data.cargo.invoice.invoice_id;
                 const invoice = parcel.invoice;
+                alert(invoice_id);
+                alert("invoice_id");
                 invoice_ids.push(invoice_id);
                 await uploadInvoice({invoice_id, invoice});
                 setErrors("");
@@ -105,10 +108,10 @@ const Summary = ({navigation, route: {params}}) => {
             parcels.forEach((parcel, index) => {
                 const p = parcel.price;
                 const n = parcel.tracking_number;
-                const l = "//google/com";
+                const l = `http://georgiancargo.co.uk/home/${n}`;
                 const w = parcel.weight;
                 const i = index + 1;
-                msg += `${i})\tTracking number: ${n}\n\tTracking link: ${l}\n\tWeight: ${w}\n\tPrice: ${p}\n`;
+                msg += `${i})\tTracking number: ${n}\n\tTracking link: ${l}\n\tWeight: ${w} KG\n\tPrice: ${p}\n`;
             });
             const {result} = await SMS.sendSMSAsync(number, msg, {});
         } else {
