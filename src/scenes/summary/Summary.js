@@ -56,7 +56,7 @@ const Summary = ({navigation, route: {params}}) => {
                 const invoice_id = await res.data.cargo.invoice.invoice_id;
                 const invoice = payload.invoice;
                 invoice_ids.push(invoice_id);
-                await uploadInvoice({invoice_id, invoice});
+                if(invoice) await uploadInvoice({invoice_id, invoice});
                 setErrors("");
             } catch (error) {
                 hasErrors = true;
