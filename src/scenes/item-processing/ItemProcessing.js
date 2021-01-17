@@ -124,7 +124,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
                     "Done",
                     "Processed successfully!",
                     [{text: "Home", onPress: () => navigation.navigate("Home")}],
-                    {cancelable: true}
+                    // {cancelable: true}
                 );
             })
             .catch((e) => {

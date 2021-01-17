@@ -117,7 +117,7 @@ const ParcelInfoModal = ({
                     "Done",
                     "Released successfully!",
                     [{text: "OK", onPress: hideModal}],
-                    {cancelable: true}
+                    // {cancelable: true}
                 );
             })
             .catch((e) => {
@@ -125,7 +125,7 @@ const ParcelInfoModal = ({
                     "Error",
                     `${e}`,
                     [{text: "OK", onPress: () => {}}],
-                    {cancelable: true}
+                    // {cancelable: true}
                 );
             })
             .finally(refresh);

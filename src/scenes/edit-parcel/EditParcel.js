@@ -126,7 +126,7 @@ const EditParcel = ({
                     "Done",
                     "Saved successfully!",
                     [{text: "Home", onPress: () => navigation.goBack()}],
-                    {cancelable: true}
+                    // {cancelable: true}
                 );
             })
             .catch((e) => {
@@ -180,8 +180,8 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Payment success",
-                    [{text: "OK", onPress: () => {}}, {text: "back", onPress: () => navigation.goBack()}],
-                    {cancelable: true}
+                    [{text: "back", onPress: () => navigation.goBack()}],
+                    // {cancelable: true}
                 );
             })
             .catch((e) => {
@@ -197,8 +197,8 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Upload success",
-                    [{text: "OK", onPress: () => {}}, {text: "back", onPress: () => navigation.goBack()}],
-                    {cancelable: true}
+                    [{text: "back", onPress: () => navigation.goBack()}],
+                    // {cancelable: true}
                 );
             })
             .catch((e) => {

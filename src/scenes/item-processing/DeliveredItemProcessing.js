@@ -74,12 +74,8 @@ const DeliveredItemProcessing = ({
             Alert.alert(
                 "Success",
                 `Tracking numbers released are: ${tracking_numbers}`,
-                [{
-                    text: "OK", onPress: () => {
-                        navigation.navigate("Home");
-                    }
-                }],
-                {cancelable: true}
+                [{text: "OK", onPress: () => navigation.navigate("Home")}],
+                // {cancelable: true}
             );
         } catch (e) {
             setError(e.response.data.message);
@@ -99,7 +95,7 @@ const DeliveredItemProcessing = ({
                         [{text: "OK", onPress: () => {
                             navigation.navigate("Home");
                         }}],
-                        {cancelable: true}
+                        // {cancelable: true}
                     );
                 }
             } catch (e) {

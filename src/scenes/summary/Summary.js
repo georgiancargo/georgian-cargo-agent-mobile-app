@@ -84,7 +84,7 @@ const Summary = ({navigation, route: {params}}) => {
                             "Done",
                             "Checked out successfully!",
                             [{text: "Home", onPress: () => navigation.navigate("Home")}],
-                            {cancelable: true}
+                            // {cancelable: true}
                         );
                         // navigation.navigate("Home");
                     })
