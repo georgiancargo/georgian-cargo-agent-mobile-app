@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#f5f5f5",
         marginBottom: 3,
     },
-    disabled:{
+    disabled: {
         minHeight: 46,
         borderWidth: 1,
         borderColor: "grey",
@@ -22,7 +22,8 @@ const styles = StyleSheet.create({
         fontSize: 16,
         borderRadius: 10,
         zIndex: 1,
-        color: "#000000",
+        color: "rgba(0,0,0,0.26)",
+        borderColor: "rgba(0,0,0,0.26)",
         backgroundColor: "#f5f5f5",
         marginBottom: 3,
     },
@@ -34,6 +35,11 @@ const styles = StyleSheet.create({
     label: {
         fontSize: 12,
         color: "#616161",
+        marginLeft: 9,
+    },
+    disabledLabel: {
+        fontSize: 12,
+        color: "rgba(0,0,0,0.26)",
         marginLeft: 9,
     },
 });
@@ -68,15 +74,17 @@ const InputWithError = ({
             }
         }
     };
+    const inStyle = disabled? styles.disabled : styles.input;
+    const labelStyle = disabled? styles.disabledLabel : styles.label;
     return (
         <>
             {label || rest.placeholder ? (
-                <Text style={styles.label}>
+                <Text style={labelStyle}>
                     {label ? label : rest.placeholder}
                 </Text>
             ) : null}
             <TextInput
-                style={{...styles.input, ...style}}
+                style={{...inStyle, ...style}}
                 onChangeText={onChangeWrapper}
                 label={label ? label : rest.placeholder}
                 keyboardType={isNumber ? "numeric" : "default"}
