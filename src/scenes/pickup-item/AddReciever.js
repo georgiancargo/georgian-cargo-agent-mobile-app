@@ -93,7 +93,9 @@ const AddReciever = ({navigation, route}) => {
     useEffect(() => {
         setReceiver(newReceiver);
     }, [newReceiver]);
-
+    useEffect(() => {
+        setAlert(true);
+    }, [image]);
     useEffect(() => {
         setParcel(newParcel);
     }, [newParcel]);
@@ -257,7 +259,8 @@ const AddReciever = ({navigation, route}) => {
                                     name="weight"
                                     placeholder="Weight"
                                     onChangeText={onChangeParcel}
-                                    value={parcel.weight}
+                                    value={parcel.weight? parcel.weight.toString() : parcel.weight}
+                                    isNumber
                                 />
                             </View>
                             <View style={{flex: 1, marginHorizontal: 3}}>
