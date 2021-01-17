@@ -4,7 +4,7 @@ const parcelValidations = (data, field) => {
     return validate("AddReciever", () => {
         vest.only(field);
 
-        ["tracking_number", "price", "currency_code", "description"].forEach(
+        ["tracking_number", "item_price", "currency_code", "description"].forEach(
             (elem) => {
                 test(elem, "This field is required", () => {
                     enforce(

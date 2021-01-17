@@ -258,11 +258,11 @@ const AddReciever = ({navigation, route}) => {
                             </View>
                             <View style={{flex: 1, marginHorizontal: 3}}>
                                 <InputWithError
-                                    error={parcelErrors.price}
-                                    name="price"
+                                    error={parcelErrors.item_price}
+                                    name="item_price"
                                     placeholder="Price"
                                     onChangeText={onChangeParcel}
-                                    value={parcel.price? parcel.price.toString() : parcel.price}
+                                    value={parcel.item_price? parcel.item_price.toString() : parcel.item_price}
                                     isNumber
                                 />
                             </View>
