@@ -284,7 +284,6 @@ const EditParcel = ({
                         </Button>
                     </View>
                 </View>
-                <UploadInvoice image={image} setImage={setImage} onDone={confirmUpload}/>
                 <View style={{flexDirection: "row"}}>
                     <View style={{flex: 2}}>
                         <InputWithError
@@ -337,6 +336,7 @@ const EditParcel = ({
                     name="collection_option"
                     checkLabels={["Home", "Office"]}
                 />
+                <UploadInvoice image={image} setImage={setImage} onDone={confirmUpload}/>
                 <Button
                     onPress={() => edit(true)}
                     disabled={saving || paying || !privileges.sender}

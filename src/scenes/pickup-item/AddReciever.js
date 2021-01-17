@@ -298,10 +298,7 @@ const AddReciever = ({navigation, route}) => {
                             onChange={onChangeParcel}
                         />
                         <Divider/>
-                        <Divider style={{marginBottom: 10}}/>
-                        <UploadInvoice image={image} setImage={setImage}/>
-                        <Divider/>
-                        <Divider style={{marginBottom: 10}}/>
+                        <Divider style={{marginVertical: 10}}/>
                         <Text>Add new extra charge</Text>
                         <View style={{flexDirection: "row"}}>
                             <View style={{flex: 2}}>
@@ -365,6 +362,7 @@ const AddReciever = ({navigation, route}) => {
                     </View>
                 </View>
                 <View style={[s.formGroup, s.pb3]}>
+                    <UploadInvoice image={image} setImage={setImage}/>
                     <Button
                         onPress={onSave}
                         disabled={policyError}

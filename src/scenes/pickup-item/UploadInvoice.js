@@ -10,7 +10,7 @@ const style = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         flexDirection: "row",
-        marginBottom: 15,
+        marginBottom: 5,
     },
     button: {
         // flex: 1,
