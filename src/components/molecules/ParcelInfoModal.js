@@ -47,11 +47,11 @@ const ParcelInfoModal = ({
         "Description",
         "Pickup date",
         "Release code",
-        "Currency code",
         "Freight price",
         "Delivery price",
         "Invoice link",
         "Discount",
+        "Item price"
     ];
     const keys = [
         "tracking_number",
@@ -66,11 +66,11 @@ const ParcelInfoModal = ({
         "description",
         "created_at",
         "release_code",
-        "currency_code",
-        "freight_price",
-        "delivery_price",
+        "freight_price_code",
+        "delivery_price_code",
         "invoice_path",
         "discount",
+        "item_price_currency"
     ];
     const userLabels = [
         "Name",
