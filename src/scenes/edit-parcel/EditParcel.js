@@ -19,6 +19,8 @@ import { confirmAlert } from "_utils";
 import { Text } from "react-native";
 import { paymentRequest } from "_requests";
 import { Alert } from "react-native";
+import { UploadInvoice } from "_scenes/pickup-item";
+import { uploadInvoiceRequest } from "_requests";
 
 const EditParcel = ({
     navigation,
@@ -36,15 +38,20 @@ const EditParcel = ({
     const [extra, setExtra] = useState({note: "", amount: ""});
     const [payment, paying] = useRequest(paymentRequest);
     const isPaid = oldParcel.payment_status === "PAID";
+    const [image, setImage] = useState(null);
+    const [upload_invoice, uploading] = useRequest(uploadInvoiceRequest);
+
     const labels = [
         "Tracking number",
         "Weight",
         "Notes",
         "Description",
-        "Currency code",
-        "Freight price",
         "Delivery price",
+        "Freight price",
+        "Currency code",
         "Discount",
+        "Item Price",
+        "Currency code",
     ];
     const keys = [
         "tracking_number",
@@ -56,10 +63,12 @@ const EditParcel = ({
         // "parcel_type", //Dropdown
         "notes",
         "description",
-        "currency_code",
-        "freight_price",
         "delivery_price",
+        "freight_price",
+        "currency_code",
         "discount",
+        "item_price",
+        "item_currency_code",
     ];
     const editRoutes = auth.agent.privileges.includes("AMEND_CARGO_ROUTE");
     const editPrices = auth.agent.privileges.includes("AMEND_CARGO_PRICING");
@@ -172,7 +181,29 @@ const EditParcel = ({
                 alert(e);
             });
     };
-
+    const uploadInvoice = () => {
+        upload_invoice({
+            invoice_id: parcel.invoice_id,
+            invoice: image,
+        })
+            .then((r) => {
+                Alert.alert(
+                    "Done",
+                    "Upload success",
+                    [{text: "OK", onPress: () => {}}],
+                    {cancelable: true}
+                );
+            })
+            .catch((e) => {
+                alert(e);
+            });
+    };
+    const confirmUpload = () => {
+        confirmAlert({
+            paragraph: "Are you sure you want to upload this invoice?",
+            onConfirm: uploadInvoice,
+        });
+    };
     return (
         <View style={{flex:1, backgroundColor:"white", padding:10}}>
             <PreventGoingBack
@@ -244,7 +275,7 @@ const EditParcel = ({
                         </Button>
                     </View>
                 </View>
-
+                <UploadInvoice image={image} setImage={setImage} onDone={confirmUpload}/>
                 <View style={{flexDirection: "row"}}>
                     <View style={{flex: 2}}>
                         <InputWithError

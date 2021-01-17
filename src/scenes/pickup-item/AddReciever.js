@@ -13,6 +13,7 @@ import {Chip, Divider, ActivityIndicator} from "react-native-paper";
 import {PreventGoingBack} from "_atoms";
 import receiverValidations from "./receiverValidations";
 import parcelValidations from "./parcelValidations";
+import UploadInvoice from "./UploadInvoice";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s} = bootstrapStyleSheet;
@@ -38,6 +39,8 @@ const AddReciever = ({navigation, route}) => {
     const [shouldAlert, setAlert] = useState(false);
     const [price, setPrice] = useState({currency_code: "",freight_price: 0,delivery_price: 0});
     const [extra, setExtra] = useState({note: "", amount: ""});
+    const [image, setImage] = useState(null);
+
     const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
     }
@@ -163,6 +166,7 @@ const AddReciever = ({navigation, route}) => {
                                 ...parcel,
                                 receiver: receiver,
                                 price: _price,
+                                invoice: image
                             };
                             setParcels(newParcels);
                         }
@@ -285,6 +289,7 @@ const AddReciever = ({navigation, route}) => {
                         />
                         <Divider/>
                         <Divider style={{marginBottom: 10}}/>
+                        <UploadInvoice image={image} setImage={setImage}/>
                         <Divider/>
                         <Divider style={{marginBottom: 10}}/>
                         <Text>Add new extra charge</Text>

@@ -13,3 +13,4 @@ export {default as logout} from "./logout";
 export {default as paymentRequest} from "./paymentRequest";
 export {default as releaseParcelRequest} from "./releaseParcelRequest";
 export {default as getTrackingDuplicates} from "./getTrackingDuplicates";
+export {default as uploadInvoiceRequest} from "./uploadInvoiceRequest";

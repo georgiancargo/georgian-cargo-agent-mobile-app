@@ -5,7 +5,7 @@ import {SummaryList, PaymentDropdown} from "_molecules";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {useRequest} from "_hooks";
-import {paymentRequest} from "_requests";
+import {paymentRequest, uploadInvoiceRequest} from "_requests";
 import {confirmAlert} from "_utils";
 import { Alert } from "react-native";
 import * as SMS from 'expo-sms';
@@ -18,6 +18,7 @@ const Summary = ({navigation, route: {params}}) => {
     });
 
     const [pay, paying] = useRequest(paymentRequest);
+    const [uploadInvoice, uploading] = useRequest(uploadInvoiceRequest);
 
     const [summaryData, setSummary] = useState({
         coupon_code: "",
@@ -52,7 +53,10 @@ const Summary = ({navigation, route: {params}}) => {
             };
             try {
                 const res = await pickupRequest(payload);
-                invoice_ids.push(res.data.cargo.invoice.invoice_id);
+                const invoice_id = res.data.cargo.invoice.invoice_id;
+                const invoice = parcel.invoice;
+                invoice_ids.push(invoice_id);
+                await uploadInvoice({invoice_id, invoice});
                 setErrors("");
             } catch (error) {
                 hasErrors = true;
@@ -138,12 +142,12 @@ const Summary = ({navigation, route: {params}}) => {
                 </View>
             </View>
             <View style={{marginBottom: 10}}>
-                <Button onPress={sendSMS} disabled={requesting || paying}>
+                <Button onPress={sendSMS} disabled={requesting || paying || uploading}>
                     Send Summary SMS
                 </Button>
             </View>
             <View style={{marginBottom: 10}}>
-                <Button onPress={confirmCheckout} loading={requesting || paying}>
+                <Button onPress={confirmCheckout} loading={requesting || paying || uploading}>
                     Checkout
                 </Button>
             </View>

@@ -22,6 +22,7 @@ const PickupItemScreen = ({navigation}) => {
     
     const [globalSettings, setGlobal] = useState({
         parcel_type: "PARCEL",
+        customer_type: "INDIVIDUAL",
     });
 
     const labels = ["Sender phone", "Sender Email", "Sender addrees line 1", "Sender address line 2", "Sender address postal code"];
