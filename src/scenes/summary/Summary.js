@@ -48,16 +48,13 @@ const Summary = ({navigation, route: {params}}) => {
             const payload = {
                 ...summaryData,
                 ...data,
-                tracking_number:"123123130",
                 source_country_code: data.sender.country_code,
                 destination_country_code: data.receiver.country_code,
             };
             try {
                 const res = await pickupRequest(payload);
                 const invoice_id = await res.data.cargo.invoice.invoice_id;
-                const invoice = parcel.invoice;
-                alert(invoice_id);
-                alert("invoice_id");
+                const invoice = payload.invoice;
                 invoice_ids.push(invoice_id);
                 await uploadInvoice({invoice_id, invoice});
                 setErrors("");
