@@ -91,7 +91,17 @@ const EditParcel = ({
         freight_price: editPrices,
         delivery_price: editPrices,
         discount_amount: editPrices,
+        item_price: true,
+        item_currency_code: true,
     };
+    const numbers = {
+        weight: true,
+        freight_price: true,
+        delivery_price: true,
+        discount_amount: true,
+        item_price: true,
+    };
+
     const parcelType = [
         {label: "Freight", value: "FREIGHT"},
         {label: "Parcel", value: "PARCEL"},
@@ -125,7 +135,7 @@ const EditParcel = ({
                 Alert.alert(
                     "Done",
                     "Saved successfully!",
-                    [{text: "Home", onPress: () => navigation.goBack()}],
+                    [{text: "back", onPress: () => navigation.goBack()}],
                     // {cancelable: true}
                 );
             })
@@ -213,6 +223,12 @@ const EditParcel = ({
             });
         else alert("Please Choose an invoice");
     };
+    const confirmPayment = () => {
+        confirmAlert({
+            paragraph: "Are you sure you want to pay?",
+            onConfirm: pay,
+        });
+    };
     return (
         <View style={{flex:1, backgroundColor:"white", padding:10}}>
             <PreventGoingBack
@@ -224,7 +240,7 @@ const EditParcel = ({
             <ScrollView>
                 {keys.map((key, i) => {
                     const val = parcel[key];
-                    const isNumber = typeof val != "string";
+                    const isNumber = numbers[key];
                     return (
                         <InputWithError
                             // label={label}
@@ -276,7 +292,7 @@ const EditParcel = ({
                         <Text></Text>
                         <Button
                             style={{height: 43}}
-                            onPress={pay}
+                            onPress={confirmPayment}
                             loading={paying}
                             disabled={shouldAlert || isPaid}
                         >
