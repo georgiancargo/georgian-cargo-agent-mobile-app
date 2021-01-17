@@ -16,6 +16,12 @@ const parcelValidations = (data, field) => {
         test("tracking_number", "Must be longer than 3 characters", () => {
             enforce(data.tracking_number.toString()).longerThanOrEquals(4);
         });
+        test("currency_code", "Must be exactly 3 characters", () => {
+            enforce(data.currency_code.toString().length).equals(3);
+        });
+        test("currency_code", "Must be all capitalized characters", () => {
+            enforce(data.currency_code.toString()).matches(/^[A-Z]{3}$/g);
+        });
     });
 };
 
