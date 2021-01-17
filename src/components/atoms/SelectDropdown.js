@@ -26,6 +26,22 @@ const style = StyleSheet.create({
         color: "#616161",
         marginLeft: 9,
     },
+    disabled: {
+        minHeight: 46,
+        borderWidth: 1,
+        fontSize: 16,
+        borderRadius: 10,
+        zIndex: 1,
+        color: "rgba(0,0,0,0.26)",
+        borderColor: "rgba(0,0,0,0.26)",
+        backgroundColor: "#f5f5f5",
+        marginBottom: 3,
+    },
+    disabledLabel: {
+        fontSize: 12,
+        color: "rgba(0,0,0,0.26)",
+        marginLeft: 9,
+    },
 });
 const SelectDropdown = ({
     list = [],
@@ -44,7 +60,7 @@ const SelectDropdown = ({
     useEffect(() => {
         if (selectedValue && selectedValue !== "") {
             if (disabled) {
-                setViewStyle({...viewStyle, borderColor: colors.disabled});
+                setViewStyle(style.disabled);
                 setPickerStyle({...pickerStyle, color: colors.disabled});
             } else {
                 setPickerStyle({...pickerStyle, color: colors.primary});
@@ -61,7 +77,9 @@ const SelectDropdown = ({
     return (
         <>
             {label || placeholder ? (
-                <Text style={style.label}>{label ? label : placeholder}</Text>
+                <Text style={disabled ? style.disabledLabel : style.label}>
+                    {label ? label : placeholder}
+                </Text>
             ) : null}
             <View style={viewStyle}>
                 <Picker
