@@ -32,6 +32,11 @@ const Summary = ({navigation, route: {params}}) => {
         let s = 0;
         parcels.forEach((parcel) => {
             s += parcel.price;
+            if (parcel.extra_charges){
+                parcel.extra_charges.map(
+                    (extra) => (s += parseFloat(extra.amount))
+                );
+            }
         });
         setSum(s);
     }, [parcels]);
