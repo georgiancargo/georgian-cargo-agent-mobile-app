@@ -50,8 +50,8 @@ const EditParcel = ({
         "Freight price",
         "Currency code",
         "Discount",
-        "Item Price",
-        "Currency code",
+        "Item price",
+        "Item price Currency code",
     ];
     const keys = [
         "tracking_number",

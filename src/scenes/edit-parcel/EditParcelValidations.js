@@ -30,6 +30,12 @@ const EditParcelValidations = (data, field) => {
         test("item_currency_code", "Must be all capitalized characters", () => {
             enforce(data.item_currency_code.toString()).matches(/^[A-Z]{3}$/g);
         });
+        test("currency_code", "Must be exactly 3 characters", () => {
+            enforce(data.currency_code.toString().length).equals(3);
+        });
+        test("currency_code", "Must be all capitalized characters", () => {
+            enforce(data.currency_code.toString()).matches(/^[A-Z]{3}$/g);
+        });
     });
 };
 
