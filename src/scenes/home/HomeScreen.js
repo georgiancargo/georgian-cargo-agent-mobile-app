@@ -34,21 +34,19 @@ const Home = ({navigation}) => {
             })
             .catch(() => {});
     };
-    useEffect(
-        () =>
-            navigation.addListener("focus", () => {
-                request({
-                    paging_specification: {
-                        page_offset: 0,
-                        page_size: 30,
-                    },
-                })
-                    .then((r) => setParcels(r.data.cargos))
-                    .catch((e) => {});
-            }),
+    const refresh = () => {
+        request({
+            paging_specification: {
+                page_offset: 0,
+                page_size: 30,
+            },
+        })
+            .then((r) => setParcels(r.data.cargos))
+            .catch((e) => {});
+    };
+    
+    useEffect(() => navigation.addListener("focus", refresh), [navigation]);
 
-        [navigation]
-    );
     return (
         <View style={s.container}>
             <View style={s.buttons}>
@@ -80,7 +78,7 @@ const Home = ({navigation}) => {
                 {requesting ? (
                     <ActivityIndicator animating={true} />
                 ) : (
-                    <ParcelList parcels={parcels} navigation={navigation} />
+                    <ParcelList parcels={parcels} navigation={navigation} refresh={refresh} />
                 )}
             </View>
         </View>

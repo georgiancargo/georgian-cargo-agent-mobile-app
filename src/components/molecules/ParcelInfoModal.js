@@ -21,6 +21,7 @@ const ParcelInfoModal = ({
     hideModal = () => {},
     parcel,
     modalVisible,
+    refresh = () => {},
 }) => {
     const {auth} = useContext(AuthContext);
     const [payment, setPayment] = useState({});
@@ -115,7 +116,7 @@ const ParcelInfoModal = ({
                 Alert.alert(
                     "Done",
                     "Released successfully!",
-                    [{text: "Home", onPress: hideModal}],
+                    [{text: "OK", onPress: hideModal}],
                     {cancelable: true}
                 );
             })
@@ -127,7 +128,7 @@ const ParcelInfoModal = ({
                     {cancelable: true}
                 );
             })
-            .finally(() => {});
+            .finally(refresh);
     };
     const Payment = () => {
         return paymentKeys.map((key, i) => (

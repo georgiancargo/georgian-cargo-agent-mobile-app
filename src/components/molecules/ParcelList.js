@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const ParcelList = ({parcels = [], navigation}) => {
+const ParcelList = ({parcels = [], navigation, refresh}) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [parcel, setParcel] = useState({});
 
@@ -85,6 +85,7 @@ const ParcelList = ({parcels = [], navigation}) => {
                 hideModal={hideModal}
                 parcel={parcel}
                 modalVisible={modalVisible}
+                refresh={refresh}
             />
             <SafeAreaView style={styles.container}>
                 <VirtualizedList
