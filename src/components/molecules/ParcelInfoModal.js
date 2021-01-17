@@ -46,6 +46,7 @@ const ParcelInfoModal = ({
         "Currency code",
         "Freight price",
         "Delivery price",
+        "Invoice link",
         "Discount",
     ];
     const keys = [
@@ -64,6 +65,7 @@ const ParcelInfoModal = ({
         "currency_code",
         "freight_price",
         "delivery_price",
+        "invoice_path",
         "discount",
     ];
     const userLabels = [
@@ -90,7 +92,6 @@ const ParcelInfoModal = ({
         hideModal();
         navigation.navigate("Edit Parcel", {parcel: parcel});
     };
-
     const release = () => {
         request({tracking_number: parcel.tracking_number})
             .then(() => {
@@ -112,16 +113,27 @@ const ParcelInfoModal = ({
             .finally(() => {});
     };
 
-    const Parcel = () =>
-        keys.map((key, i) => (
+    const Parcel = () => {
+        const link = (url) => Linking.openURL(url);
+
+        const Link = ({url}) => (
+            <Text style={styles.link} onPress={() => link(url)}>
+                Link
+            </Text>
+        );
+        return keys.map((key, i) => (
             <View style={styles.row} key={key}>
                 <Text style={styles.dd}>{labels[i]}</Text>
-                <Text style={styles.dt}>
-                    {parcel[key] ? parcel[key] : "N/A"}
-                </Text>
+                {key !== "invoice_path" ? (
+                    <Text style={styles.dt}>
+                        {parcel[key] ? parcel[key] : "N/A"}
+                    </Text>
+                ) : (
+                    <Link url={parcel[key]} />
+                )}
             </View>
         ));
-
+    };
     const User = ({user, role}) => {
         if (!user) return null;
         const email = (mail) => Linking.openURL(`mailto:${mail}`);
