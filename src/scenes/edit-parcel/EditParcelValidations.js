@@ -18,11 +18,17 @@ const EditParcelValidations = (data, field) => {
             "freight_price",
             "delivery_price",
             "item_price",
-            "item_currency_code",    
+            "item_currency_code",
         ].forEach((elem) => {
             test(elem, "This field is required", () => {
                 enforce(data[elem].toString()).isNotEmpty();
             });
+        });
+        test("item_currency_code", "Must be exactly 3 characters", () => {
+            enforce(data.item_currency_code.toString().length).equals(3);
+        });
+        test("item_currency_code", "Must be all capitalized characters", () => {
+            enforce(data.item_currency_code.toString()).matches(/^[A-Z]{3}$/g);
         });
     });
 };

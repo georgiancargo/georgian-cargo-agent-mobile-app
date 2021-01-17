@@ -113,7 +113,6 @@ const EditParcel = ({
     };
     const saveParcel = () => {
         // alert(JSON.stringify(parcel))
-        setAlert(false);
         setValidating(true);
         validate(parcel)
             .then((r) => {
@@ -121,6 +120,7 @@ const EditParcel = ({
                 return request(parcel);
             })
             .then((r) => {
+                setAlert(false);
                 // alert("Saved Successfully");
                 Alert.alert(
                     "Done",
@@ -130,8 +130,8 @@ const EditParcel = ({
                 );
             })
             .catch((e) => {
-                // alert(e);
-                alert(e.response.data.data.errors);
+                alert(e);
+                // alert(e.response.data.data.errors);
             });
     };
     const save = ()=>{
