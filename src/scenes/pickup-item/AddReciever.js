@@ -115,7 +115,7 @@ const AddReciever = ({navigation, route}) => {
     ];
     const parcelLabels = [
         // "Tracking number",
-        "weight",
+        // "weight",
         // "source country code",
         // "destination country code",
         "description",
@@ -125,7 +125,7 @@ const AddReciever = ({navigation, route}) => {
     ];
     const parcelKeys = [
         // "tracking_number",
-        "weight",
+        // "weight",
         // "source_country_code",
         // "destination_country_code",
         "description",
@@ -227,7 +227,7 @@ const AddReciever = ({navigation, route}) => {
                     <Divider style={{marginBottom: 10}}/>
                     <View style={[s.formGroup]}>
                         <View style={{flexDirection: "row"}}>
-                            <View style={{flex: 3}}>
+                            <View style={{flex: 2, marginRight:5}}>
                                 <InputWithError
                                     error={parcelErrors.tracking_number}
                                     name="tracking_number"
@@ -236,19 +236,44 @@ const AddReciever = ({navigation, route}) => {
                                     value={parcel.tracking_number}
                                 />
                             </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    justifyContent: 'center',
-                                    padding: 3
-                                }}
-                            >
+                            <View style={{flex: 1}}>
+                                <Text></Text>
                                 <Button
                                     onPress={goToScanner}
                                     style={{}}
                                 >
                                     Scan
                                 </Button>
+                            </View>
+                        </View>
+                        <View style={{flexDirection: "row"}}>
+                            <View style={{flex: 2, marginRight:2}}>
+                                <InputWithError
+                                    error={parcelErrors.weight}
+                                    name="weight"
+                                    placeholder="Weight"
+                                    onChangeText={onChangeParcel}
+                                    value={parcel.weight}
+                                />
+                            </View>
+                            <View style={{flex: 1, marginHorizontal: 3}}>
+                                <InputWithError
+                                    error={parcelErrors.price}
+                                    name="price"
+                                    placeholder="Price"
+                                    onChangeText={onChangeParcel}
+                                    value={parcel.price? parcel.price.toString() : parcel.price}
+                                    isNumber
+                                />
+                            </View>
+                            <View style={{flex: 1, marginLeft: 3}}>
+                                <InputWithError
+                                    error={parcelErrors.currency_code}
+                                    name="currency_code"
+                                    placeholder="Currency"
+                                    onChangeText={onChangeParcel}
+                                    value={parcel.currency_code}
+                                />
                             </View>
                         </View>
                         <Form
@@ -281,14 +306,8 @@ const AddReciever = ({navigation, route}) => {
                                     isNumber
                                 />
                             </View>
-                            <View
-                                style={{
-                                    flex: 1,
-                                    paddingTop: 15,
-                                    paddingBottom: 5,
-                                    justifyContent: 'center'
-                                }}
-                            >
+                            <View style={{flex: 1}}>
+                                <Text></Text>
                                 <Button onPress={onAdd} style={{}}>
                                     Add
                                 </Button>

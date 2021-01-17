@@ -50,7 +50,7 @@ const PickupItemScreen = ({navigation}) => {
                 setParcels: setParcels,
                 // parcels: index ? {...parcels, [index]: temp} : temp,
                 parcels: parcels,
-                newParcel: {description: "Clothes"},
+                newParcel: {description: "Clothes", price: 75, currency_code:"EUR"},
                 newReceiver: {},
                 source_country_code: sender.country_code,
                 parcel_type: globalSettings.parcel_type,
