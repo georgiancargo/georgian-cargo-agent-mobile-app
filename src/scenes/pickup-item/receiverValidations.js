@@ -6,7 +6,7 @@ const receiverValidations = (data, field) => {
         vest.only(field);
         [
             "name",
-            "email",
+            // "email",
             "phone",
             "country_code",
             "address_line_1",
@@ -22,15 +22,15 @@ const receiverValidations = (data, field) => {
             });
         });
 
-        if(typeof data.email === "undefined"){
-            data.email = '';
-        }
-        const trimmedEmail = truncate(data.email.toString(), 15);
-        test("email", trimmedEmail + "is not valid email address", () => {
-            enforce(data.email.toString())
-                .isNotEmpty()
-                .matches(/[^@]+@[^.]+\..+/g);
-        });
+        // if(typeof data.email === "undefined"){
+        //     data.email = '';
+        // }
+        // const trimmedEmail = truncate(data.email.toString(), 15);
+        // test("email", trimmedEmail + "is not valid email address", () => {
+        //     enforce(data.email.toString())
+        //         .isNotEmpty()
+        //         .matches(/[^@]+@[^.]+\..+/g);
+        // });
     });
 };
 
