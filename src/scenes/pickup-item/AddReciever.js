@@ -175,6 +175,7 @@ const AddReciever = ({navigation, route}) => {
                                 ...parcel,
                                 receiver: receiver,
                                 price: _price,
+                                ...price,
                                 invoice: image
                             };
                             setParcels(newParcels);

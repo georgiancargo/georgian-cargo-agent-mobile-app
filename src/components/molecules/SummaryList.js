@@ -7,21 +7,24 @@ import {SummaryListItem} from "_atoms";
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
 
-const SummaryList = ({parcels}) => {
+const SummaryList = ({parcels, discounts}) => {
     const renderItem = ({item, index}) => {
         const {price, ...parcel} = item;
         let totalPrice = price;
+        let discount = 0;
         if (parcel.extra_charges)
             parcel.extra_charges.map(
                 (extra) => (totalPrice += parseFloat(extra.amount))
             );
+        if (discounts[index]) discount = discounts[index];
+
         return (
             <View style={[s.tableRow]}>
                 <View style={[s.tableHeadCol, {justifyContent: "center"}]}>
                     <Text style={[s.text]}>{index + 1}</Text>
                 </View>
                 <View style={[s.tableHeadCol, s.flex12]}>
-                    <SummaryListItem parcel={parcel} price={totalPrice} />
+                    <SummaryListItem parcel={parcel} price={totalPrice} discount={discount}/>
                 </View>
             </View>
         );

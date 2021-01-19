@@ -15,3 +15,4 @@ export {default as releaseParcelRequest} from "./releaseParcelRequest";
 export {default as getTrackingDuplicates} from "./getTrackingDuplicates";
 export {default as uploadInvoiceRequest} from "./uploadInvoiceRequest";
 export {default as parcelPaymentInfoRequest} from "./parcelPaymentInfoRequest";
+export {default as getDiscount} from "./getDiscount";

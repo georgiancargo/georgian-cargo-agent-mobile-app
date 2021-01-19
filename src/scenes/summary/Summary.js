@@ -5,7 +5,7 @@ import {SummaryList, PaymentDropdown} from "_molecules";
 import {useOfflineRequest} from "_hooks";
 import {ErrorText} from "_atoms";
 import {useRequest} from "_hooks";
-import {paymentRequest, uploadInvoiceRequest} from "_requests";
+import {paymentRequest, uploadInvoiceRequest, getDiscount} from "_requests";
 import {confirmAlert} from "_utils";
 import { Alert } from "react-native";
 import * as SMS from 'expo-sms';
@@ -19,6 +19,7 @@ const Summary = ({navigation, route: {params}}) => {
 
     const [pay, paying] = useRequest(paymentRequest);
     const [uploadInvoice, uploading] = useRequest(uploadInvoiceRequest);
+    const [apply, applying] = useRequest(getDiscount);
 
     const [summaryData, setSummary] = useState({
         coupon_code: "",
@@ -27,6 +28,8 @@ const Summary = ({navigation, route: {params}}) => {
     });
     const [sum, setSum] = useState(0);
     const [errors, setErrors] = useState([]);
+    const [discounts, setDiscounts] = useState([]);
+    const [total_discounts, setTotalDiscounts] = useState(0);
 
     useEffect(() => {
         let s = 0;
@@ -40,6 +43,17 @@ const Summary = ({navigation, route: {params}}) => {
         });
         setSum(s);
     }, [parcels]);
+    
+    useEffect(() => {
+        if(discounts.length){
+            let d = 0;
+            discounts.forEach((discount) => {
+                d += discount;
+            });
+            setSum(sum - d);
+            setTotalDiscounts(d);
+        }
+    }, [discounts]);
 
     const onChange = (name, value) => {
         setSummary({...summaryData, [name]: value});
@@ -101,6 +115,28 @@ const Summary = ({navigation, route: {params}}) => {
         });
         
     };
+    const applyCoupon = () => {
+        const prices = [];
+        parcels.forEach((parcel) => {
+            let freight_price = parcel.freight_price;
+            let delivery_price = parcel.delivery_price;
+            let extra_charges = parcel.extra_charges;
+            prices.push({freight_price, delivery_price, extra_charges});
+        });
+        apply({prices, coupon: summaryData.coupon_code})
+            .then((r) => {
+                // alert(JSON.stringify(r.data));
+                setDiscounts(r.data.discounts);
+            })
+            .catch((e) => {});
+    };
+    const confirmCoupon = () => {
+        confirmAlert({
+            paragraph: "Sure you want to apply this coupon?",
+            onConfirm: applyCoupon,
+        });
+        
+    };
     const sendSMS = async () => {
         const isAvailable = await SMS.isAvailableAsync();
         if (isAvailable) {
@@ -123,18 +159,27 @@ const Summary = ({navigation, route: {params}}) => {
     return (
         <>
             <View style={{flex: 1, backgroundColor: "white", padding: 15}}>
-                <SummaryList parcels={parcels} />
+                <SummaryList parcels={parcels} discounts={discounts}/>
                 <View style={{marginBottom: 20}}>
+                    <Text style={{fontSize: 20}}>Discount is: <Text style={{fontWeight: 'bold'}}>{isNaN(total_discounts) ? 'Cannot be calculated, please contact administrator' : total_discounts}</Text></Text>
                     <Text style={{fontSize: 25}}>Sum is: <Text style={{fontWeight: 'bold'}}>{isNaN(sum) ? 'Cannot be calculated, please contact administrator' : sum}</Text></Text>
                 </View>
                 <ErrorText error={errors} />
                 <View>
-                    <InputWithError
-                        name="coupon_code"
-                        placeholder="Coupon"
-                        onChangeText={onChange}
-                        value={summaryData.coupon_code}
-                    />
+                    <View style={{flexDirection: "row"}}>
+                        <View style={{flex: 3, marginRight:5}}>
+                            <InputWithError
+                                name="coupon_code"
+                                placeholder="Coupon"
+                                onChangeText={onChange}
+                                value={summaryData.coupon_code}
+                            />
+                        </View>
+                        <View style={{flex: 2}}>
+                            <Text></Text>
+                            <Button onPress={confirmCoupon} loading={applying} disabled={requesting || paying || uploading}>Apply</Button>
+                        </View>
+                    </View>
                     <PaymentDropdown
                         // list={payment_methods}
                         link={true}
@@ -145,16 +190,16 @@ const Summary = ({navigation, route: {params}}) => {
                     />
                     {/* <Divider style={{marginBottom: 10}} /> */}
                 </View>
-            </View>
-            <View style={{marginBottom: 10}}>
-                <Button onPress={sendSMS} disabled={requesting || paying || uploading}>
+            <View style={{marginTop: 10}}>
+                <Button onPress={sendSMS} disabled={requesting || paying || uploading || applying}>
                     Send Summary SMS
                 </Button>
             </View>
-            <View style={{marginBottom: 10}}>
-                <Button onPress={confirmCheckout} loading={requesting || paying || uploading}>
+            <View style={{marginTop: 10}}>
+                <Button onPress={confirmCheckout} loading={requesting || paying || uploading || applying}>
                     Checkout
                 </Button>
+            </View>
             </View>
         </>
     );

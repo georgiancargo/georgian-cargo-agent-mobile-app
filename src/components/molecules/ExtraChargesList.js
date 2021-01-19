@@ -1,18 +1,19 @@
 import React from "react";
-import {Text, FlatList} from "react-native";
+import {FlatList} from "react-native";
 import {Paragraph, Chip} from "react-native-paper";
 
 const ExtraChargesList = ({
     extra_charges = [],
     removeExtraCharge: rm = () => {},
     disabled = false,
+    style
 }) => {
     const renderItem = ({item, index}) => {
         return (
             <Chip
                 onClose={() => rm(index)}
                 mode="outlined"
-                style={{marginRight: 3}}
+                style={style ? style : {marginRight: 3}}
                 disabled={disabled}
             >
                 {`${item.note}: ${item.amount}`}

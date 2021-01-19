@@ -1,7 +1,7 @@
 import React from "react";
-import {Text, View, StyleSheet} from "react-native";
+import {Text, View, StyleSheet, FlatList} from "react-native";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
-import {TouchableOpacity} from "react-native-gesture-handler";
+import {Chip} from "react-native-paper";
 // import {GRAY_MEDIUM} from "_styles/colors";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
@@ -31,8 +31,41 @@ const styles = StyleSheet.create({
     col2: {
         flex: 1,
     },
+    discount: {
+        borderWidth: 1,
+        borderColor: "#f5f5f5",
+        color: "green",
+    },
+    chip:{
+        marginRight: 3,
+        paddingHorizontal:1,
+        borderWidth:1,
+        borderColor: "rgba(0,0,0,0.26)",
+        borderRadius: 5,
+        
+    }
 });
-const SummaryListItem = ({price, parcel = {}}) => {
+const List = ({extra_charges = []}) => {
+    const renderItem = ({item}) => {
+        return (
+            <View style={styles.chip}>
+                <Text>{`${item.note}: ${item.amount}`}</Text>
+            </View>
+        );
+    };
+    return extra_charges.length > 0 ? (
+        <FlatList
+            style={{marginTop: 1}}
+            data={extra_charges}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            horizontal
+        />
+    ) : (
+        <Text> No Extra Charges </Text>
+    );
+};
+const SummaryListItem = ({price, parcel = {}, discount}) => {
     return (
         <>
             <View style={styles.container}>
@@ -54,7 +87,9 @@ const SummaryListItem = ({price, parcel = {}}) => {
                         To: {parcel.receiver.country_code}
                     </Text>
                     <Text>Price: {price ? price : 0}</Text>
-                    {parcel.extra_charges ? (
+                    <Text>discount: {discount}</Text>
+
+                    {/* {parcel.extra_charges ? (
                         <>
                             <Text style={[s.text]}>extra charges: </Text>
                             {parcel.extra_charges.map((c, i) => (
@@ -65,8 +100,12 @@ const SummaryListItem = ({price, parcel = {}}) => {
                         </>
                     ) : (
                         <Text style={[s.text]}>No Extra Charges</Text>
-                    )}
+                    )} */}
                 </View>
+            </View>
+            <View style={{flexDirection: "row"}}>
+                <Text>Extra charges: </Text>
+                <List extra_charges={parcel.extra_charges}/>
             </View>
         </>
     );
