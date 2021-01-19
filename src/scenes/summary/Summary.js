@@ -45,12 +45,21 @@ const Summary = ({navigation, route: {params}}) => {
     }, [parcels]);
     
     useEffect(() => {
-        if(discounts.length){
+        if (discounts.length) {
+            let s = 0;
             let d = 0;
+            parcels.forEach((parcel) => {
+                s += parcel.price;
+                if (parcel.extra_charges) {
+                    parcel.extra_charges.map(
+                        (extra) => (s += parseFloat(extra.amount))
+                    );
+                }
+            });
             discounts.forEach((discount) => {
                 d += discount;
             });
-            setSum(sum - d);
+            setSum(s - d);
             setTotalDiscounts(d);
         }
     }, [discounts]);
