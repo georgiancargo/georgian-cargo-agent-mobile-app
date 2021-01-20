@@ -4,7 +4,8 @@ import {InputWithError, Button, PreventGoingBack} from "_atoms";
 import BootstrapStyleSheet from "react-native-bootstrap-styles";
 import {ScrollView} from "react-native";
 import {useValidation} from "_hooks";
-import EditUserValidations from "./EditUserValidations";
+import receiverValidations from "./receiverValidations";
+import senderValidations from "./senderValidations";
 
 const bootstrapStyleSheet = new BootstrapStyleSheet();
 const {s, c} = bootstrapStyleSheet;
@@ -18,13 +19,29 @@ const EditUser = ({
     const [user, setUser] = useState(oldUser);
     const [isValidating, setValidating] = useState(false);
     const [changed, setChanged] = useState(false);
-    const {errors, validate, hasErrors} = useValidation(EditUserValidations);
+    const {errors, validate, hasErrors} = useValidation(
+        type === "Sender" ? senderValidations : receiverValidations
+    );
 
     useEffect(() => {
         setUser(oldUser);
     }, [oldUser]);
-    const labels = ["name", "phone", "email", "addrees line 1", "address line 2", "address postal code"];
-    const keys = ["name", "phone", "email", "address_line_1", "address_line_2", "postal_code"];
+    const labels = [
+        "name",
+        "phone",
+        "email",
+        "addrees line 1",
+        "address line 2",
+        "address postal code",
+    ];
+    const keys = [
+        "name",
+        "phone",
+        "email",
+        "address_line_1",
+        "address_line_2",
+        "postal_code",
+    ];
     // "country_code",
 
     const onChange = (name, value) => {

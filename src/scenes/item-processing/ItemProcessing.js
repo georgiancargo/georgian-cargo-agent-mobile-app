@@ -119,7 +119,7 @@ const ItemProcessing = ({navigation, route: {params}}) => {
         hideDialog();
         request({tracking_numbers: barCodes, event: params.event})
             .then((r) => {
-                // alert("Done");
+                // alert(r.data);
                 Alert.alert(
                     "Done",
                     "Processed successfully!",

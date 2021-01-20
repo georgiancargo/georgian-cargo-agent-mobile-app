@@ -177,8 +177,15 @@ const ParcelInfoModal = ({
         const call = (number) => Linking.openURL(`sms:${number}`);
 
         return userKeys.map((key, i) => {
-            const data = user[key] ? user[key] : "N/A";
+            const data = user[key];
             const label = `${role} ${userLabels[i]}`;
+            if (!data)
+                return (
+                    <View style={styles.row} key={key}>
+                        <Text style={styles.dd}>{label}</Text>
+                        <Text style={styles.dt}>N/A</Text>
+                    </View>
+                );
             return (
                 <View style={styles.row} key={key}>
                     <Text style={styles.dd}>{label}</Text>

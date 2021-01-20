@@ -1,7 +1,7 @@
 import vest, {validate, test, enforce} from "vest";
 import {truncate} from "_utils";
 
-const EditUserValidations = (data, field) => {
+const senderValidations = (data, field) => {
     return validate("EditUser", () => {
         vest.only(field);
 
@@ -28,4 +28,4 @@ const EditUserValidations = (data, field) => {
     });
 };
 
-export default EditUserValidations;
+export default senderValidations;
