@@ -38,7 +38,7 @@ const EditParcel = ({
     const [extra, setExtra] = useState({note: "", amount: ""});
     const [payment, paying] = useRequest(paymentRequest);
     const isPaid = oldParcel.payment_status === "PAID";
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState([]);
     const [upload_invoice, uploading] = useRequest(uploadInvoiceRequest);
 
     const labels = [
@@ -199,10 +199,17 @@ const EditParcel = ({
             });
     };
     const uploadInvoice = () => {
-        upload_invoice({
-            invoice_id: parcel.invoice_id,
-            invoice: image,
-        })
+        (async () => {
+            for (let i = 0; i < image.length; i++) {
+                const invoice = image[i];
+                try {
+                    await upload_invoice({
+                        invoice_id: parcel.invoice_id,
+                        invoice: invoice,
+                    });
+                } catch (error) {}
+            }
+        })()
             .then((r) => {
                 Alert.alert(
                     "Done",
@@ -216,9 +223,9 @@ const EditParcel = ({
             });
     };
     const confirmUpload = () => {
-        if (image)
+        if (image.length)
             confirmAlert({
-                paragraph: "Are you sure you want to upload this invoice?",
+                paragraph: "Are you sure you want to upload these invoices?",
                 onConfirm: uploadInvoice,
             });
         else alert("Please Choose an invoice");

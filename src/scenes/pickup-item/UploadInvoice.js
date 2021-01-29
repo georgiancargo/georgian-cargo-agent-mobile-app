@@ -3,6 +3,8 @@ import {Image, View, Platform, StyleSheet} from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import {Button} from "_atoms";
 import {ModalContainer} from "_atoms";
+import {FlatList} from "react-native-gesture-handler";
+import {Text} from "react-native";
 
 const style = StyleSheet.create({
     container: {
@@ -13,7 +15,7 @@ const style = StyleSheet.create({
         marginBottom: 5,
     },
     button: {
-        // flex: 1,
+        flex: 1,
         margin: 2,
     },
     col: {
@@ -31,8 +33,8 @@ const style = StyleSheet.create({
 });
 
 export default function UploadInvoice({
-    image = null,
-    setImage = () => {},
+    image: images = null,
+    setImage: setImages = () => {},
     onDone = () => {},
     loading = false,
 }) {
@@ -69,7 +71,9 @@ export default function UploadInvoice({
         // alert(JSON.stringify(result));
 
         if (!result.cancelled) {
-            setImage(result.uri);
+            const newImages = images.slice();
+            newImages.push(result.uri);
+            setImages(newImages);
         }
     };
     const pickCamera = async () => {
@@ -79,25 +83,73 @@ export default function UploadInvoice({
         });
 
         if (!result.cancelled) {
-            setImage(result.uri);
+            const newImages = images.slice();
+            newImages.push(result.uri);
+            setImages(newImages);
         }
+    };
+    const remove = (i) => {
+        const newImages = images.slice();
+        newImages.splice(i, 1);
+        setImages(newImages);
+    };
+    const renderItem = ({item, index}) => {
+        let file_name = item.split("/").pop();
+        file_name =
+            file_name.length > 20
+                ? file_name.substring(0, 17) + "..."
+                : file_name;
+        return (
+            <View
+                style={{
+                    // borderWidth: 1,
+                    backgroundColor: index % 2 === 1 ? "#f5f5f5" : "white",
+                    flexDirection: "row",
+                    flex: 1,
+                }}
+            >
+                <View style={{flex: 4, flexDirection: "row"}}>
+                    <View style={{flex: 2, margin: 4}}>
+                        <Image
+                            source={{uri: item}}
+                            style={{width: "100%", height: "100%"}}
+                            resizeMode="cover"
+                        />
+                    </View>
+                    <View style={{flex: 3, justifyContent: "center"}}>
+                        <Text>{file_name}</Text>
+                    </View>
+                </View>
+                <View style={{flex: 1}}>
+                    <Button
+                        mode="outlined"
+                        color="red"
+                        onPress={() => remove(index)}
+                    >
+                        X
+                    </Button>
+                </View>
+            </View>
+        );
     };
     return (
         <View style={style.container}>
             <ModalContainer modalVisible={modalVisible}>
                 <View style={style.modalContainer}>
-                    {image && (
-                        <View style={{justifyContent: "center", alignItems:"center", flex:1}}>
-                            <Image source={{uri: image}} style={{width: "100%", height: "100%"}} resizeMode="center"/>
-                        </View>
-                    )}
+                    <View style={{flex: 4}}>
+                        <FlatList data={images} renderItem={renderItem} />
+                    </View>
                     <Button style={style.button} onPress={pickImage}>
                         Upload file
                     </Button>
                     <Button style={style.button} onPress={pickCamera}>
                         Open Camera
                     </Button>
-                    <Button style={style.button} onPress={hideModal} mode="outlined">
+                    <Button
+                        style={style.button}
+                        onPress={hideModal}
+                        mode="outlined"
+                    >
                         Done
                     </Button>
                 </View>

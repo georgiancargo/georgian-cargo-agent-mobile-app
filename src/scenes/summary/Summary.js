@@ -82,9 +82,15 @@ const Summary = ({navigation, route: {params}}) => {
             try {
                 const res = await pickupRequest(payload);
                 const invoice_id = await res.data.cargo.invoice.invoice_id;
-                const invoice = payload.invoice;
+                const invoices = payload.invoice;
                 invoice_ids.push(invoice_id);
-                if(invoice) await uploadInvoice({invoice_id, invoice});
+                if (invoices.length)
+                    for (let i = 0; i < invoices.length; i++) {
+                        const invoice = invoices[i];
+                        try {
+                            await uploadInvoice({invoice_id, invoice: invoice});
+                        } catch (error) {}
+                    }
                 setErrors("");
             } catch (error) {
                 hasErrors = true;

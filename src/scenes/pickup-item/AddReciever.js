@@ -39,7 +39,7 @@ const AddReciever = ({navigation, route}) => {
     const [shouldAlert, setAlert] = useState(false);
     const [price, setPrice] = useState({currency_code: "",freight_price: 0,delivery_price: 0});
     const [extra, setExtra] = useState({note: "", amount: ""});
-    const [image, setImage] = useState(null);
+    const [image, setImage] = useState([]);
 
     const onExtraChange = (name, value) => {
         setExtra({...extra, [name]: value});
