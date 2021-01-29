@@ -82,7 +82,7 @@ const AddReciever = ({navigation, route}) => {
                 setPrice({
                     currency_code: data.prices.currency_code,
                     freight_price: data.prices.freight_price,
-                    delivery_price: data.prices.delivery_price,
+                    delivery_price: Math.round(data.prices.delivery_price),
                 });
                 setPolicyError(false);
             })

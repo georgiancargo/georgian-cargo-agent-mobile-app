@@ -201,11 +201,11 @@ const EditParcel = ({
     const uploadInvoice = () => {
         (async () => {
             for (let i = 0; i < image.length; i++) {
-                const invoice = image[i];
+                const v = image[i];
                 try {
                     await upload_invoice({
                         invoice_id: parcel.invoice_id,
-                        invoice: invoice,
+                        invoice: v,
                     });
                 } catch (error) {}
             }
