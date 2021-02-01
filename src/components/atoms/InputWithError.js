@@ -17,7 +17,6 @@ const styles = StyleSheet.create({
     disabled: {
         minHeight: 46,
         borderWidth: 1,
-        borderColor: "grey",
         paddingHorizontal: 12,
         fontSize: 16,
         borderRadius: 10,

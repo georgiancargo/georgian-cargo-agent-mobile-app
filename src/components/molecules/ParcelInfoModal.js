@@ -1,28 +1,21 @@
 import React, {useContext, useEffect, useState} from "react";
-import {
-    SafeAreaView,
-    StyleSheet,
-    View,
-    Text,
-    ScrollView,
-    Linking,
-    Alert,
-} from "react-native";
-import {ModalContainer, Button} from "_atoms";
-import {Divider, ActivityIndicator} from "react-native-paper";
+import {StyleSheet, Alert, Linking, SafeAreaView, ScrollView, Text, View,} from "react-native";
+import {Button, ModalContainer} from "_atoms";
+import {ActivityIndicator, Divider} from "react-native-paper";
 import {AuthContext} from "_context";
 import {useRequest} from "_hooks";
-import {releaseParcelRequest} from "_requests";
-import { confirmAlert } from "_utils";
-import { parcelPaymentInfoRequest } from "_requests";
+import {parcelPaymentInfoRequest, releaseParcelRequest} from "_requests";
+import {confirmAlert} from "_utils";
 
 const ParcelInfoModal = ({
-    navigation,
-    hideModal = () => {},
-    parcel,
-    modalVisible,
-    refresh = () => {},
-}) => {
+                             navigation,
+                             hideModal = () => {
+                             },
+                             parcel,
+                             modalVisible,
+                             refresh = () => {
+                             },
+                         }) => {
     const {auth} = useContext(AuthContext);
     const [payment, setPayment] = useState({});
     const [request, releasing] = useRequest(releaseParcelRequest);
@@ -68,7 +61,7 @@ const ParcelInfoModal = ({
         "release_code",
         "freight_price_code",
         "delivery_price_code",
-        "invoice_path",
+        "invoices",
         "discount_amount",
         "item_price_currency"
     ];
@@ -101,7 +94,7 @@ const ParcelInfoModal = ({
                 payment_date = payment_date.toLocaleString();
                 setPayment({...payment, created_at: payment_date})
             })
-            .catch((e) => {
+            .catch(() => {
                 setPayment({});
             });
     }, [parcel.tracking_number]);
@@ -124,7 +117,10 @@ const ParcelInfoModal = ({
                 Alert.alert(
                     "Error",
                     `${e}`,
-                    [{text: "OK", onPress: () => {}}],
+                    [{
+                        text: "OK", onPress: () => {
+                        }
+                    }],
                     // {cancelable: true}
                 );
             })
@@ -137,7 +133,7 @@ const ParcelInfoModal = ({
 
                 <Text style={styles.dt}>
                     {gettinInfo ? (
-                        <ActivityIndicator animating />
+                        <ActivityIndicator animating/>
                     ) : payment[key] ? (
                         payment[key]
                     ) : (
@@ -153,7 +149,7 @@ const ParcelInfoModal = ({
         const Link = ({url}) =>
             url ? (
                 <Text style={styles.link} onPress={() => link(url)}>
-                    Link
+                    Link{"\n"}
                 </Text>
             ) : (
                 <Text style={styles.dt}>N/A</Text>
@@ -161,12 +157,19 @@ const ParcelInfoModal = ({
         return keys.map((key, i) => (
             <View style={styles.row} key={key}>
                 <Text style={styles.dd}>{labels[i]}</Text>
-                {key !== "invoice_path" ? (
+                {key !== "invoices" ? (
                     <Text style={styles.dt}>
                         {parcel[key] ? parcel[key] : "N/A"}
                     </Text>
                 ) : (
-                    <Link url={parcel[key]} />
+                    <Text>
+                        {parcel[key].map((path, i) => {
+                            return <Text style={{color: "blue", textDecorationLine: "underline", marginRight: 12}}
+                                         onPress={() => link(path)}>
+                                Download invoice {i + 1} {"\n"}
+                            </Text>
+                        })}
+                    </Text>
                 )}
             </View>
         ));
@@ -214,14 +217,14 @@ const ParcelInfoModal = ({
         <ModalContainer modalVisible={modalVisible}>
             <SafeAreaView style={{flex: 1}}>
                 <ScrollView>
-                    <Parcel />
-                    <Divider style={{marginVertical: 3}} />
-                    <Payment />
-                    <Divider style={{marginVertical: 3}} />
-                    <User user={sender} role="Sender" />
-                    <Divider style={{marginVertical: 3}} />
-                    <User user={receiver} role="Receiver" />
-                    <Divider style={{marginVertical: 3}} />
+                    <Parcel/>
+                    <Divider style={{marginVertical: 3}}/>
+                    <Payment/>
+                    <Divider style={{marginVertical: 3}}/>
+                    <User user={sender} role="Sender"/>
+                    <Divider style={{marginVertical: 3}}/>
+                    <User user={receiver} role="Receiver"/>
+                    <Divider style={{marginVertical: 3}}/>
                 </ScrollView>
                 <View style={styles.buttonRow}>
                     <Button
