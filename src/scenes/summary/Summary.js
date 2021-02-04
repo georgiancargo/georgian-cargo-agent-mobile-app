@@ -43,7 +43,7 @@ const Summary = ({navigation, route: {params}}) => {
         });
         setSum(s);
     }, [parcels]);
-    
+
     useEffect(() => {
         if (discounts.length) {
             let s = 0;
@@ -128,7 +128,7 @@ const Summary = ({navigation, route: {params}}) => {
             paragraph: "Sure you want to checkout?",
             onConfirm: checkout,
         });
-        
+
     };
     const applyCoupon = () => {
         const prices = [];
@@ -150,7 +150,7 @@ const Summary = ({navigation, route: {params}}) => {
             paragraph: "Sure you want to apply this coupon?",
             onConfirm: applyCoupon,
         });
-        
+
     };
     const sendSMS = async () => {
         const isAvailable = await SMS.isAvailableAsync();
@@ -198,6 +198,7 @@ const Summary = ({navigation, route: {params}}) => {
                     <PaymentDropdown
                         // list={payment_methods}
                         link={true}
+                        allow_no_payment={true}
                         name="payment_method"
                         onSelect={onChange}
                         selectedValue={summaryData.payment_method}

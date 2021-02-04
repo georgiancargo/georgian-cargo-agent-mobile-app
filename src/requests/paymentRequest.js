@@ -12,6 +12,6 @@ export default function paymentRequest(axios, data) {
         case "LINK":
             return axios.post("/billing/payment/method/bank/link", payload);
         default:
-            break;
+            return Promise.resolve();
     }
 }
